@@ -1,0 +1,51 @@
+{
+  // 啟用 flat config
+  "eslint.experimental.useFlatConfig": true,
+
+  // 關閉 prettier, 使用自動修復格式化
+  "prettier.enable": false,
+  "editor.formatOnSave": false,
+  "editor.tabSize": 2,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  },
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+
+  // 客製化修復
+  "eslint.rules.customizations": [
+    {
+      "rule": "*-order",
+      "severity": "off"
+    }
+  ],
+
+  // 檢查檔案類型
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "yaml",
+    "toml",
+    "xml",
+    "gql",
+    "graphql",
+    "astro",
+    "css",
+    "less",
+    "scss",
+    "pcss",
+    "postcss"
+  ]
+}
