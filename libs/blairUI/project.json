@@ -1,0 +1,17 @@
+{
+	"name": "blairUI",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/blairUI/src",
+	"projectType": "library",
+	"// targets": "to see all targets run: nx show project blairUI --web",
+	"targets": {
+		"lint": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "libs/{projectName}",
+				"command": "eslint ."
+			}
+		}
+	},
+	"tags": ["type:front_ui", "scope:shared"]
+}
