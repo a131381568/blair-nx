@@ -4,7 +4,7 @@
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
-      "!{projectRoot}/eslint.config.js",
+      "!{projectRoot}/eslint.config.mjs",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/cypress/**/*",
@@ -12,7 +12,8 @@
       "!{projectRoot}/cypress.config.[jt]s",
       "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)",
       "!{projectRoot}/.storybook/**/*",
-      "!{projectRoot}/tsconfig.storybook.json"
+      "!{projectRoot}/tsconfig.storybook.json",
+      "!{projectRoot}/.eslintrc.json"
     ],
     "sharedGlobals": []
   },
@@ -40,8 +41,8 @@
     {
       "plugin": "@nx/cypress/plugin",
       "options": {
-        "targetName": "e2e",
-        "openTargetName": "open-cypress",
+        "targetName": "cy:headless",
+        "openTargetName": "cy:op",
         "componentTestingTargetName": "component-test",
         "ciTargetName": "e2e-ci"
       }
@@ -50,9 +51,6 @@
   "targetDefaults": {
     "test": {
       "inputs": ["default", "^production"]
-    },
-    "e2e-ci--**/*": {
-      "dependsOn": ["^build"]
     },
     "@nx/esbuild:esbuild": {
       "cache": true,

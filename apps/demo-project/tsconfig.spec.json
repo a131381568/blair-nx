@@ -22,6 +22,7 @@
 		"src/**/*.test.jsx",
 		"src/**/*.spec.jsx",
 		"src/**/*.d.ts",
+		"src/**/*.cy.ts",
 		"components.d.ts"
 	],
 	"exclude": ["node_modules"]

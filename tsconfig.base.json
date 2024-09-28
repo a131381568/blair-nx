@@ -14,8 +14,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@blair-nx/testerr": ["libs/testerr/src/index.ts"]
-    },
+      "@blair-nx/blairComposables/*": ["libs/blairComposables/src/lib/*"],
+      "@blair-nx/blairUI": ["libs/blairUI/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-// import { testerr } from '@blair-nx/testerr';
-// import { testerr } from 'libs/testerr/src/lib/testerr.ts';
+import { useHexToRGBA } from '@blair-nx/blairComposables/useColorCodeConverter';
+import { BlairUi } from '@blair-nx/blairUI';
+
 defineProps<{
 	title: string;
 }>();
@@ -9,11 +10,15 @@ defineProps<{
 <template>
 	<div class="wrapper">
 		<div class="container">
+			<BlairUi title="我是標題" />
 			<div id="welcome">
 				<h1>
 					<span> Hello there, </span>
 					Welcome {{ title }} 👋
 				</h1>
+				<h2>
+					{{ useHexToRGBA("#1D988A") }}
+				</h2>
 			</div>
 			<div
 				id="hero"
