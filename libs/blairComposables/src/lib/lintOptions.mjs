@@ -3,9 +3,7 @@ import pluginCypress from 'eslint-plugin-cypress/flat';
 
 export default [
 	{
-		typescript: {
-			tsconfigPath: 'tsconfig.json',
-		},
+		typescript: true,
 		vue: true,
 		stylistic: {
 			indent: 'tab',

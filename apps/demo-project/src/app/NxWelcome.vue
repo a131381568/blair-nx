@@ -22,7 +22,7 @@ defineProps<{
 			</div>
 			<div
 				id="hero"
-				class="rounded wevfewfwef"
+				class="rounded"
 			>
 				<div class="text-container">
 					<h2>

@@ -73,20 +73,6 @@
 			},
 			"dependsOn": ["lint"]
 		},
-		"cy:op": {
-			"executor": "nx:run-commands",
-			"options": {
-				"cwd": "apps/{projectName}",
-				"command": "cypress open"
-			}
-		},
-		"cy:headless": {
-			"executor": "nx:run-commands",
-			"options": {
-				"cwd": "apps/{projectName}",
-				"command": "cypress run -s 'cypress/e2e' -b chrome"
-			}
-		},
 		"lint": {
 			"executor": "nx:run-commands",
 			"options": {
