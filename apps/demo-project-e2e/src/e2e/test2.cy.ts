@@ -9,7 +9,7 @@ describe('demo-e2e-test', () => {
 	});
 
 	it('驗證引入組件', () => {
-		cy.get('.container').children('p')
+		cy.get('#welcome').prev('p')
 			.should('contain.text', '我是標題');
 	});
 });
