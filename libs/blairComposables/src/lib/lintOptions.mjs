@@ -1,5 +1,6 @@
 import nxPlugins from '@nx/eslint-plugin';
 import pluginCypress from 'eslint-plugin-cypress/flat';
+import pluginTailwindCSS from 'eslint-plugin-tailwindcss';
 
 export default [
 	{
@@ -87,4 +88,6 @@ export default [
 	// cy
 	pluginCypress.configs.recommended,
 	pluginCypress.configs.globals,
+	// tailwindCSS
+	...pluginTailwindCSS.configs['flat/recommended'],
 ];
