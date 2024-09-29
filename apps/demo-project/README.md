@@ -23,17 +23,6 @@ pnpm exec nx lint demo-project
 pnpm exec nx test demo-project
 ```
 
-## cypress 介面
+## E2E 測試
 
-```shell
-# 開啟本地環境的前提下執行
-pnpm exec nx run demo-project:cy:op
-```
-
-## headless 模式
-
-```shell
-# 開啟本地環境的前提下執行
-# 執行 cypress 所有測試
-pnpm exec nx run demo-project:cy:headless
-```
+請查閱 apps/demo-project-e2e

@@ -1,6 +1,6 @@
 describe('demo-e2e', () => {
 	beforeEach(() => {
-		cy.visit('/');
+		cy.visit('/welcome');
 	});
 
 	it('測試標題', () => {

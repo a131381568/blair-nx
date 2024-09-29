@@ -1,6 +1,6 @@
 describe('demo-e2e-test', () => {
 	beforeEach(() => {
-		cy.visit('/');
+		cy.visit('/welcome');
 	});
 
 	it('驗證色碼', () => {
