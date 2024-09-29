@@ -9,7 +9,8 @@
 		"src/**/*.jsx",
 		"src/**/*.ts",
 		"src/**/*.vue",
-		"components.d.ts"
+		"components.d.ts",
+		"../../libs/**/*.ts"
 	],
 	"exclude": [
 		"src/**/*.spec.ts",

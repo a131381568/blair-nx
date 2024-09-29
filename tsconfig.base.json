@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "rootDir": ".",
-    "declaration": false,
+    "declaration": true, // 修改為 true
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -14,7 +14,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@blair-nx/blairComposables/*": ["libs/blairComposables/src/lib/*"],
+      "@blair-nx/blairComposables": ["libs/blairComposables/src/index.ts"],
       "@blair-nx/blairUI": ["libs/blairUI/src/index.ts"]
     }
   },

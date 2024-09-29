@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { useHexToHSL, useHexToRGBA } from './useColorCodeConverter.ts';
+import { useHexToHSL, useHexToRGBA } from './useColorCodeConverter';
 
 describe('useHexToHSL', () => {
 	it('色碼轉換：將 Hex 轉成 HSL', () => {

@@ -23,7 +23,8 @@
 		"src/**/*.spec.jsx",
 		"src/**/*.d.ts",
 		"src/**/*.cy.ts",
-		"components.d.ts"
+		"components.d.ts",
+		"src/**/*.vue"
 	],
 	"exclude": ["node_modules"]
 }

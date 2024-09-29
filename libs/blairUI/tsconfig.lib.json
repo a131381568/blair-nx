@@ -9,7 +9,8 @@
 		"src/**/*.jsx",
 		"src/**/*.ts",
 		"src/**/*.tsx",
-		"src/**/*.vue"
+		"src/**/*.vue",
+		"../../libs/**/*.ts"
 	],
 	"exclude": [
 		"src/**/__tests__/*",

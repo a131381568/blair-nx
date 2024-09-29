@@ -1,11 +1,14 @@
 {
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
+		"composite": true,
 		"jsx": "preserve",
 		"jsxImportSource": "vue",
 		"resolveJsonModule": true,
 		"allowJs": true,
 		"strict": true,
+		"declaration": true,
+		"declarationMap": true,
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": false,
 		"verbatimModuleSyntax": true

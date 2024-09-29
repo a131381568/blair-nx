@@ -1,3 +1,4 @@
+import { URL, fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
@@ -26,6 +27,11 @@ export default defineConfig({
 		coverage: {
 			reportsDirectory: '../../coverage/apps/demo-project',
 			provider: 'v8',
+		},
+	},
+	resolve: {
+		alias: {
+			'@': fileURLToPath(new URL('./src', import.meta.url)),
 		},
 	},
 });
