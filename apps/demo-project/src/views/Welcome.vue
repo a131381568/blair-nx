@@ -10,7 +10,7 @@ import NxWelcome from '@/components/NxWelcome.vue';
 	/>
 	<router-link
 		to="/"
-		class="tw-text-[#0000ff] tw-underline tw-block tw-text-center"
+		class="tw-block tw-text-center tw-text-[#0000ff] tw-underline"
 	>
 		Go to Home
 	</router-link>

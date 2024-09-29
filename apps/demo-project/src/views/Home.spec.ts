@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
-import { createPinia, setActivePinia, storeToRefs } from 'pinia';
+import { createPinia, setActivePinia } from 'pinia';
 import Home from './Home.vue';
 
 describe('測試用 Home', () => {
