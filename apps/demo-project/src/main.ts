@@ -1,4 +1,4 @@
-import './assets/styles.css';
+import './assets/index.postcss';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import router from './router';

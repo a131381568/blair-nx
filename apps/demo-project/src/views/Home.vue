@@ -6,6 +6,11 @@ import CountInfo from '@/components/CountInfo.vue';
 <template>
 	<h1>Home</h1>
 	staticData: {{ staticData }}
+	<h1>大標題一二三四五</h1>
+	<h2>大標題一二三四五</h2>
+	<h3>大標題一二三四五</h3>
+	<h4>大標題一二三四五</h4>
+	<h5>大標題一二三四五</h5>
 	<hr>
 	<router-link
 		to="/welcome"

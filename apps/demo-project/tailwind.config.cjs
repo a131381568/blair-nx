@@ -1,5 +1,6 @@
+import { createGlobPatternsForDependencies } from '@nx/vue/tailwind';
+
 const { join } = require('node:path');
-const { createGlobPatternsForDependencies } = require('@nx/vue/tailwind');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
