@@ -1,0 +1,28 @@
+{
+	"name": "blairComposables",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/blairComposables/src",
+	"projectType": "library",
+	"targets": {
+		"build": {
+			"executor": "@nx/esbuild:esbuild",
+			"outputs": ["{options.outputPath}"],
+			"options": {
+				"outputPath": "dist/libs/{projectName}",
+				"main": "libs/{projectName}/src/index.ts",
+				"tsConfig": "libs/{projectName}/tsconfig.lib.json",
+				"assets": [],
+				"generatePackageJson": true,
+				"format": ["cjs"]
+			}
+		},
+		"lint": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "libs/{projectName}",
+				"command": "eslint ."
+			}
+		}
+	},
+	"tags": ["type:front_libs", "scope:shared"]
+}
