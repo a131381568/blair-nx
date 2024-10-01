@@ -1,0 +1,17 @@
+meta {
+  name: partially_update_item
+  type: http
+  seq: 7
+}
+
+patch {
+  url: {{HOST}}/objects/{{ID_01}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Apple MacBook Pro 666 (Updated Name)"
+  }
+}

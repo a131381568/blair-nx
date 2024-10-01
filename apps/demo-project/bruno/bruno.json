@@ -1,0 +1,9 @@
+{
+	"version": "1",
+	"name": "public_restful",
+	"type": "collection",
+	"ignore": [
+		"node_modules",
+		".git"
+	]
+}

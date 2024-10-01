@@ -1,0 +1,27 @@
+meta {
+  name: item_by_ids
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{HOST}}/objects?id={{ID_01}}&id={{ID_02}}
+  body: none
+  auth: none
+}
+
+params:query {
+  id: {{ID_01}}
+  id: {{ID_02}}
+}
+
+tests {
+  test("status should be 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("default req 2 item", function() {
+    const data = res.getBody();
+    expect(data.length).to.equal(2);
+  });
+}
