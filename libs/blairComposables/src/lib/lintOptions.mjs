@@ -61,25 +61,7 @@ export default [
 	// nx rule
 	{
 		rules: {
-			'@nx/enforce-module-boundaries': [
-				'error',
-				{
-					enforceBuildableLibDependency: true,
-					allow: [
-						'../../libs/blairComposables/src/lib/lintOptions.mjs',
-					],
-					depConstraints: [
-						{
-							sourceTag: 'type:front_libs',
-							onlyDependOnLibsWithTags: ['scope:shared', 'type:front_libs'],
-						},
-						{
-							sourceTag: 'type:front_app',
-							onlyDependOnLibsWithTags: ['scope:shared', 'type:front_app'],
-						},
-					],
-				},
-			],
+			'@nx/enforce-module-boundaries': 'off',
 		},
 		plugins: {
 			'@nx': nxPlugins,

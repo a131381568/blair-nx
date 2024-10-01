@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "rootDir": ".",
-    "declaration": true, // 修改為 true
+    "declaration": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -15,8 +15,11 @@
     "baseUrl": ".",
     "paths": {
       "@blair-nx/blairComposables": ["libs/blairComposables/src/index.ts"],
-      "@blair-nx/blairUI": ["libs/blairUI/src/index.ts"]
-    }
+      "@blair-nx/blairUI": ["libs/blairUI/src/index.ts"],
+      "@demo-src/*": ["apps/demo-project/src/*"],
+    },
+    "esModuleInterop": true,
+    "strict": true
   },
   "exclude": ["node_modules", "tmp"]
 }

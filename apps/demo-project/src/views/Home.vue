@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { staticData } from '@/constants/static-data';
-import CountInfo from '@/components/CountInfo.vue';
+import { staticData } from '@demo-src/constants/static-data';
+import CountInfo from '@demo-src/components/CountInfo.vue';
 </script>
 
 <template>

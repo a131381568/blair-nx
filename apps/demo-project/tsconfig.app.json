@@ -1,9 +1,13 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"types": ["vite/client"],
-		"outDir": "../../dist/out-tsc"
-
+		"types": [
+			"vite/client",
+			"node",
+			"vue"
+		],
+		"outDir": "../../dist/out-tsc",
+		"isolatedModules": true
 	},
 	"include": [
 		"src/**/*.js",

@@ -1,8 +1,8 @@
 import { mount } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
 import { createPinia, setActivePinia, storeToRefs } from 'pinia';
+import { useGlobalStore } from '@demo-src/stores/global';
 import CountInfo from './CountInfo.vue';
-import { useGlobalStore } from '@/stores/global';
 
 function mountComponent<T>(component: T) {
 	return mount(component);
