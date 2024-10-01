@@ -1,0 +1,23 @@
+meta {
+  name: add_item
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{HOST}}/objects
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "iphone se 2020444",
+    "data": {
+      "year": 2020,
+      "price": 777,
+      "CPU model": "m1",
+      "Hard disk size": "512 mb"
+    }
+  }
+}
