@@ -2,13 +2,8 @@ import { mount } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
 import { createPinia, setActivePinia, storeToRefs } from 'pinia';
 import { useGlobalStore } from '@demo-src/stores/global';
+import type { WrapperType } from '@demo-src/types/types';
 import CountInfo from './CountInfo.vue';
-
-function mountComponent<T>(component: T) {
-	return mount(component);
-}
-
-type WrapperType<T> = ReturnType<typeof mountComponent<T>>;
 
 describe('pinia 驗證', () => {
 	let wrapper: WrapperType<typeof CountInfo>;
