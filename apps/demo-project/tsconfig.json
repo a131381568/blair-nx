@@ -4,17 +4,15 @@
 		"composite": true,
 		"jsx": "preserve",
 		"jsxImportSource": "vue",
-		"baseUrl": ".",
-		"paths": {
-			"@/*": ["src/*"]
-		},
+		"rootDir": "../../",
 		"resolveJsonModule": true,
+		"types": ["node"],
 		"allowJs": true,
 		"strict": true,
 		"declaration": true,
 		"declarationMap": true,
 		"allowSyntheticDefaultImports": true,
-		"esModuleInterop": false,
+		"esModuleInterop": true,
 		"verbatimModuleSyntax": true
 	},
 	"references": [

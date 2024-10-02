@@ -44,11 +44,7 @@
 				"reportCompressedSize": false,
 				"commonjsOptions": {
 					"transformMixedEsModules": true,
-					"requireReturnsDefault": true,
-					"include": [
-						"ckeditor5-custom-build/build/ckeditor",
-						"vue3-colorpicker"
-					]
+					"requireReturnsDefault": true
 				},
 				"emptyOutDir": true,
 				"assetsDir": "{projectName}/assets",

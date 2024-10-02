@@ -18,6 +18,9 @@ export default defineConfig({
 			fileRegex: /.js$|.vue$|.png$|.ts$|.jpg$|.json$/,
 		}),
 	],
+	build: {
+		// 設定遷移至 project.json
+	},
 	test: {
 		watch: false,
 		globals: true,
@@ -31,8 +34,10 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			// '@': fileURLToPath(new URL('./src', import.meta.url)),
-			'@': path.resolve(__dirname, './src'),
+			'@demo-src': path.resolve(__dirname, './src'),
 		},
+	},
+	css: {
+		postcss: path.resolve(__dirname, 'postcss.config.ts'),
 	},
 });

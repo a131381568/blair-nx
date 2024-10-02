@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import NxWelcome from '@/components/NxWelcome.vue';
+import NxWelcome from '@demo-src/components/NxWelcome.vue';
 </script>
 
 <template>

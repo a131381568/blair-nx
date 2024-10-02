@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useGlobalStore } from '@/stores/global';
+import { useGlobalStore } from '@demo-src/stores/global';
 
 const globalStore = useGlobalStore();
 const { isLoading, count } = storeToRefs(globalStore);

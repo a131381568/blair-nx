@@ -24,7 +24,8 @@
 		"src/**/*.d.ts",
 		"src/**/*.cy.ts",
 		"components.d.ts",
-		"src/**/*.vue"
+		"src/**/*.vue",
+		"src/**/stores/**.ts"
 	],
 	"exclude": ["node_modules"]
 }
