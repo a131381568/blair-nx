@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@floating-ui/vue": "1.0.6",
+    "@ts-rest/core": "3.49.3",
     "@types/qs": "^6.9.16",
     "axios": "^1.5.0",
     "pinia": "2.2.2",
@@ -17,7 +18,8 @@
     "tslib": "^2.3.0",
     "vue": "3.4.38",
     "vue-final-modal": "^4.5.3",
-    "vue-router": "^4.0.5"
+    "vue-router": "^4.0.5",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@antfu/eslint-config": "2.20.0",

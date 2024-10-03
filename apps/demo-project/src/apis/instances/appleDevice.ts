@@ -2,7 +2,14 @@ import qs from 'qs';
 import { apiWithoutToken } from '@demo-src/apis/index';
 import type { AdListParams, BaseAdItem } from '@demo-src/types/types';
 
-export const apiFetchAdList = () => apiWithoutToken.get('/objects');
+export const apiFetchAdList = <T>(params: T) => {
+	return apiWithoutToken({
+		url: '/objects',
+		method: 'get',
+		headers: { 'Content-Type': 'text/plain' },
+		params,
+	});
+};
 
 export const apiFetchAdListByIds = (query: AdListParams) => {
 	return apiWithoutToken.get('/objects', {
@@ -25,4 +32,11 @@ export const apiPutItem = (id: string, payload: BaseAdItem) => apiWithoutToken.p
 
 export const apiPatchItem = (id: string, payload: BaseAdItem) => apiWithoutToken.patch(`/objects/${id}`, payload);
 
-export const apiDelItem = (id: string) => apiWithoutToken.delete(`/objects/${id}`);
+export const apiDelItem = <T>(id: string, params: T) => {
+	return apiWithoutToken({
+		url: `/objects/${id}`,
+		method: 'delete',
+		headers: { 'Content-Type': 'text/plain' },
+		params,
+	});
+};

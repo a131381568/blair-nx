@@ -56,6 +56,8 @@ const importDefaultData = () => {
 	itemDisk.value = EXAMPLE_SINGLE_DATA.data['Hard disk size'];
 };
 
+const getAllListAct = () => getFetchAdList();
+
 const getIdsData = () => getFetchAdListByQuery({
 	id: IDS_LIST,
 	a: 'aaaa',
@@ -120,7 +122,7 @@ const delItemAct = async () => {
 			<h3>1. 取得全列表</h3>
 			<button
 				class="tw-w-20 tw-rounded tw-bg-demo-main tw-py-1 tw-text-[#fff]"
-				@click="getFetchAdList"
+				@click="getAllListAct"
 			>
 				觸發
 			</button>

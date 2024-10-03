@@ -13,18 +13,25 @@ import type {
 	AdItemUpdate,
 	AdListParams,
 	BaseAdItem,
-	DeleteMsg,
 } from '@demo-src/types/types';
+import { apiContract } from '@demo-src/apis/contract';
 
 export const getFetchAdList = async () => {
 	const { updateList } = useAppleDeviceStore();
 
 	try {
-		const res = await apiFetchAdList();
-		updateList(res.data);
+		const res = await apiFetchAdList({
+			method: apiContract.getListRes.method,
+			url: apiContract.getListRes.path,
+		});
+		const validation = apiContract.getListRes.responses[200];
+
+		if (res.status === 200 && validation.parse(res.data)) {
+			updateList(res.data);
+		}
 	}
-	catch (error) {
-		console.error(error);
+	catch (error: any) {
+		throw new Error(error.toString());
 	}
 };
 
@@ -107,17 +114,25 @@ export const patchItem = async (id: string, payload: BaseAdItem) => {
 
 export const deleteItem = async (id: string) => {
 	try {
-		const res = await apiDelItem(id);
-		const msg: DeleteMsg = res.data;
-		if (msg.message.endsWith('has been deleted.')) {
+		const res = await apiDelItem(id, {
+			method: apiContract.delItemRes.method,
+			url: apiContract.delItemRes.path,
+		});
+		const validation = apiContract.delItemRes.responses[200];
+
+		if (res.status === 200 && validation.parse(res.data)) {
 			return 'success';
 		}
 		else {
 			return 'failure';
 		}
 	}
-	catch (error) {
-		console.error(error);
-		return 'failure';
+	catch (error: any) {
+		const validation = apiContract.delItemRes.responses[404];
+		if (error.status === 404 && validation.parse(error.response.data)) {
+			// 404 handle
+			return 'failure';
+		}
+		throw new Error(error.toString());
 	}
 };
