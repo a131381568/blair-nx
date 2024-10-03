@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { AdItemDetail, AdItemUpdate, AppleDeviceState, BaseAdItem } from '@demo-src/types/types';
+import type { AdItemDetail, AdItemUpdate, AppleDeviceState, BaseAdItem } from '@demo-src/types';
 
 export const useAppleDeviceStore = defineStore('appleDevice', {
 	state: (): AppleDeviceState => ({

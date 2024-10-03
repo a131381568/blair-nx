@@ -13,7 +13,7 @@ import type {
 	AdItemUpdate,
 	AdListParams,
 	BaseAdItem,
-} from '@demo-src/types/types';
+} from '@demo-src/types';
 import { apiContract } from '@demo-src/apis/contract';
 
 export const getFetchAdList = async () => {

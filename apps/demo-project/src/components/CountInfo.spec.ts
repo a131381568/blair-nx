@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils';
 import { createTestingPinia } from '@pinia/testing';
 import { createPinia, setActivePinia, storeToRefs } from 'pinia';
 import { useGlobalStore } from '@demo-src/stores/global';
-import type { WrapperType } from '@demo-src/types/types';
+import type { WrapperType } from '@demo-src/types';
 import CountInfo from './CountInfo.vue';
 
 describe('pinia 驗證', () => {

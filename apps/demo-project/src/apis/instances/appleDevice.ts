@@ -1,6 +1,6 @@
 import qs from 'qs';
 import { apiWithoutToken } from '@demo-src/apis/index';
-import type { AdListParams, BaseAdItem } from '@demo-src/types/types';
+import type { AdListParams, BaseAdItem } from '@demo-src/types';
 
 export const apiFetchAdList = <T>(params: T) => {
 	return apiWithoutToken({

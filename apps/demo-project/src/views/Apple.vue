@@ -14,11 +14,11 @@ import {
 import { useAppleDeviceStore } from '@demo-src/stores/appleDevice';
 
 const IDS_LIST = [
-	'ff808181923ed5e2019247cdb4aa14fd',
 	'ff808181923ed5e20192480dc0721570',
 	'ff808181923ed5e20192483d7f8b15db',
 	'ff808181923ed5e20192484333c215e3',
 	'ff808181923ed5e201924844295915e9',
+	'ff808181923ed5e201925369c7562b62',
 ];
 const EXAMPLE_SINGLE_DATA = {
 	name: 'iphone se 2020444',
