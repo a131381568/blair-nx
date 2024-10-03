@@ -16,7 +16,7 @@
     "paths": {
       "@blair-nx/blairComposables": ["libs/blairComposables/src/index.ts"],
       "@blair-nx/blairUI": ["libs/blairUI/src/index.ts"],
-      "@demo-src/*": ["apps/demo-project/src/*"],
+      "@demo-src/*": ["apps/boilerplate/src/*"],
     },
     "esModuleInterop": true,
     "strict": true

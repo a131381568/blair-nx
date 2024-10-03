@@ -1,9 +1,9 @@
 {
-	"name": "demo-project-e2e",
+	"name": "boilerplate-e2e",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "application",
 	"sourceRoot": "apps/{projectName}/src",
-	"implicitDependencies": ["demo-project"],
+	"implicitDependencies": ["boilerplate"],
 	"targets": {
 		"lint": {
 			"executor": "nx:run-commands",

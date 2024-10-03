@@ -17,7 +17,7 @@
 # 本地開發
 
 ```shell
-pnpm exec nx serve demo-project
+pnpm exec nx serve boilerplate
 ```
 
 # 測試
@@ -28,12 +28,12 @@ pnpm exec nx serve demo-project
 
 ### 針對檔案
 ```shell
-pnpm exec nx test demo-project App.spec.ts
+pnpm exec nx test boilerplate App.spec.ts
 ```
 
 ### 針對專案
 ```shell
-pnpm exec nx test demo-project
+pnpm exec nx test boilerplate
 ```
 
 ### 所有專案
@@ -46,17 +46,17 @@ pnpm exec nx run-many -t test
 ### cypress 介面
 ```shell
 # 本地起 web server
-pnpm exec nx serve demo-project
+pnpm exec nx serve boilerplate
 # 開啟 cypress 介面
-pnpm exec nx cy:op demo-project
+pnpm exec nx cy:op boilerplate
 ```
 
 ### headless 模式
 ```shell
 # 本地起 web server
-pnpm exec nx serve demo-project
+pnpm exec nx serve boilerplate
 # 開啟 cypress 介面
-pnpm exec nx cy:headless demo-project
+pnpm exec nx cy:headless boilerplate
 ```
 
 # 程式碼檢查
@@ -65,7 +65,7 @@ pnpm exec nx cy:headless demo-project
 
 ```shell
 # 針對單獨專案
-pnpm exec nx lint demo-project
+pnpm exec nx lint boilerplate
 # 全部專案
 pnpm exec nx run-many -t lint --skip-nx-cache
 ```
@@ -74,7 +74,7 @@ pnpm exec nx run-many -t lint --skip-nx-cache
 
 ```shell
 # 針對單獨專案
-pnpm exec nx build demo-project
+pnpm exec nx build boilerplate
 # 全部專案(公開)
 pnpm exec nx run-many -t build -p tag:publish:true -c production
 ```

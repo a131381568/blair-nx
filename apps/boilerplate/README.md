@@ -1,31 +1,31 @@
 # demoProject
 
-- 專案名稱：demo project
-- 本機端網址：http://localhost:4200/demo
-- 測試環境網址：https://test.puraliena.com/demo
+- 專案名稱：boilerplate
+- 本機端網址：http://localhost:4200
+- 測試環境網址：https://test.puraliena.com/boilerplate
 
 ## 起本地環境
 
 - 前端
 ```shell
-pnpm exec nx run demo-project:serve:local
+pnpm exec nx run boilerplate:serve:local
 ```
 
 ## 檢查程式碼
 
 ```shell
-pnpm exec nx lint demo-project
+pnpm exec nx lint boilerplate
 ```
 
 ## 單元測試
 
 ```shell
-pnpm exec nx test demo-project
+pnpm exec nx test boilerplate
 ```
 
 ## E2E 測試
 
-請查閱 apps/demo-project-e2e
+請查閱 apps/boilerplate-e2e
 
 # Bruno API 文件
 
@@ -37,6 +37,6 @@ pnpm exec nx test demo-project
 
 ```shell
 # 位置在 nx 根目錄
-ln -s ./.env.local ./apps/demo-project/bruno/.env
+ln -s ./.env.local ./apps/boilerplate/bruno/.env
 ```
 

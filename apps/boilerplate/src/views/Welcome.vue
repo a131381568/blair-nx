@@ -4,7 +4,7 @@ import NxWelcome from '@demo-src/components/NxWelcome.vue';
 
 <template>
 	<NxWelcome
-		title="demo-project"
+		title="boilerplate"
 		data-name="sssss"
 		limit-value="aaaaaaaaaa"
 	/>

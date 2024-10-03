@@ -8,7 +8,7 @@ import requireTransfrom from 'vite-plugin-require-transform';
 
 export default defineConfig({
 	root: __dirname,
-	cacheDir: '../../node_modules/.vite/apps/demo-project',
+	cacheDir: '../../node_modules/.vite/apps/boilerplate',
 	plugins: [
 		commonjs(),
 		vue(),
@@ -28,7 +28,7 @@ export default defineConfig({
 		include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
 		reporters: ['verbose'],
 		coverage: {
-			reportsDirectory: '../../coverage/apps/demo-project',
+			reportsDirectory: '../../coverage/apps/boilerplate',
 			provider: 'v8',
 		},
 	},

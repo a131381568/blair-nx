@@ -6,14 +6,14 @@
 
 ```shell
 # 手動起本地 webServer
-pnpm exec nx run demo-project:serve:local
+pnpm exec nx run boilerplate:serve:local
 ```
 
 ## cypress 介面
 
 ```shell
 # 開啟本地環境的前提下執行
-pnpm exec nx cy:op demo-project-e2e
+pnpm exec nx cy:op boilerplate-e2e
 ```
 
 ## headless 模式
@@ -21,5 +21,5 @@ pnpm exec nx cy:op demo-project-e2e
 ```shell
 # 開啟本地環境的前提下執行
 # 執行 cypress 所有測試
-pnpm exec nx cy:headless demo-project-e2e
+pnpm exec nx cy:headless boilerplate-e2e
 ```
