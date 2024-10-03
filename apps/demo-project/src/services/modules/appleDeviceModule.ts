@@ -6,7 +6,7 @@ import {
 	apiFetchAdListByPathId,
 	apiPatchItem,
 	apiPutItem,
-} from '@demo-src/apis/instances/appleDevice';
+} from '@demo-src/services/apis/appleDeviceApi';
 import { useAppleDeviceStore } from '@demo-src/stores/appleDevice';
 import type {
 	AdItemDetail,
@@ -14,7 +14,7 @@ import type {
 	AdListParams,
 	BaseAdItem,
 } from '@demo-src/types';
-import { apiContract } from '@demo-src/apis/contract';
+import { apiContract } from '@demo-src/services/contracts/appleDeviceContract';
 
 export const getFetchAdList = async () => {
 	const { updateList } = useAppleDeviceStore();

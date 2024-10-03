@@ -10,7 +10,7 @@ import {
 	getFetchAdListByQuery,
 	patchItem,
 	putItem,
-} from '@demo-src/apis/modules/appleDevice';
+} from '@demo-src/services/modules/appleDeviceModule';
 import { useAppleDeviceStore } from '@demo-src/stores/appleDevice';
 
 const IDS_LIST = [

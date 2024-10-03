@@ -1,6 +1,6 @@
 import { initContract } from '@ts-rest/core';
 import type { AppRoute, ClientInferRequest } from '@ts-rest/core';
-import { delResErrorSchema, delResSuccessSchema, listResSchema } from '@demo-src/types/schemas';
+import { delResErrorSchema, delResSuccessSchema, listResSchema } from '@demo-src/types/schemas/appleDeviceSchema';
 
 const c = initContract();
 
