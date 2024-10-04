@@ -1,4 +1,4 @@
-import './assets/index.postcss';
+import '@blair-nx-config/tailwindStyle.css';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import router from './router';

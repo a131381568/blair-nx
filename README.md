@@ -77,6 +77,8 @@ pnpm exec nx run-many -t lint --skip-nx-cache
 pnpm exec nx build boilerplate
 # 全部專案(公開)
 pnpm exec nx run-many -t build -p tag:publish:true -c production
+# 測試專案
+pnpm exec nx run-many -t build -p tag:type:front_app -c production
 ```
 
 # 其他指令

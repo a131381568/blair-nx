@@ -14,8 +14,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@blair-nx/blairComposables": ["libs/blairComposables/src/index.ts"],
-      "@blair-nx/blairUI": ["libs/blairUI/src/index.ts"],
+      "@blair-nx-composables": ["libs/blairComposables/src/index.ts"],
+      "@blair-nx-ui": ["libs/blairUI/src/index.ts"],
+      "@blair-nx-config/*": ["libs/blairConfig/*"],
       "@demo-src/*": ["apps/boilerplate/src/*"],
     },
     "esModuleInterop": true,

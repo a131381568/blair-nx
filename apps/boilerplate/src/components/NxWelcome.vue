@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useHexToRGBA } from '@blair-nx/blairComposables';
-import { BlairUi } from '@blair-nx/blairUI';
+import { useHexToRGBA } from '@blair-nx-composables';
+import { BlairUi } from '@blair-nx-ui';
 import Pass from '@demo-src/components/svg/Pass.vue';
 
 defineProps<{

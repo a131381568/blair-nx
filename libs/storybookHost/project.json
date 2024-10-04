@@ -1,0 +1,35 @@
+{
+	"name": "storybookHost",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/{projectName}/src",
+	"projectType": "library",
+	"targets": {
+		"storybook": {
+			"executor": "@nx/storybook:storybook",
+			"options": {
+				"configDir": "libs/{projectName}/.storybook"
+			}
+		},
+		"build": {
+			"executor": "@nx/storybook:build",
+			"options": {
+				"outputDir": "dist/{projectName}",
+				"configDir": "libs/{projectName}/.storybook"
+			},
+			"configurations": {
+				"ci": {
+					"quiet": true
+				}
+			},
+			"dependsOn": ["lint"]
+		},
+		"lint": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "libs/{projectName}",
+				"command": "eslint ."
+			}
+		}
+	},
+	"tags": ["type:front_app", "publish:false"]
+}
