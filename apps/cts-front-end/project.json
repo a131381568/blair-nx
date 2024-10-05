@@ -1,0 +1,81 @@
+{
+	"name": "cts-front-end",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"projectType": "application",
+	"sourceRoot": "apps/{projectName}/src",
+	"targets": {
+		"serve": {
+			"executor": "@nx/vite:dev-server",
+			"defaultConfiguration": "local",
+			"options": {
+				"buildTarget": "{projectName}:build",
+				"port": 4200
+			},
+			"configurations": {
+				"local": {
+					"envFiles": [".env", ".env.local"]
+				},
+				"testing": {
+					"envFiles": [".env", ".env.testing"]
+				},
+				"staging": {
+					"envFiles": [".env", ".env.staging"]
+				}
+			}
+		},
+		"preview": {
+			"executor": "@nx/vite:dev-server",
+			"defaultConfiguration": "production",
+			"options": {
+				"buildTarget": "{projectName}:build",
+				"port": 4300
+			},
+			"configurations": {
+				"production": {
+					"envFiles": [".env", ".env.production"]
+				}
+			}
+		},
+		"build": {
+			"executor": "@nx/vite:build",
+			"defaultConfiguration": "production",
+			"options": {
+				"outputPath": "dist/{projectName}",
+				"reportCompressedSize": false,
+				"commonjsOptions": {
+					"transformMixedEsModules": true,
+					"requireReturnsDefault": true
+				},
+				"emptyOutDir": true,
+				"assetsDir": "{projectName}/assets",
+				"generatePackageJson": false,
+				"terserOptions": {
+					"drop_console": true
+				}
+			},
+			"configurations": {
+				"local": {
+					"envFiles": [".env", ".env.local"]
+				},
+				"testing": {
+					"envFiles": [".env", ".env.testing"]
+				},
+				"staging": {
+					"envFiles": [".env", ".env.staging"]
+				},
+				"production": {
+					"envFiles": [".env", ".env.production"]
+				}
+			},
+			"dependsOn": ["lint"]
+		},
+		"lint": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/{projectName}",
+				"command": "eslint ."
+			}
+		}
+	},
+	"tags": ["type:front_app", "publish:false"]
+}
