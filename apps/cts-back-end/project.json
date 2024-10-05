@@ -1,0 +1,26 @@
+{
+  "name": "cts-back-end",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/cts-back-end/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "cts-back-end:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "cts-back-end:build:development"
+        },
+        "production": {
+          "buildTarget": "cts-back-end:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

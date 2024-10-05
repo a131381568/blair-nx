@@ -9,7 +9,8 @@
 			"defaultConfiguration": "local",
 			"options": {
 				"buildTarget": "{projectName}:build",
-				"port": 4200
+				"port": 4200,
+				"proxyConfig": "apps/cts-front-end/proxy.conf.json"
 			},
 			"configurations": {
 				"local": {
