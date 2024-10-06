@@ -1,0 +1,54 @@
+{
+	"name": "cts-back-end",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/cts-back-end/src",
+	"projectType": "application",
+	"targets": {
+		"serve": {
+			"executor": "@nx/js:node",
+			"defaultConfiguration": "development",
+			"options": {
+				"buildTarget": "cts-back-end:build",
+				"runBuildTargetDependencies": false
+			},
+			"configurations": {
+				"development": {
+					"buildTarget": "cts-back-end:build:development"
+				},
+				"production": {
+					"buildTarget": "cts-back-end:build:production"
+				}
+			},
+			"dependsOn": ["build", "copy-env"]
+		},
+		"lint": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/{projectName}",
+				"command": "eslint ."
+			}
+		},
+		"copy-env": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "{workspaceRoot}",
+				"command": "node tools/copy-env.ts {projectName}"
+			}
+		},
+		"prisma:m": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/cts-back-end",
+				"command": "prisma migrate dev"
+			}
+		},
+		"prisma:g": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/cts-back-end",
+				"command": "prisma generate"
+			}
+		}
+	},
+	"tags": []
+}

@@ -1,5 +1,5 @@
 {
-	"name": "boilerplate",
+	"name": "cts-front-end",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
 	"projectType": "application",
 	"sourceRoot": "apps/{projectName}/src",
@@ -9,7 +9,8 @@
 			"defaultConfiguration": "local",
 			"options": {
 				"buildTarget": "{projectName}:build",
-				"port": 4200
+				"port": 4200,
+				"proxyConfig": "apps/cts-front-end/proxy.conf.json"
 			},
 			"configurations": {
 				"local": {
@@ -21,8 +22,7 @@
 				"staging": {
 					"envFiles": [".env", ".env.staging"]
 				}
-			},
-			"dependsOn": ["copy-env"]
+			}
 		},
 		"preview": {
 			"executor": "@nx/vite:dev-server",
@@ -75,13 +75,6 @@
 			"options": {
 				"cwd": "apps/{projectName}",
 				"command": "eslint ."
-			}
-		},
-		"copy-env": {
-			"executor": "nx:run-commands",
-			"options": {
-				"cwd": "{workspaceRoot}",
-				"command": "node tools/copy-env.ts {projectName}"
 			}
 		}
 	},

@@ -1,0 +1,11 @@
+meta {
+  name: deleteUser
+  type: http
+  seq: 8
+}
+
+delete {
+  url: {{API_HOST}}/{{API_PREFIX}}/users/55
+  body: json
+  auth: none
+}

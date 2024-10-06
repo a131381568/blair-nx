@@ -1,0 +1,29 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"composite": true,
+		"jsx": "preserve",
+		"jsxImportSource": "vue",
+		"rootDir": "../../",
+		"resolveJsonModule": true,
+		"types": ["node"],
+		"allowJs": true,
+		"strict": true,
+		"declaration": true,
+		"declarationMap": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"verbatimModuleSyntax": true
+	},
+	"references": [
+		{
+			"path": "./tsconfig.app.json"
+		},
+		{
+			"path": "./tsconfig.spec.json"
+		}
+	],
+	"files": [],
+	"include": [],
+	"exclude": []
+}
