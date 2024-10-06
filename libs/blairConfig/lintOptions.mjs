@@ -27,6 +27,7 @@ export default [
 			'**/.eslintrc-auto-import.json',
 			'**/README.md',
 			'**/components.d.ts',
+			'**/prisma/migrations'
 		],
 	},
 	{
@@ -65,6 +66,19 @@ export default [
 		},
 		plugins: {
 			'@nx': nxPlugins,
+		},
+	},
+	// nestjs
+	{
+		files: [
+			'**/*.service.ts',
+			'**/*.module.ts',
+			'**/*.controller.ts',
+			'**/*.module.*.ts',
+			'**/*.controller.*.ts',
+		],
+		rules: {
+			'@typescript-eslint/consistent-type-imports': 'off'
 		},
 	},
 	// cy

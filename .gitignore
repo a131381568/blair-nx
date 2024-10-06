@@ -53,5 +53,8 @@ Thumbs.db
 .env.local
 .env.*.local
 
-
+# storybook
 storybook-static
+
+# prisma
+**/prisma/migrations

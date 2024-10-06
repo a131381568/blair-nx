@@ -33,10 +33,4 @@ pnpm exec nx test boilerplate
 
 可以開啟桌機的 [GUI](https://www.usebruno.com/downloads) 工具，也可以使用 [CLI](https://docs.usebruno.com/bru-cli/overview) 打指令 
 
-設置連結檔案, 使其環境變數生效
-
-```shell
-# 位置在 nx 根目錄
-ln -s ./.env.local ./apps/boilerplate/bruno/.env
-```
-
+需要讓`.env`放置在`apps/boilerplate/bruno`下才會生效

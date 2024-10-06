@@ -21,7 +21,8 @@
 				"staging": {
 					"envFiles": [".env", ".env.staging"]
 				}
-			}
+			},
+			"dependsOn": ["copy-env"]
 		},
 		"preview": {
 			"executor": "@nx/vite:dev-server",
@@ -74,6 +75,13 @@
 			"options": {
 				"cwd": "apps/{projectName}",
 				"command": "eslint ."
+			}
+		},
+		"copy-env": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "{workspaceRoot}",
+				"command": "node tools/copy-env.ts {projectName}"
 			}
 		}
 	},
