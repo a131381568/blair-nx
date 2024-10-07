@@ -75,7 +75,7 @@ export default [
 			'**/*.module.ts',
 			'**/*.controller.ts',
 			'**/*.module.*.ts',
-			'**/*.controller.*.ts',
+			'**/*.controller.*.ts'
 		],
 		rules: {
 			'@typescript-eslint/consistent-type-imports': 'off'
