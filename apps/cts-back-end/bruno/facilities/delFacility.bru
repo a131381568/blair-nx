@@ -1,0 +1,23 @@
+meta {
+  name: delFacility
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{API_HOST}}/{{API_PREFIX}}/facilities/10
+  body: json
+  auth: none
+}
+
+docs {
+  1. 驗證型別為 updateAboutInfoSchema
+  2. 可輸入參數(皆為字串)：
+     - visual,
+     - slogan,
+     - philosophy,
+     - quote,
+     - epilogue
+     
+  
+}

@@ -5,11 +5,11 @@ import type { UpdateAboutInfoDto } from './about-info-schemas';
 
 @Controller('about-info')
 export class AboutInfoController {
-	constructor(private readonly AboutService: AboutInfoService) {}
+	constructor(private readonly aboutService: AboutInfoService) {}
 
 	@Get()
 	async getAboutInfo(): Promise<AboutInfo> {
-		const aboutInfo = await this.AboutService.getAboutInfo();
+		const aboutInfo = await this.aboutService.getAboutInfo();
 		if (!aboutInfo) {
 			throw new NotFoundException('About info not found');
 		}
@@ -17,7 +17,7 @@ export class AboutInfoController {
 	}
 
 	@Post()
-	async createUser(@Body() aboutInofData: UpdateAboutInfoDto): Promise<AboutInfo> {
-		return this.AboutService.updateAboutInfo(aboutInofData);
+	async updateAboutInfo(@Body() aboutInofData: UpdateAboutInfoDto): Promise<AboutInfo> {
+		return this.aboutService.updateAboutInfo(aboutInofData);
 	}
 }
