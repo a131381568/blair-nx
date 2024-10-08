@@ -28,12 +28,3 @@ export type CreateFacilityItemDto = z.infer<typeof createFacilityItemSchema>;
 
 export type GetFacilityItemFullDto = z.infer<typeof getFacilityItemFullSchema>;
 export type GetFacilitiesListDto = z.infer<typeof getFacilitiesListSchema>;
-
-// del & put res
-export const updateFacilityResponseSchema = z.object({
-	success: z.boolean(),
-	payload: updateFacilityItemSchema,
-	message: z.string(),
-});
-
-export type UpdateFacilityResponsetDto = z.infer<typeof updateFacilityResponseSchema>;

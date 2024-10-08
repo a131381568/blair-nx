@@ -1,14 +1,14 @@
 import { Body, Controller, Get, NotFoundException, Post } from '@nestjs/common';
-import type { AboutInfo } from '@prisma/client';
+import { UpdateResponsetDto } from '../../common/shared-schemas';
 import { AboutInfoService } from './about-info.service';
-import type { UpdateAboutInfoDto } from './about-info-schemas';
+import type { GetAboutInfoDto, UpdateAboutInfoDto } from './about-info-schemas';
 
 @Controller('about-info')
 export class AboutInfoController {
 	constructor(private readonly aboutService: AboutInfoService) {}
 
 	@Get()
-	async getAboutInfo(): Promise<AboutInfo> {
+	async getAboutInfo(): Promise<GetAboutInfoDto> {
 		const aboutInfo = await this.aboutService.getAboutInfo();
 		if (!aboutInfo) {
 			throw new NotFoundException('About info not found');
@@ -17,7 +17,7 @@ export class AboutInfoController {
 	}
 
 	@Post()
-	async updateAboutInfo(@Body() aboutInofData: UpdateAboutInfoDto): Promise<AboutInfo> {
+	async updateAboutInfo(@Body() aboutInofData: UpdateAboutInfoDto): Promise<UpdateResponsetDto> {
 		return this.aboutService.updateAboutInfo(aboutInofData);
 	}
 }

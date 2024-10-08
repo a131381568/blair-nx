@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { PrismaModule } from '../../shared/prisma.module';
+import { PrismaModule } from '../shared/prisma.module';
 import { AboutInfoService } from './about-info.service';
 import { getAboutInfoSchema } from './about-info-schemas';
 
@@ -56,42 +56,37 @@ describe('關於我驗證', () => {
 	describe('更新關於我資訊', () => {
 		it('更新 visual', async () => {
 			const INPUT_VAL = 'ccc.jpg';
-			const data = await service.updateAboutInfo({
-				visual: INPUT_VAL,
-			});
-			expect(data.visual).toBe(INPUT_VAL);
+			await service.updateAboutInfo({ visual: INPUT_VAL });
+			const { visual } = await service.getAboutInfo();
+			expect(visual).toBe(INPUT_VAL);
 		});
 
 		it('更新 slogan', async () => {
 			const INPUT_VAL = 'good';
-			const data = await service.updateAboutInfo({
-				slogan: INPUT_VAL,
-			});
-			expect(data.slogan).toBe(INPUT_VAL);
+			await service.updateAboutInfo({ slogan: INPUT_VAL });
+			const { slogan } = await service.getAboutInfo();
+			expect(slogan).toBe(INPUT_VAL);
 		});
 
 		it('更新 philosophy', async () => {
 			const INPUT_VAL = '內容A';
-			const data = await service.updateAboutInfo({
-				philosophy: INPUT_VAL,
-			});
-			expect(data.philosophy).toBe(INPUT_VAL);
+			await service.updateAboutInfo({ philosophy: INPUT_VAL });
+			const { philosophy } = await service.getAboutInfo();
+			expect(philosophy).toBe(INPUT_VAL);
 		});
 
 		it('更新 quote', async () => {
 			const INPUT_VAL = '內容B';
-			const data = await service.updateAboutInfo({
-				quote: INPUT_VAL,
-			});
-			expect(data.quote).toBe(INPUT_VAL);
+			await service.updateAboutInfo({ quote: INPUT_VAL });
+			const { quote } = await service.getAboutInfo();
+			expect(quote).toBe(INPUT_VAL);
 		});
 
 		it('更新 epilogue', async () => {
 			const INPUT_VAL = '內容C';
-			const data = await service.updateAboutInfo({
-				epilogue: INPUT_VAL,
-			});
-			expect(data.epilogue).toBe(INPUT_VAL);
+			await service.updateAboutInfo({ epilogue: INPUT_VAL });
+			const { epilogue } = await service.getAboutInfo();
+			expect(epilogue).toBe(INPUT_VAL);
 		});
 
 		it('恢復成原始資訊', async () => {
@@ -103,11 +98,10 @@ describe('關於我驗證', () => {
 				epilogue: '『打從地球誕生的那一刻起，天空就已經用這樣的姿態為我們在夜晚蓋上滿天星斗的布幕了。』<br />\n在這宏觀的世界，世人們將星座和神話故事相互結合，把夜空中同一個區域的星星，分為一個個的星座，每一個星座都有屬於它們自己的故事，令人嚮往和好奇。<br />\n而製造這浪漫的舞台，究竟是什麼構造？它們的由來又什麼？是否是我們能夠觸手可及的呢？\n它們一直都存在我們的身旁，只是我們一直都沒注意到而已。<br />\n<strong class="text-sp-color-light">這次讓我們來好好記下它們的存在的軌跡。</strong>',
 			};
 
-			const data = await service.updateAboutInfo(ORI_ABOUT_DATA);
-			expect(data).toEqual({
-				...ORI_ABOUT_DATA,
-				aboutId: 1,
-			});
+			await service.updateAboutInfo(ORI_ABOUT_DATA);
+			const data = await service.getAboutInfo();
+
+			expect(data).toEqual({ ...ORI_ABOUT_DATA, aboutId: 1 });
 		});
 	});
 });

@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { z } from 'zod';
-import { map, omit } from 'remeda';
+import { omit, tryit } from 'radash';
 import { Prisma } from '@prisma/client';
-import { PrismaService } from '../../shared/prisma.service';
-import to from '../../helper/await-to-js';
-import type { CreateFacilityItemDto, GetFacilitiesListBaseDto, GetFacilitiesListDto, GetFacilityItemFullDto, UpdateFacilityItemDto, UpdateFacilityResponsetDto } from './facilities-schemas';
+import { PrismaService } from '../shared/prisma.service';
+import { generateResult } from '../../common/update-response';
+import { UpdateResponsetDto } from '../../common/shared-schemas';
+import type { CreateFacilityItemDto, GetFacilitiesListBaseDto, GetFacilityItemFullDto, UpdateFacilityItemDto } from './facilities-schemas';
 import { createFacilityItemSchema, updateFacilityItemSchema } from './facilities-schemas';
 
 @Injectable()
@@ -16,13 +17,13 @@ export class FacilitiesService {
 			where: { published: true },
 			take: 3,
 		});
-		return map(res, item => omit(item, ['published', 'facilitiesOrderId']));
+		return res.map(item => omit(item, ['published', 'facilitiesOrderId']));
 	}
 
 	async getFacilityItem(id: number): Promise<GetFacilityItemFullDto> {
-		const [err, res] = await to<GetFacilitiesListDto>(this.prisma.facilitiesList.findMany({
+		const [err, res] = await tryit(this.prisma.facilitiesList.findMany)({
 			where: { facilitiesOrderId: id },
-		}));
+		});
 		if (err || (res && !res.length)) {
 			return {
 				facilitiesTitle: '',
@@ -39,20 +40,20 @@ export class FacilitiesService {
 	async updateFacilityItem(
 		id: number,
 		data: UpdateFacilityItemDto,
-	): Promise<UpdateFacilityResponsetDto> {
+	): Promise<UpdateResponsetDto> {
 		try {
 			const validatedData = updateFacilityItemSchema.parse(data);
 
-			const [err, res] = await to<GetFacilitiesListDto>(this.prisma.facilitiesList.findMany({
+			const [err, res] = await tryit(this.prisma.facilitiesList.findMany)({
 				where: { facilitiesOrderId: id },
-			}));
+			});
 			if (err || (res && !res.length))
 				return generateResult(false, data, 'FacilityId not found');
 
-			const [updateError] = await to<GetFacilityItemFullDto>(this.prisma.facilitiesList.update({
+			const [updateError] = await tryit(this.prisma.facilitiesList.update)({
 				where: { facilitiesOrderId: id },
 				data: validatedData,
-			}));
+			});
 			if (updateError)
 				return generateResult(false, data, 'Update failure');
 			return generateResult(true, data, 'Update success');
@@ -62,17 +63,17 @@ export class FacilitiesService {
 		}
 	}
 
-	async createFacilityItem(data: CreateFacilityItemDto): Promise<UpdateFacilityResponsetDto> {
+	async createFacilityItem(data: CreateFacilityItemDto): Promise<UpdateResponsetDto> {
 		try {
 			const validatedData = createFacilityItemSchema.parse(data);
 			const totalCount = await this.prisma.facilitiesList.count();
-			const [createError] = await to<GetFacilityItemFullDto>(this.prisma.facilitiesList.create({
+			const [createError] = await tryit(this.prisma.facilitiesList.create)({
 				data: {
 					...validatedData,
 					published: true,
 					facilitiesOrderId: 1 + totalCount,
 				},
-			}));
+			});
 			if (createError)
 				return generateResult(false, data, 'Create failure');
 			return generateResult(true, data, 'Create success');
@@ -82,26 +83,14 @@ export class FacilitiesService {
 		}
 	}
 
-	async deleteFacilityItem(id: number): Promise<UpdateFacilityResponsetDto> {
+	async deleteFacilityItem(id: number): Promise<UpdateResponsetDto> {
 		const indexVal = { facilitiesOrderId: id };
-		const [error] = await to<GetFacilityItemFullDto>(this.prisma.facilitiesList.update({
+		const [error] = await tryit(this.prisma.facilitiesList.update)({
 			where: indexVal,
 			data: { published: false },
-		}));
+		});
 		if (error)
 			return generateResult(false, indexVal, 'Delete failed');
 		return generateResult(true, indexVal, 'Delete success');
 	}
 }
-
-function generateResult(
-	success: boolean,
-	payload: UpdateFacilityItemDto,
-	message: string,
-) {
-	return {
-		success,
-		payload,
-		message,
-	};
-};
