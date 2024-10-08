@@ -48,6 +48,27 @@
 				"cwd": "apps/cts-back-end",
 				"command": "prisma generate"
 			}
+		},
+		"prisma:pl": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/cts-back-end",
+				"command": "prisma db pull"
+			}
+		},
+		"prisma:ps": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/cts-back-end",
+				"command": "prisma db push"
+			}
+		},
+		"prisma:val": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/cts-back-end",
+				"command": "prisma validate"
+			}
 		}
 	},
 	"tags": []

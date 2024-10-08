@@ -1,0 +1,32 @@
+meta {
+  name: addFacility
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{API_HOST}}/{{API_PREFIX}}/facilities/create
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "facilitiesTitle": "ooo",
+    "facilitiesDescription": "ppp",
+    "facilitiesImage": "aaaa",
+    "facilitiesLink": "ssss"
+  }
+}
+
+docs {
+  1. 驗證型別為 updateAboutInfoSchema
+  2. 可輸入參數(皆為字串)：
+     - visual,
+     - slogan,
+     - philosophy,
+     - quote,
+     - epilogue
+     
+  
+}

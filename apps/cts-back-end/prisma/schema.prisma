@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,10 +7,90 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model AboutInfo {
+  visual     String? @db.VarChar
+  slogan     String? @db.VarChar
+  philosophy String?
+  quote      String?
+  epilogue   String?
+  aboutId    Int     @id @default(autoincrement()) @map("about_id")
+
+  @@map("about_info")
+}
+
+model FacilitiesList {
+  facilitiesOrderId     Int      @id @default(autoincrement()) @map("facilities_orderid")
+  facilitiesTitle       String?  @map("facilities_title") @db.VarChar
+  facilitiesDescription String?  @map("facilities_description")
+  facilitiesImage       String?  @map("facilities_image") @db.VarChar
+  facilitiesLink        String?  @map("facilities_link") @db.VarChar
+  published             Boolean?
+
+  @@map("facilities_list")
+}
+
+model ObservatoriesList {
+  observatoryOrderId      Int      @id @default(autoincrement()) @map("observatory_orderid")
+  observatoryCategoryName String?  @map("observatory_category_name") @db.VarChar
+  observatoryCategoryId   String?  @map("observatory_category_id") @db.VarChar
+  observatoryPostContent  String?  @map("observatory_post_content")
+  published               Boolean?
+
+  @@map("observatories_list")
+}
+
+model PageInfo {
+  pageTitle    String? @map("page_title") @db.VarChar
+  subPageTitle String? @map("sub_page_title") @db.VarChar
+  pageRoute    String? @map("page_route") @db.VarChar
+  pageId       Int     @id @unique(map: "unique_page_id") @default(autoincrement()) @map("page_id")
+
+  @@map("page_info")
+}
+
+model PostCategories {
+  postCategoryOrderId Int      @id @default(autoincrement()) @map("post_category_orderid")
+  postCategoryName    String?  @map("post_category_name") @db.VarChar
+  postCategoryId      String?  @map("post_category_id") @db.VarChar
+  published           Boolean?
+
+  @@map("post_categories")
+}
+
+model Science {
+  orderId    Int       @id @default(autoincrement()) @map("orderid")
+  postId     Int?      @map("postid")
+  title      String?   @db.VarChar
+  categoryId String?   @map("categoryid") @db.VarChar
+  updateTime DateTime? @map("updatetime") @db.Date
+  content    String?
+  image      String?   @db.VarChar
+  published  Boolean?
+
+  @@map("science")
+}
+
+model StargazingList {
+  stargazingOrderId     Int      @id @default(autoincrement()) @map("stargazing_orderid")
+  stargazingTitle       String?  @map("stargazing_title") @db.VarChar
+  stargazingLatitude    Decimal? @map("stargazing_latitude") @db.Decimal(18, 15)
+  stargazingLongitude   Decimal? @map("stargazing_longitude") @db.Decimal(18, 15)
+  stargazingImage       String?  @map("stargazing_image") @db.VarChar
+  stargazingDescription String?  @map("stargazing_description")
+  stargazingAddress     String?  @map("stargazing_address") @db.VarChar
+  stargazingLink        String?  @map("stargazing_link") @db.VarChar
+  published             Boolean?
+  stargazingLid         String?  @map("stargazing_lid") @db.VarChar
+
+  @@map("stargazing_list")
+}
+
+model Users {
+  orderId  Int     @id @default(autoincrement()) @map("orderid")
+  uid      Int?
+  name     String? @db.VarChar
+  email    String? @db.VarChar
+  password String? @db.VarChar
+
+  @@map("users")
 }
