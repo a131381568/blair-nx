@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { tryit } from 'radash';
 import { PrismaService } from '../shared/prisma.service';
-import { UpdateResponsetDto } from '../../common/shared-schemas';
-import { generateResult } from '../../common/update-response';
+import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import type { GetAboutInfoDto, UpdateAboutInfoDto } from './about-info-schemas';
 import { updateAboutInfoSchema } from './about-info-schemas';
 
@@ -10,24 +9,24 @@ import { updateAboutInfoSchema } from './about-info-schemas';
 export class AboutInfoService {
 	constructor(private prisma: PrismaService) {}
 
-	async getAboutInfo(): Promise<GetAboutInfoDto> {
+	async getAboutInfo(): Promise<ApiResponse<GetAboutInfoDto>> {
 		const [err, res] = await tryit(this.prisma.aboutInfo.findUnique)({
 			where: { aboutId: 1 },
 		});
 		if (err || !res) {
-			return {
+			return createApiResponse(false, {
 				visual: '',
 				slogan: '',
 				philosophy: '',
 				quote: '',
 				epilogue: '',
-				aboutId: 1,
-			};
+				aboutId: null,
+			});
 		}
-		return res;
+		return createApiResponse(true, res);
 	}
 
-	async updateAboutInfo(data: UpdateAboutInfoDto): Promise<UpdateResponsetDto> {
+	async updateAboutInfo(data: UpdateAboutInfoDto): Promise<ApiResponse<UpdateAboutInfoDto>> {
 		try {
 			const validatedData = updateAboutInfoSchema.parse(data);
 
@@ -36,11 +35,11 @@ export class AboutInfoService {
 				data: validatedData,
 			});
 			if (err)
-				return generateResult(false, data, 'Update failure');
-			return generateResult(true, data, 'Update success');
+				return createApiResponse(false, data, 'Update failed');
+			return createApiResponse(true, data, 'Update success');
 		}
-		catch (error: unknown) {
-			return generateResult(false, data, 'Validated failed');
+		catch (error) {
+			return createApiResponse(false, data, 'Validated failed');
 		}
 	}
 }

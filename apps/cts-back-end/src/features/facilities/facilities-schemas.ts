@@ -1,16 +1,18 @@
 import { z } from 'zod';
 
 const facilityItemBase = z.object({
-	facilitiesTitle: z.string().nullable(),
-	facilitiesDescription: z.string().nullable(),
-	facilitiesImage: z.string().nullable(),
-	facilitiesLink: z.string().nullable(),
+	facilitiesTitle: z.string().nullable().default(''),
+	facilitiesDescription: z.string().nullable().default(''),
+	facilitiesImage: z.string().nullable().default(''),
+	facilitiesLink: z.string().nullable().default(''),
 });
 
 export const getFacilityItemFullSchema = facilityItemBase.extend({
 	facilitiesOrderId: z.number(),
 	published: z.boolean().nullable(),
 });
+
+export const defaultFacilityItemBase: FacilityItemBaseDto = facilityItemBase.parse({});
 
 export const getFacilitiesListSchema = z.array(getFacilityItemFullSchema);
 export const getFacilitiesListBaseSchema = z.array(facilityItemBase);

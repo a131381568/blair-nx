@@ -1,11 +1,8 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-// import process from 'node:process';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { ApiResponseInterceptor } from './core/interceptors/api-response.interceptor';
+// import { HttpExceptionFilter } from './core/filter/http-exception.filter';
 
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
@@ -13,6 +10,8 @@ async function bootstrap() {
 
 	app.enableCors({ origin: '*', credentials: true });
 	app.setGlobalPrefix(globalPrefix);
+	// app.useGlobalFilters(new HttpExceptionFilter());
+	app.useGlobalInterceptors(new ApiResponseInterceptor());
 
 	const port = 3000; // process.env.PORT
 	await app.listen(port);
