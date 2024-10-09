@@ -6,7 +6,6 @@ import { IntIdDto, IntIdSchema } from '../../common/dto/schemas';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import type { CreateFacilityItemDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, UpdateFacilityItemDto } from './facilities-schemas';
 import { createFacilityItemSchema, defaultFacilityItemBase, updateFacilityItemSchema } from './facilities-schemas';
-// import { BaseService } from "../shared/Base.service";
 
 @Injectable()
 export class FacilitiesService {
@@ -30,26 +29,6 @@ export class FacilitiesService {
 			res.map(item => omit(item, ['published', 'facilitiesOrderId'])),
 		);
 	}
-
-	// async getFacilityItem(id: IntIdDto): Promise<ApiResponse<FacilityItemBaseDto>> {
-	// 	const { success: zodSuccess, error: zodErr, data: safeId } = IntIdSchema.safeParse(id);
-
-	// 	if (!zodSuccess)
-	// 		return createApiResponse(false, defaultFacilityItemBase, `Validation error: ${zodErr.errors[0].message}`);
-
-	// 	const [err, res] = await tryit(this.prisma.facilitiesList.findFirst)({
-	// 		where: { facilitiesOrderId: Number(safeId) },
-	// 	});
-
-	// 	if (err && PrismaErrorSchema.safeParse(err).success)
-	// 		return createApiResponse(false, defaultFacilityItemBase, 'Database error');
-	// 	if (err)
-	// 		return createApiResponse(false, defaultFacilityItemBase, 'Unexpected error occurred');
-	// 	if (!res)
-	// 		return createApiResponse(false, defaultFacilityItemBase, 'FacilityId not found or no changes made');
-
-	// 	return createApiResponse(true, omit(res, ['published', 'facilitiesOrderId']));
-	// }
 
 	async getFacilityItem(id: IntIdDto): Promise<ApiResponse<FacilityItemBaseDto>> {
 		const { success: zodSuccess, error: zodErr, data: safeId } = IntIdSchema.safeParse(id);

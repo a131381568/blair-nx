@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiResponse } from '../../core/interceptors/api-response';
 import { IntIdDto } from '../../common/dto/schemas';
 import { FacilitiesService } from './facilities.service';
