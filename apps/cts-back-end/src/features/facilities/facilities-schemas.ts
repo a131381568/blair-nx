@@ -21,7 +21,12 @@ export const updateFacilityItemSchema = facilityItemBase.partial().extend({
 	facilitiesOrderId: z.number().optional(),
 }).strict();
 
-export const createFacilityItemSchema = facilityItemBase.strict();
+export const createFacilityItemSchema = z.object({
+	facilitiesTitle: z.string().nullable(),
+	facilitiesDescription: z.string().nullable(),
+	facilitiesImage: z.string().nullable(),
+	facilitiesLink: z.string().nullable(),
+}).strict();
 
 export type FacilityItemBaseDto = z.infer<typeof facilityItemBase>;
 export type UpdateFacilityItemDto = z.infer<typeof updateFacilityItemSchema>;

@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { z } from 'zod';
 import { omit, tryit } from 'radash';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from '../shared/prisma.service';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
+import { IntIdDto, IntIdSchema } from '../../common/dto/schemas';
+import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import type { CreateFacilityItemDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, UpdateFacilityItemDto } from './facilities-schemas';
 import { createFacilityItemSchema, defaultFacilityItemBase, updateFacilityItemSchema } from './facilities-schemas';
+// import { BaseService } from "../shared/Base.service";
 
 @Injectable()
 export class FacilitiesService {
@@ -17,17 +18,10 @@ export class FacilitiesService {
 			take: 3,
 		});
 
-		if (err instanceof Prisma.PrismaClientKnownRequestError
-			|| err instanceof Prisma.PrismaClientUnknownRequestError
-			|| err instanceof Prisma.PrismaClientRustPanicError
-			|| err instanceof Prisma.PrismaClientInitializationError
-			|| err instanceof Prisma.PrismaClientValidationError
-		) {
-			return createApiResponse(false, [], err.message);
-		}
+		if (err && PrismaErrorSchema.safeParse(err).success)
+			return createApiResponse(false, [], 'Database error');
 		if (err)
 			return createApiResponse(false, [], 'Unexpected error occurred');
-
 		if (res && !res.length)
 			return createApiResponse(false, [], 'FacilityList is empty');
 
@@ -37,24 +31,40 @@ export class FacilitiesService {
 		);
 	}
 
-	async getFacilityItem(id: number): Promise<ApiResponse<FacilityItemBaseDto>> {
+	// async getFacilityItem(id: IntIdDto): Promise<ApiResponse<FacilityItemBaseDto>> {
+	// 	const { success: zodSuccess, error: zodErr, data: safeId } = IntIdSchema.safeParse(id);
+
+	// 	if (!zodSuccess)
+	// 		return createApiResponse(false, defaultFacilityItemBase, `Validation error: ${zodErr.errors[0].message}`);
+
+	// 	const [err, res] = await tryit(this.prisma.facilitiesList.findFirst)({
+	// 		where: { facilitiesOrderId: Number(safeId) },
+	// 	});
+
+	// 	if (err && PrismaErrorSchema.safeParse(err).success)
+	// 		return createApiResponse(false, defaultFacilityItemBase, 'Database error');
+	// 	if (err)
+	// 		return createApiResponse(false, defaultFacilityItemBase, 'Unexpected error occurred');
+	// 	if (!res)
+	// 		return createApiResponse(false, defaultFacilityItemBase, 'FacilityId not found or no changes made');
+
+	// 	return createApiResponse(true, omit(res, ['published', 'facilitiesOrderId']));
+	// }
+
+	async getFacilityItem(id: IntIdDto): Promise<ApiResponse<FacilityItemBaseDto>> {
+		const { success: zodSuccess, error: zodErr, data: safeId } = IntIdSchema.safeParse(id);
+
+		if (!zodSuccess)
+			return createApiResponse(false, defaultFacilityItemBase, `Validation error: ${zodErr.errors[0].message}`);
+
 		const [err, res] = await tryit(this.prisma.facilitiesList.findFirst)({
-			where: { facilitiesOrderId: id },
+			where: { facilitiesOrderId: Number(safeId) },
 		});
 
-		if (err instanceof Prisma.PrismaClientKnownRequestError
-			|| err instanceof Prisma.PrismaClientUnknownRequestError
-			|| err instanceof Prisma.PrismaClientRustPanicError
-			|| err instanceof Prisma.PrismaClientInitializationError
-			|| err instanceof Prisma.PrismaClientValidationError
-		) {
-			return createApiResponse(false, defaultFacilityItemBase, err.message);
-		}
-
-		if (err) {
+		if (err && PrismaErrorSchema.safeParse(err).success)
+			return createApiResponse(false, defaultFacilityItemBase, 'Database error');
+		if (err)
 			return createApiResponse(false, defaultFacilityItemBase, 'Unexpected error occurred');
-		}
-
 		if (!res)
 			return createApiResponse(false, defaultFacilityItemBase, 'FacilityId not found or no changes made');
 
@@ -62,32 +72,26 @@ export class FacilitiesService {
 	}
 
 	async updateFacilityItem(
-		id: number,
+		id: IntIdDto,
 		data: UpdateFacilityItemDto,
 	): Promise<ApiResponse<UpdateFacilityItemDto>> {
-		const { success, error: zodError, data: safeData } = updateFacilityItemSchema.safeParse(data);
-		if (!success)
-			return createApiResponse(false, data, `Validation error: ${zodError.errors[0].message}`);
+		const { success: idZodSuccess, error: idZodErr, data: safeId } = IntIdSchema.safeParse(id);
+		const { success: dataZodSuccess, error: dataZodErr, data: safeData } = updateFacilityItemSchema.safeParse(data);
+
+		if (!dataZodSuccess || !idZodSuccess)
+			return createApiResponse(false, data, `Validation error: ${[dataZodErr?.errors[0].message, idZodErr?.errors[0].message].join('. ')}`);
 
 		const [err, res] = await tryit(this.prisma.facilitiesList.updateMany)({
-			where: { facilitiesOrderId: id },
+			where: { facilitiesOrderId: safeId },
 			data: safeData,
 		});
 
-		if (err instanceof Prisma.PrismaClientKnownRequestError
-			|| err instanceof Prisma.PrismaClientUnknownRequestError
-			|| err instanceof Prisma.PrismaClientRustPanicError
-			|| err instanceof Prisma.PrismaClientInitializationError
-			|| err instanceof Prisma.PrismaClientValidationError
-		) {
-			return createApiResponse(false, data, err.message);
-		}
-
+		if (err && PrismaErrorSchema.safeParse(err).success)
+			return createApiResponse(false, data, 'Database error');
 		if (err)
 			return createApiResponse(false, data, 'Unexpected error occurred');
-		if (res && !res.count) {
+		if (res && !res.count)
 			return createApiResponse(false, data, 'FacilityId not found or no changes made');
-		}
 
 		return createApiResponse(true, data, 'Update success');
 	}
@@ -95,58 +99,56 @@ export class FacilitiesService {
 	async createFacilityItem(
 		data: CreateFacilityItemDto,
 	): Promise<ApiResponse<CreateFacilityItemDto>> {
-		try {
-			const validatedData = createFacilityItemSchema.parse(data);
+		const { success: zodSuccess, error: zodErr, data: safeData } = createFacilityItemSchema.safeParse(data);
 
-			const [error] = await tryit(this.prisma.$transaction)(async (prisma) => {
-				const lastFacility = await prisma.facilitiesList.findFirst({
-					orderBy: { facilitiesOrderId: 'desc' },
-					select: { facilitiesOrderId: true },
-				});
+		if (!zodSuccess)
+			return createApiResponse(false, data, `Validation error: ${zodErr.errors[0].message}`);
 
-				const nextFacilitiesOrderId = (lastFacility?.facilitiesOrderId ?? 0) + 1;
-
-				const newItem = await prisma.facilitiesList.create({
-					data: {
-						...validatedData,
-						published: true,
-						facilitiesOrderId: nextFacilitiesOrderId,
-					},
-				});
-
-				return omit(newItem, ['published', 'facilitiesOrderId']);
+		return this.prisma.$transaction(async (prisma) => {
+			const lastFacility = await prisma.facilitiesList.findFirst({
+				orderBy: { facilitiesOrderId: 'desc' },
+				select: { facilitiesOrderId: true },
 			});
 
-			if (error)
-				return createApiResponse(false, data, 'Create failure');
-			return createApiResponse(true, data, 'Create success');
-		}
-		catch (error) {
-			if (error instanceof z.ZodError) {
-				return createApiResponse(false, data, 'Validation failed');
-			}
+			const nextFacilitiesOrderId = (lastFacility?.facilitiesOrderId ?? 0) + 1;
 
-			if (error instanceof Prisma.PrismaClientKnownRequestError
-				|| error instanceof Prisma.PrismaClientUnknownRequestError
-				|| error instanceof Prisma.PrismaClientRustPanicError
-				|| error instanceof Prisma.PrismaClientInitializationError
-				|| error instanceof Prisma.PrismaClientValidationError
-			) {
-				return createApiResponse(false, data, error.message);
-			}
+			const [err, res] = await tryit(prisma.facilitiesList.create)({
+				data: {
+					...safeData,
+					published: true,
+					facilitiesOrderId: nextFacilitiesOrderId,
+				},
+			});
 
-			return createApiResponse(false, data, 'Unexpected error occurred');
-		}
+			if (err && PrismaErrorSchema.safeParse(err).success)
+				return createApiResponse(false, safeData, 'Database error');
+			if (err)
+				return createApiResponse(false, safeData, 'Unexpected error occurred');
+
+			return createApiResponse(true, omit(res, ['published', 'facilitiesOrderId']), 'Create success');
+		});
 	}
 
-	async deleteFacilityItem(id: number): Promise<ApiResponse<{ id: number }>> {
-		const indexVal = { facilitiesOrderId: id };
-		const [error] = await tryit(this.prisma.facilitiesList.update)({
-			where: indexVal,
-			data: { published: false },
+	async deleteFacilityItem(id: IntIdDto): Promise<ApiResponse<{ id: IntIdDto }>> {
+		const { success: zodSuccess, error: zodErr, data: safeId } = IntIdSchema.safeParse(id);
+
+		if (!zodSuccess)
+			return createApiResponse(false, { id }, `Validation error: ${zodErr.errors[0].message}`);
+
+		return this.prisma.$transaction(async (prisma) => {
+			const [err, res] = await tryit(prisma.facilitiesList.updateMany)({
+				where: { facilitiesOrderId: safeId },
+				data: { published: false },
+			});
+
+			if (err && PrismaErrorSchema.safeParse(err).success)
+				return createApiResponse(false, { id }, 'Database error');
+			if (err)
+				return createApiResponse(false, { id }, 'Unexpected error occurred');
+			if (res && !res.count)
+				return createApiResponse(false, { id }, 'FacilityId not found or no changes made');
+
+			return createApiResponse(true, { id }, 'Delete success');
 		});
-		if (error)
-			return createApiResponse(false, { id }, 'Delete failed');
-		return createApiResponse(true, { id }, 'Delete success');
 	}
 }
