@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
 import { ApiResponse } from '../../core/interceptors/api-response';
 import { IntIdDto } from '../../common/dto/schemas';
 import { FacilitiesService } from './facilities.service';
-import type { CreateFacilityItemDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, UpdateFacilityItemDto } from './facilities-schemas';
+import type { CreateFacilityItemDto, CreateFacilityItemFinishDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, GetFacilitiesListDto, UpdateFacilityItemDto } from './facilities-schemas';
 
 @Controller('facilities')
 
@@ -12,6 +12,11 @@ export class FacilitiesController {
 	@Get()
 	getFacilitiesList(): Promise<ApiResponse<GetFacilitiesListBaseDto>> {
 		return this.facilitiesService.getFacilitiesList();
+	}
+
+	@Get('custom-list')
+	getCustomFacilitiesList(): Promise<ApiResponse<GetFacilitiesListDto>> {
+		return this.facilitiesService.getCustomFacilitiesList();
 	}
 
 	@Get(':id')
@@ -25,7 +30,7 @@ export class FacilitiesController {
 	}
 
 	@Post('create')
-	async createFacilityItem(@Body() data: CreateFacilityItemDto): Promise<ApiResponse<CreateFacilityItemDto>> {
+	async createFacilityItem(@Body() data: CreateFacilityItemDto): Promise<ApiResponse<CreateFacilityItemFinishDto>> {
 		return this.facilitiesService.createFacilityItem(data);
 	}
 

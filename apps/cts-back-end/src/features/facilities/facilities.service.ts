@@ -4,7 +4,7 @@ import { PrismaService } from '../shared/prisma.service';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { IntIdDto, IntIdSchema } from '../../common/dto/schemas';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
-import type { CreateFacilityItemDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, UpdateFacilityItemDto } from './facilities-schemas';
+import type { CreateFacilityItemDto, CreateFacilityItemFinishDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, GetFacilitiesListDto, UpdateFacilityItemDto } from './facilities-schemas';
 import { createFacilityItemSchema, defaultFacilityItemBase, updateFacilityItemSchema } from './facilities-schemas';
 
 @Injectable()
@@ -37,7 +37,10 @@ export class FacilitiesService {
 			return createApiResponse(false, defaultFacilityItemBase, `Validation error: ${zodErr.errors[0].message}`);
 
 		const [err, res] = await tryit(this.prisma.facilitiesList.findFirst)({
-			where: { facilitiesOrderId: Number(safeId) },
+			where: {
+				facilitiesOrderId: Number(safeId),
+				published: true,
+			},
 		});
 
 		if (err && PrismaErrorSchema.safeParse(err).success)
@@ -61,7 +64,7 @@ export class FacilitiesService {
 			return createApiResponse(false, data, `Validation error: ${[dataZodErr?.errors[0].message, idZodErr?.errors[0].message].join('. ')}`);
 
 		const [err, res] = await tryit(this.prisma.facilitiesList.updateMany)({
-			where: { facilitiesOrderId: safeId },
+			where: { facilitiesOrderId: Number(safeId) },
 			data: safeData,
 		});
 
@@ -77,11 +80,11 @@ export class FacilitiesService {
 
 	async createFacilityItem(
 		data: CreateFacilityItemDto,
-	): Promise<ApiResponse<CreateFacilityItemDto>> {
+	): Promise<ApiResponse<CreateFacilityItemFinishDto>> {
 		const { success: zodSuccess, error: zodErr, data: safeData } = createFacilityItemSchema.safeParse(data);
 
 		if (!zodSuccess)
-			return createApiResponse(false, data, `Validation error: ${zodErr.errors[0].message}`);
+			return createApiResponse(false, { ...data, facilitiesOrderId: 0 }, `Validation error: ${zodErr.errors[0].message}`);
 
 		return this.prisma.$transaction(async (prisma) => {
 			const lastFacility = await prisma.facilitiesList.findFirst({
@@ -100,11 +103,11 @@ export class FacilitiesService {
 			});
 
 			if (err && PrismaErrorSchema.safeParse(err).success)
-				return createApiResponse(false, safeData, 'Database error');
+				return createApiResponse(false, { ...safeData, facilitiesOrderId: 0 }, 'Database error');
 			if (err)
-				return createApiResponse(false, safeData, 'Unexpected error occurred');
+				return createApiResponse(false, { ...safeData, facilitiesOrderId: 0 }, 'Unexpected error occurred');
 
-			return createApiResponse(true, omit(res, ['published', 'facilitiesOrderId']), 'Create success');
+			return createApiResponse(true, omit(res, ['published']), 'Create success');
 		});
 	}
 
@@ -116,7 +119,7 @@ export class FacilitiesService {
 
 		return this.prisma.$transaction(async (prisma) => {
 			const [err, res] = await tryit(prisma.facilitiesList.updateMany)({
-				where: { facilitiesOrderId: safeId },
+				where: { facilitiesOrderId: Number(safeId) },
 				data: { published: false },
 			});
 
@@ -129,5 +132,12 @@ export class FacilitiesService {
 
 			return createApiResponse(true, { id }, 'Delete success');
 		});
+	}
+
+	async getCustomFacilitiesList(): Promise<ApiResponse<GetFacilitiesListDto>> {
+		const res = await this.prisma.facilitiesList.findMany({
+			orderBy: { facilitiesOrderId: 'desc' },
+		});
+		return createApiResponse(true, res);
 	}
 }
