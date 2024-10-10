@@ -1,5 +1,5 @@
 import type { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
-import { Catch, HttpException, HttpStatus } from '@nestjs/common';
+import { Catch, HttpException } from '@nestjs/common';
 import { Response } from 'express';
 import { createApiResponse } from '../interceptors/api-response';
 

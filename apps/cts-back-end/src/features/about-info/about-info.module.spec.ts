@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { PrismaModule } from '../shared/prisma.module';
 import { AboutInfoService } from './about-info.service';
-import { getAboutInfoSchema } from './about-info-schemas';
+import { getAboutInfoDefaultSchema } from './about-info-schemas';
 
 describe('關於我驗證', () => {
 	let service: AboutInfoService;
@@ -17,39 +17,21 @@ describe('關於我驗證', () => {
 
 	describe('取得關於我資訊', () => {
 		it('取得線上資訊, 比對型別', async () => {
-			let validatedData = false;
-			const data = await service.getAboutInfo();
-
-			try {
-				getAboutInfoSchema.parse(data);
-				validatedData = true;
-			}
-			catch (error) {
-				validatedData = false;
-			}
-
-			expect(validatedData).toBe(true);
+			const { data } = await service.getAboutInfo();
+			const { success } = getAboutInfoDefaultSchema.safeParse(data);
+			expect(success).toBe(true);
 		});
 
 		it('使用假資料, 驗證錯誤型別', async () => {
-			let validatedData = false;
-
-			try {
-				getAboutInfoSchema.parse({
-					visual: '/img/kenny-logo.png',
-					slogan: 123,
-					philosophy: '人是被賦予豐富情感的動物',
-					quote: '我和他就好像天上的星星',
-					epilogue: '打從地球誕生的那一刻起',
-					aboutId: 1,
-				});
-				validatedData = true;
-			}
-			catch (error) {
-				validatedData = false;
-			}
-
-			expect(validatedData).toBe(false);
+			const { success } = getAboutInfoDefaultSchema.safeParse({
+				visual: '/img/kenny-logo.png',
+				slogan: 123,
+				philosophy: '人是被賦予豐富情感的動物',
+				quote: '我和他就好像天上的星星',
+				epilogue: '打從地球誕生的那一刻起',
+				aboutId: 1,
+			});
+			expect(success).toBe(false);
 		});
 	});
 
@@ -57,36 +39,48 @@ describe('關於我驗證', () => {
 		it('更新 visual', async () => {
 			const INPUT_VAL = 'ccc.jpg';
 			await service.updateAboutInfo({ visual: INPUT_VAL });
-			const { visual } = await service.getAboutInfo();
+			const { success, data: { visual } } = await service.getAboutInfo();
+			expect(success).toBe(true);
 			expect(visual).toBe(INPUT_VAL);
 		});
 
 		it('更新 slogan', async () => {
 			const INPUT_VAL = 'good';
 			await service.updateAboutInfo({ slogan: INPUT_VAL });
-			const { slogan } = await service.getAboutInfo();
+			const { success, data: { slogan } } = await service.getAboutInfo();
+			expect(success).toBe(true);
 			expect(slogan).toBe(INPUT_VAL);
 		});
 
 		it('更新 philosophy', async () => {
 			const INPUT_VAL = '內容A';
 			await service.updateAboutInfo({ philosophy: INPUT_VAL });
-			const { philosophy } = await service.getAboutInfo();
+			const { success, data: { philosophy } } = await service.getAboutInfo();
+			expect(success).toBe(true);
 			expect(philosophy).toBe(INPUT_VAL);
 		});
 
 		it('更新 quote', async () => {
 			const INPUT_VAL = '內容B';
 			await service.updateAboutInfo({ quote: INPUT_VAL });
-			const { quote } = await service.getAboutInfo();
+			const { success, data: { quote } } = await service.getAboutInfo();
+			expect(success).toBe(true);
 			expect(quote).toBe(INPUT_VAL);
 		});
 
 		it('更新 epilogue', async () => {
 			const INPUT_VAL = '內容C';
 			await service.updateAboutInfo({ epilogue: INPUT_VAL });
-			const { epilogue } = await service.getAboutInfo();
+			const { success, data: { epilogue } } = await service.getAboutInfo();
+			expect(success).toBe(true);
 			expect(epilogue).toBe(INPUT_VAL);
+		});
+
+		it('驗證不存在 payload', async () => {
+			const INPUT_VAL = { aaa: 123 };
+			// @ts-expect-error 測不存在 key 的 response
+			const { success } = await service.updateAboutInfo(INPUT_VAL);
+			expect(success).toBe(false);
 		});
 
 		it('恢復成原始資訊', async () => {
@@ -99,9 +93,9 @@ describe('關於我驗證', () => {
 			};
 
 			await service.updateAboutInfo(ORI_ABOUT_DATA);
-			const data = await service.getAboutInfo();
-
-			expect(data).toEqual({ ...ORI_ABOUT_DATA, aboutId: 1 });
+			const { success, data } = await service.getAboutInfo();
+			expect(success).toBe(true);
+			expect(data).toEqual(ORI_ABOUT_DATA);
 		});
 	});
 });
