@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiResponse } from '../../core/interceptors/api-response';
+import { IntIdDto } from '../../common/dto/schemas';
 import { FacilitiesService } from './facilities.service';
-import type { CreateFacilityItemDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, UpdateFacilityItemDto } from './facilities-schemas';
+import type { CreateFacilityItemDto, CreateFacilityItemFinishDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, GetFacilitiesListDto, UpdateFacilityItemDto } from './facilities-schemas';
 
 @Controller('facilities')
 
@@ -13,26 +14,28 @@ export class FacilitiesController {
 		return this.facilitiesService.getFacilitiesList();
 	}
 
+	@Get('custom-list')
+	getCustomFacilitiesList(): Promise<ApiResponse<GetFacilitiesListDto>> {
+		return this.facilitiesService.getCustomFacilitiesList();
+	}
+
 	@Get(':id')
-	getFacilityItem(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<FacilityItemBaseDto>> {
+	getFacilityItem(@Param('id') id: IntIdDto): Promise<ApiResponse<FacilityItemBaseDto>> {
 		return this.facilitiesService.getFacilityItem(id);
 	}
 
 	@Put(':id')
-	async updateFacilityItem(
-		@Param('id', ParseIntPipe) id: number,
-		@Body() data: UpdateFacilityItemDto,
-	): Promise<ApiResponse<UpdateFacilityItemDto>> {
+	async updateFacilityItem(@Param('id') id: IntIdDto, @Body() data: UpdateFacilityItemDto): Promise<ApiResponse<UpdateFacilityItemDto>> {
 		return this.facilitiesService.updateFacilityItem(id, data);
 	}
 
 	@Post('create')
-	async createFacilityItem(@Body() data: CreateFacilityItemDto): Promise<ApiResponse<CreateFacilityItemDto>> {
+	async createFacilityItem(@Body() data: CreateFacilityItemDto): Promise<ApiResponse<CreateFacilityItemFinishDto>> {
 		return this.facilitiesService.createFacilityItem(data);
 	}
 
 	@Delete(':id')
-	async deleteFacilityItem(@Param('id', ParseIntPipe) id: number): Promise<ApiResponse<{ id: number }>> {
+	async deleteFacilityItem(@Param('id') id: IntIdDto): Promise<ApiResponse<{ id: IntIdDto }>> {
 		return this.facilitiesService.deleteFacilityItem(id);
 	}
 }
