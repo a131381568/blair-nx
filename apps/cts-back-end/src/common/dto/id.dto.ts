@@ -12,4 +12,7 @@ export const IntIdSchema = z
 		return val;
 	});
 
+export const StrIdSchema = z.string().min(1).max(15);
+
 export type IntIdDto = z.infer<typeof IntIdSchema>;
+export type StrIdDto = z.infer<typeof StrIdSchema>;
