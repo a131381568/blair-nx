@@ -13,6 +13,7 @@ export class ObservatoriesService {
 	async getObservatoriesList(): Promise<ApiResponse<ObservatoriesListDto>> {
 		const [err, res] = await tryit(this.prisma.observatoriesList.findMany)({
 			orderBy: { observatoryOrderId: 'asc' },
+			where: { published: true },
 		});
 
 		if (err && PrismaErrorSchema.safeParse(err).success)
