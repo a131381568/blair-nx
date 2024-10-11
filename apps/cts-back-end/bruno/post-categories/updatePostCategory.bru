@@ -1,0 +1,18 @@
+meta {
+  name: updatePostCategory
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{API_HOST}}/{{API_PREFIX}}/post-categories/om9qRb1k36
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "postCategoryId": "strawberry",
+    "postCategoryName": "草莓"
+  }
+}

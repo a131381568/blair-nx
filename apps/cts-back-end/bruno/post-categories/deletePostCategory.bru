@@ -1,0 +1,18 @@
+meta {
+  name: deletePostCategory
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{API_HOST}}/{{API_PREFIX}}/post-categories/lCaLnH-19R
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "postCategoryId": "strawberry",
+    "postCategoryName": "草莓"
+  }
+}
