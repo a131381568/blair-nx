@@ -7,9 +7,10 @@ import { FacilitiesModule } from './features/facilities/facilities.module';
 import { ObservatoriesModule } from './features/observatories/observatories.module';
 import { HttpExceptionFilter } from './core/filter/http-exception.filter';
 import { PrismaClientExceptionFilter } from './core/filter/prisma-client-exception.filter';
+import { PostCategoriesModule } from './features/post-categories/post-categories.module';
 
 @Module({
-	imports: [AboutInfoModule, PrismaModule, FacilitiesModule, ObservatoriesModule, PageInfoModule],
+	imports: [AboutInfoModule, PrismaModule, FacilitiesModule, ObservatoriesModule, PageInfoModule, PostCategoriesModule],
 	providers: [
 		{
 			provide: APP_FILTER,
