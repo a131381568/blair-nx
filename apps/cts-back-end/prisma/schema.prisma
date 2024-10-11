@@ -19,13 +19,13 @@ model AboutInfo {
 }
 
 model FacilitiesList {
-  facilitiesOrderId     Int      @id @default(autoincrement()) @map("facilities_orderid")
   facilitiesTitle       String?  @map("facilities_title") @db.VarChar
   facilitiesDescription String?  @map("facilities_description")
   facilitiesImage       String?  @map("facilities_image") @db.VarChar
   facilitiesLink        String?  @map("facilities_link") @db.VarChar
   published             Boolean?
   facilitiesNanoId      String   @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
+  facilitiesOrderId     Int      @id @default(autoincrement()) @map("facilities_orderid")
 
   @@map("facilities_list")
 }
@@ -52,17 +52,16 @@ model PageInfo {
 }
 
 model PostCategories {
-  postCategoryOrderId Int      @id @default(autoincrement()) @map("post_category_orderid")
   postCategoryName    String?  @map("post_category_name") @db.VarChar
   postCategoryId      String?  @map("post_category_id") @db.VarChar
   published           Boolean?
   postCategoryNanoId  String   @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
+  postCategoryOrderId Int      @id @default(autoincrement()) @map("post_category_orderid")
 
   @@map("post_categories")
 }
 
 model Science {
-  orderId    Int       @id @default(autoincrement()) @map("orderid")
   title      String?   @db.VarChar
   categoryId String?   @map("categoryid") @db.VarChar
   updateTime DateTime? @map("updatetime") @db.Date
@@ -70,12 +69,12 @@ model Science {
   image      String?   @db.VarChar
   published  Boolean?
   postNanoId String    @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
+  orderId    Int       @id @default(autoincrement()) @map("orderid")
 
   @@map("science")
 }
 
 model StargazingList {
-  stargazingOrderId     Int      @id @default(autoincrement()) @map("stargazing_orderid")
   stargazingTitle       String?  @map("stargazing_title") @db.VarChar
   stargazingLatitude    Decimal? @map("stargazing_latitude") @db.Decimal(18, 15)
   stargazingLongitude   Decimal? @map("stargazing_longitude") @db.Decimal(18, 15)
@@ -86,16 +85,17 @@ model StargazingList {
   published             Boolean?
   stargazingLid         String?  @map("stargazing_lid") @db.VarChar
   stargazingNanoId      String   @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
+  stargazingOrderId     Int      @id @default(autoincrement()) @map("stargazing_orderid")
 
   @@map("stargazing_list")
 }
 
 model Users {
-  orderId  Int     @id @default(autoincrement()) @map("orderid")
   name     String? @db.VarChar
   email    String? @db.VarChar
   password String? @db.VarChar
   nanoId   String  @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
+  orderId  Int     @id @default(autoincrement()) @map("orderid")
 
   @@map("users")
 }
