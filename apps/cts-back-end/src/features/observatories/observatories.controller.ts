@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiResponse } from '../../core/interceptors/api-response';
-import { IntIdDto } from '../../common/dto/id.dto';
+import { StrIdDto } from '../../common/dto/id.dto';
 import { ObservatoriesService } from './observatories.service';
 import { ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto } from './observatories-schemas';
 
@@ -14,12 +14,12 @@ export class ObservatoriesController {
 	}
 
 	@Get(':id')
-	getObservatoryItem(@Param('id') id: IntIdDto): Promise<ApiResponse<ObservatoryItemDto>> {
+	getObservatoryItem(@Param('id') id: StrIdDto): Promise<ApiResponse<ObservatoryItemDto>> {
 		return this.observatoriesService.getObservatoryItem(id);
 	}
 
 	@Put(':id')
-	async updateObservatoryItem(@Param('id') id: IntIdDto, @Body() data: UpdateObservatoryItemDto): Promise<ApiResponse<null>> {
+	async updateObservatoryItem(@Param('id') id: StrIdDto, @Body() data: UpdateObservatoryItemDto): Promise<ApiResponse<null>> {
 		return this.observatoriesService.updateObservatoryItem(id, data);
 	}
 

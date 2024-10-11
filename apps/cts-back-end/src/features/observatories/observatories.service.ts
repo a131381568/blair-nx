@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { omit, tryit } from 'radash';
+import { pick, tryit } from 'radash';
 import { PrismaService } from '../shared/prisma.service';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
-import { IntIdDto, IntIdSchema } from '../../common/dto/id.dto';
+import { StrIdDto, StrIdSchema } from '../../common/dto/id.dto';
 import { ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto, defaultObservatoryItemData, updateObservatoryItemSchema } from './observatories-schemas';
 
 @Injectable()
@@ -22,18 +22,18 @@ export class ObservatoriesService {
 		if (res && !res.length)
 			return createApiResponse(false, [], 'ObservatoriesList is empty');
 
-		return createApiResponse(true, res.map(item => omit(item, ['published', 'observatoryOrderId'])));
+		return createApiResponse(true, res.map(item => pick(item, ['observatoryNanoId', 'observatoryCategoryName', 'observatoryCategoryId', 'observatoryPostContent'])));
 	}
 
-	async getObservatoryItem(id: IntIdDto): Promise<ApiResponse<ObservatoryItemDto>> {
-		const { success: zodSuccess, error: zodErr, data: safeId } = IntIdSchema.safeParse(id);
+	async getObservatoryItem(id: StrIdDto): Promise<ApiResponse<ObservatoryItemDto>> {
+		const { success: zodSuccess, error: zodErr, data: safeId } = StrIdSchema.safeParse(id);
 
 		if (!zodSuccess)
 			return createApiResponse(false, defaultObservatoryItemData, `Validation error: ${zodErr.errors[0].message}`);
 
 		const [err, res] = await tryit(this.prisma.observatoriesList.findFirst)({
 			where: {
-				observatoryOrderId: safeId,
+				observatoryNanoId: safeId,
 				published: true,
 			},
 		});
@@ -45,14 +45,14 @@ export class ObservatoriesService {
 		if (!res)
 			return createApiResponse(false, defaultObservatoryItemData, 'observatoryCategoryId not found or no changes made');
 
-		return createApiResponse(true, omit(res, ['published', 'observatoryOrderId']));
+		return createApiResponse(true, pick(res, ['observatoryCategoryName', 'observatoryCategoryId', 'observatoryPostContent']));
 	}
 
 	async updateObservatoryItem(
-		id: IntIdDto,
+		id: StrIdDto,
 		data: UpdateObservatoryItemDto,
 	): Promise<ApiResponse<null>> {
-		const { success: idZodSuccess, error: idZodErr, data: safeId } = IntIdSchema.safeParse(id);
+		const { success: idZodSuccess, error: idZodErr, data: safeId } = StrIdSchema.safeParse(id);
 		const { success: dataZodSuccess, error: dataZodErr, data: safeData } = updateObservatoryItemSchema.safeParse(data);
 
 		if (!dataZodSuccess || !idZodSuccess)
@@ -60,7 +60,7 @@ export class ObservatoriesService {
 
 		const [err, res] = await tryit(this.prisma.observatoriesList.updateMany)({
 			where: {
-				observatoryOrderId: safeId,
+				observatoryNanoId: safeId,
 				published: true,
 			},
 			data: safeData,
@@ -84,28 +84,15 @@ export class ObservatoriesService {
 		if (!zodSuccess)
 			return createApiResponse(false, null, `Validation error: ${zodErr.errors[0].message}`);
 
-		return this.prisma.$transaction(async (prisma) => {
-			const lastItem = await prisma.observatoriesList.findFirst({
-				orderBy: { observatoryOrderId: 'desc' },
-				select: { observatoryOrderId: true },
-			});
-
-			const nextOrderId = (lastItem?.observatoryOrderId ?? 0) + 1;
-
-			const [err] = await tryit(prisma.observatoriesList.create)({
-				data: {
-					...safeData,
-					published: true,
-					observatoryOrderId: nextOrderId,
-				},
-			});
-
-			if (err && PrismaErrorSchema.safeParse(err).success)
-				return createApiResponse(false, null, 'Database error');
-			if (err)
-				return createApiResponse(false, null, 'Unexpected error occurred');
-
-			return createApiResponse(true, null, 'Create success');
+		const [err] = await tryit(this.prisma.observatoriesList.create)({
+			data: { ...safeData, published: true },
 		});
+
+		if (err && PrismaErrorSchema.safeParse(err).success)
+			return createApiResponse(false, null, 'Database error');
+		if (err)
+			return createApiResponse(false, null, 'Unexpected error occurred');
+
+		return createApiResponse(true, null, 'Create success');
 	}
 }

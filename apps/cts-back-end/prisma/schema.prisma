@@ -25,14 +25,14 @@ model FacilitiesList {
   facilitiesImage       String?  @map("facilities_image") @db.VarChar
   facilitiesLink        String?  @map("facilities_link") @db.VarChar
   published             Boolean?
+  facilitiesNanoId      String   @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
 
   @@map("facilities_list")
 }
 
 model ObservatoriesList {
-  id                      Int      @id @default(autoincrement())
   observatoryNanoId       String   @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
-  observatoryOrderId      Int      @unique @map("observatory_orderid")
+  observatoryOrderId      Int      @id @default(autoincrement()) @map("observatory_orderid")
   observatoryCategoryName String?  @map("observatory_category_name") @db.VarChar
   observatoryCategoryId   String?  @map("observatory_category_id") @db.VarChar
   observatoryPostContent  String?  @map("observatory_post_content")
@@ -46,6 +46,7 @@ model PageInfo {
   subPageTitle String? @map("sub_page_title") @db.VarChar
   pageRoute    String? @map("page_route") @db.VarChar
   pageId       Int     @id @unique(map: "unique_page_id") @default(autoincrement()) @map("page_id")
+  pageNanoId   String  @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
 
   @@map("page_info")
 }
@@ -55,6 +56,7 @@ model PostCategories {
   postCategoryName    String?  @map("post_category_name") @db.VarChar
   postCategoryId      String?  @map("post_category_id") @db.VarChar
   published           Boolean?
+  postCategoryNanoId  String   @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
 
   @@map("post_categories")
 }
@@ -68,6 +70,7 @@ model Science {
   content    String?
   image      String?   @db.VarChar
   published  Boolean?
+  postNanoId String    @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
 
   @@map("science")
 }
@@ -83,6 +86,7 @@ model StargazingList {
   stargazingLink        String?  @map("stargazing_link") @db.VarChar
   published             Boolean?
   stargazingLid         String?  @map("stargazing_lid") @db.VarChar
+  stargazingNanoId      String   @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
 
   @@map("stargazing_list")
 }
@@ -93,6 +97,7 @@ model Users {
   name     String? @db.VarChar
   email    String? @db.VarChar
   password String? @db.VarChar
+  nanoId   String  @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
 
   @@map("users")
 }
