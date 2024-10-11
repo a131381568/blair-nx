@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model AboutInfo {
@@ -32,11 +33,11 @@ model FacilitiesList {
 
 model ObservatoriesList {
   observatoryNanoId       String   @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
-  observatoryOrderId      Int      @id @default(autoincrement()) @map("observatory_orderid")
   observatoryCategoryName String?  @map("observatory_category_name") @db.VarChar
   observatoryCategoryId   String?  @map("observatory_category_id") @db.VarChar
   observatoryPostContent  String?  @map("observatory_post_content")
   published               Boolean?
+  observatoryOrderId      Int      @id @default(autoincrement()) @map("observatory_orderid")
 
   @@map("observatories_list")
 }
@@ -52,25 +53,29 @@ model PageInfo {
 }
 
 model PostCategories {
-  postCategoryName    String?  @map("post_category_name") @db.VarChar
-  postCategoryId      String?  @map("post_category_id") @db.VarChar
+  postCategoryName    String?   @map("post_category_name") @db.VarChar
+  postCategoryId      String?   @map("post_category_id") @db.VarChar
   published           Boolean?
-  postCategoryNanoId  String   @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
-  postCategoryOrderId Int      @id @default(autoincrement()) @map("post_category_orderid")
+  postCategoryNanoId  String    @unique @default(dbgenerated("nanoid(10)")) @map("post_category_nanoid") @db.VarChar(10)
+  sciences            Science[] @relation("CategorySciences")
+  postCategoryOrderId Int       @id @default(autoincrement()) @map("post_category_orderid")
 
   @@map("post_categories")
 }
 
 model Science {
-  title      String?   @db.VarChar
-  categoryId String?   @map("categoryid") @db.VarChar
-  updateTime DateTime? @map("updatetime") @db.Date
-  content    String?
-  image      String?   @db.VarChar
-  published  Boolean?
-  postNanoId String    @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
-  orderId    Int       @id @default(autoincrement()) @map("orderid")
+  title              String?         @db.VarChar
+  categoryId         String?         @map("categoryid") @db.VarChar
+  updateTime         DateTime?       @map("updatetime") @db.Date
+  content            String?
+  image              String?         @db.VarChar
+  published          Boolean?
+  postNanoId         String          @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
+  postCategoryNanoId String?         @map("post_category_nanoid") @db.VarChar(10)
+  quoteCat           PostCategories? @relation("CategorySciences", fields: [postCategoryNanoId], references: [postCategoryNanoId])
+  orderId            Int             @id @default(autoincrement()) @map("orderid")
 
+  @@index([postCategoryNanoId])
   @@map("science")
 }
 
