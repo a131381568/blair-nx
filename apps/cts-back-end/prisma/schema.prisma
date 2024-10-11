@@ -30,7 +30,9 @@ model FacilitiesList {
 }
 
 model ObservatoriesList {
-  observatoryOrderId      Int      @id @default(autoincrement()) @map("observatory_orderid")
+  id                      Int      @id @default(autoincrement())
+  observatoryNanoId       String   @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
+  observatoryOrderId      Int      @unique @map("observatory_orderid")
   observatoryCategoryName String?  @map("observatory_category_name") @db.VarChar
   observatoryCategoryId   String?  @map("observatory_category_id") @db.VarChar
   observatoryPostContent  String?  @map("observatory_post_content")
