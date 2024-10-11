@@ -27,4 +27,9 @@ export class ObservatoriesController {
 	async createObservatoryItem(@Body() data: UpdateObservatoryItemDto): Promise<ApiResponse<null>> {
 		return this.observatoriesService.createObservatoryItem(data);
 	}
+
+	@Delete(':id')
+	async deleteFacilityItem(@Param('id') id: StrIdDto): Promise<ApiResponse<null>> {
+		return this.observatoriesService.deleteFacilityItem(id);
+	}
 }

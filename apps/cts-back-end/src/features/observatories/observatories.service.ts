@@ -43,7 +43,7 @@ export class ObservatoriesService {
 		if (err)
 			return createApiResponse(false, defaultObservatoryItemData, 'Unexpected error occurred');
 		if (!res)
-			return createApiResponse(false, defaultObservatoryItemData, 'observatoryCategoryId not found or no changes made');
+			return createApiResponse(false, defaultObservatoryItemData, 'observatoryId not found or no changes made');
 
 		return createApiResponse(true, pick(res, ['observatoryCategoryName', 'observatoryCategoryId', 'observatoryPostContent']));
 	}
@@ -94,5 +94,26 @@ export class ObservatoriesService {
 			return createApiResponse(false, null, 'Unexpected error occurred');
 
 		return createApiResponse(true, null, 'Create success');
+	}
+
+	async deleteFacilityItem(id: StrIdDto): Promise<ApiResponse<null>> {
+		const { success: zodSuccess, error: zodErr, data: safeId } = StrIdSchema.safeParse(id);
+
+		if (!zodSuccess)
+			return createApiResponse(false, null, `Validation error: ${zodErr.errors[0].message}`);
+
+		const [err, res] = await tryit(this.prisma.observatoriesList.updateMany)({
+			where: { observatoryNanoId: safeId, published: true },
+			data: { published: false },
+		});
+
+		if (err && PrismaErrorSchema.safeParse(err).success)
+			return createApiResponse(false, null, 'Database error');
+		if (err)
+			return createApiResponse(false, null, 'Unexpected error occurred');
+		if (res && !res.count)
+			return createApiResponse(false, null, 'observatoryId not found or no changes made');
+
+		return createApiResponse(true, null, 'Delete success');
 	}
 }

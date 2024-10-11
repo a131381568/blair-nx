@@ -6,19 +6,18 @@ const observatoryItemBase = z.object({
 	observatoryPostContent: z.string().nullable(),
 });
 
-// const observatoryItemWithOrderId = observatoryItemBase.extend({
-// 	observatoryOrderId: z.number().nullable(),
-// });
+const observatoryItemWithNanoId = observatoryItemBase.extend({
+	observatoryNanoId: z.string(),
+});
 
 const observatoryItemDefaultSchema = z.object({
-	// observatoryOrderId: z.number().nullable().default(null),
 	observatoryCategoryName: z.string().nullable().default(''),
 	observatoryCategoryId: z.string().nullable().default(''),
 	observatoryPostContent: z.string().nullable().default(''),
 });
 
 export const updateObservatoryItemSchema = observatoryItemBase.strict();
-export const getObservatoriesListBaseSchema = z.array(observatoryItemBase);
+export const getObservatoriesListBaseSchema = z.array(observatoryItemWithNanoId);
 export const defaultObservatoryItemData: ObservatoryItemDefaultDto = observatoryItemDefaultSchema.parse({});
 
 export type ObservatoryItemDto = z.infer<typeof observatoryItemBase>;
