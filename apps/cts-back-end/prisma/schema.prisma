@@ -63,7 +63,6 @@ model PostCategories {
 
 model Science {
   orderId    Int       @id @default(autoincrement()) @map("orderid")
-  postId     Int?      @map("postid")
   title      String?   @db.VarChar
   categoryId String?   @map("categoryid") @db.VarChar
   updateTime DateTime? @map("updatetime") @db.Date
@@ -93,7 +92,6 @@ model StargazingList {
 
 model Users {
   orderId  Int     @id @default(autoincrement()) @map("orderid")
-  uid      Int?
   name     String? @db.VarChar
   email    String? @db.VarChar
   password String? @db.VarChar
