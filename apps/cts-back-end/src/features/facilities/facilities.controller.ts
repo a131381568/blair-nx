@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiResponse } from '../../core/interceptors/api-response';
-import { IntIdDto } from '../../common/dto/schemas';
+import { IntIdDto } from '../../common/dto/id.dto';
 import { FacilitiesService } from './facilities.service';
 import type { CreateFacilityItemDto, CreateFacilityItemFinishDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, GetFacilitiesListDto, UpdateFacilityItemDto } from './facilities-schemas';
 

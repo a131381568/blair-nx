@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { omit, tryit } from 'radash';
 import { PrismaService } from '../shared/prisma.service';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
-import { IntIdDto, IntIdSchema } from '../../common/dto/schemas';
+import { IntIdDto, IntIdSchema } from '../../common/dto/id.dto';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import type { CreateFacilityItemDto, CreateFacilityItemFinishDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, GetFacilitiesListDto, UpdateFacilityItemDto } from './facilities-schemas';
 import { createFacilityItemSchema, defaultFacilityItemBase, updateFacilityItemSchema } from './facilities-schemas';
