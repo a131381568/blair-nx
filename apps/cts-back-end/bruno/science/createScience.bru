@@ -1,0 +1,20 @@
+meta {
+  name: createScience
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{API_HOST}}/{{API_PREFIX}}/science/create
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "apple",
+    "content": "Curabitur nec lorem nec orci ultrices suscipit ut sit amet sem",
+    "image": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_light_color_272x92dp.png",
+    "postCategoryNanoId": "RNO5ABXmwZ"
+  }
+}

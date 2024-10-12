@@ -8,6 +8,7 @@ const scienceItemBase = z.object({
 	content: z.string().nullable(),
 	image: z.string().nullable(),
 	postCategoryId: z.string().nullable(),
+	postCategoryName: z.string().nullable(),
 });
 
 const scienceQuery = z.object({
@@ -23,10 +24,25 @@ export const sciencetWithPagiDefaultData = {
 	list: [],
 	meta: paginationDefaultData,
 };
+export const scienceItemBaseDefaultData = {
+	title: '',
+	updateTime: '',
+	content: '',
+	image: '',
+	postCategoryId: '',
+	postCategoryName: '',
+};
+export const createScienceSchema = z.object({
+	title: z.string(),
+	content: z.string(),
+	image: z.string(),
+	postCategoryNanoId: z.string(),
+}).strict();
 
 export type ScienceItemDto = z.infer<typeof scienceItemBase>;
 export type ScienceListDto = z.infer<typeof scienceListBaseSchema>;
 export type ScienceQueryDto = z.infer<typeof scienceQuery>;
+export type CreateScienceDto = z.infer<typeof createScienceSchema>;
 
 export interface ScienceListWithPagiDto {
 	list: ScienceListDto;

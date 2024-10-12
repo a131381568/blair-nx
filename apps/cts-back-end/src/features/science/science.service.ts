@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { get, tryit } from 'radash';
+import { get, pick, tryit } from 'radash';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
+import { StrIdDto, StrIdSchema } from '../../common/dto/id.dto';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
-import { ScienceListWithPagiDto, ScienceQueryDto, sciencetWithPagiDefaultData } from './science-schemas';
+import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto, createScienceSchema, scienceItemBaseDefaultData, sciencetWithPagiDefaultData } from './science-schemas';
 
 @Injectable()
 export class ScienceService {
@@ -72,5 +73,68 @@ export class ScienceService {
 			list: scienceData,
 			meta: pagiMeta,
 		});
+	}
+
+	async getScienceDetail(id: string): Promise<ApiResponse<ScienceItemDto>> {
+		const { success: zodSuccess, error: zodErr, data: safeId } = StrIdSchema.safeParse(id);
+
+		if (!zodSuccess)
+			return createApiResponse(false, scienceItemBaseDefaultData, `Validation error: ${zodErr.errors[0].message}`);
+
+		const [err, res] = await tryit(this.prisma.science.findFirst)({
+			where: {
+				postNanoId: safeId,
+				published: true,
+			},
+			include: {
+				quoteCat: {
+					select: {
+						postCategoryName: true,
+						postCategoryId: true,
+					},
+				},
+			},
+		});
+
+		if (err && PrismaErrorSchema.safeParse(err).success)
+			return createApiResponse(false, scienceItemBaseDefaultData, 'Database error');
+		if (err)
+			return createApiResponse(false, scienceItemBaseDefaultData, 'Unexpected error occurred');
+		if (!res)
+			return createApiResponse(false, scienceItemBaseDefaultData, 'observatoryId not found or no changes made');
+
+		const { title, content, image, updateTime, quoteCat } = res;
+		return createApiResponse(true, {
+			title,
+			content,
+			image,
+			updateTime: updateTime ? new Date(updateTime).toLocaleDateString('fr-CA') : '',
+			postCategoryId: get(quoteCat, 'postCategoryId', ''),
+			postCategoryName: get(quoteCat, 'postCategoryName', ''),
+		});
+	}
+
+	async createScienceItem(
+		data: CreateScienceDto,
+	): Promise<ApiResponse<null>> {
+		const { success: zodSuccess, error: zodErr, data: safeData } = createScienceSchema.safeParse(data);
+		// 需要先確認 id 是存在的
+		if (!zodSuccess)
+			return createApiResponse(false, null, `Validation error: ${zodErr.errors[0].message}`);
+
+		const [err] = await tryit(this.prisma.science.create)({
+			data: { ...safeData, published: true },
+		});
+
+		if (err && PrismaErrorSchema.safeParse(err).success) {
+			// console.table(safeData);
+			// console.table(err);
+			return createApiResponse(false, null, 'Database error');
+		}
+
+		if (err)
+			return createApiResponse(false, null, 'Unexpected error occurred');
+
+		return createApiResponse(true, null, 'Create success');
 	}
 }
