@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { PrismaModule } from '../shared/prisma.module';
+import { PrismaModule } from 'nestjs-prisma';
 import { ObservatoriesService } from './observatories.service';
 import { ObservatoriesController } from './observatories.controller';
 
 @Module({
-	imports: [PrismaModule],
+	imports: [PrismaModule.forRoot()],
 	controllers: [ObservatoriesController],
 	providers: [ObservatoriesService],
 })

@@ -4,15 +4,15 @@ import { PrismaService } from 'nestjs-prisma';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import { StrIdDto, StrIdSchema } from '../../common/dto/id.dto';
-import { ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto, defaultObservatoryItemData, updateObservatoryItemSchema } from './observatories-schemas';
+import { PostCategoriesDto, PostCategoryFitDto, defaultPostCategoryData, updatePostCategorySchema } from './post-categories-schemas';
 
 @Injectable()
-export class ObservatoriesService {
+export class PostCategoriesService {
 	constructor(private prisma: PrismaService) {}
 
-	async getObservatoriesList(): Promise<ApiResponse<ObservatoriesListDto>> {
-		const [err, res] = await tryit(this.prisma.observatoriesList.findMany)({
-			orderBy: { observatoryOrderId: 'asc' },
+	async getPostCategories(): Promise<ApiResponse<PostCategoriesDto>> {
+		const [err, res] = await tryit(this.prisma.postCategories.findMany)({
+			orderBy: { postCategoryOrderId: 'asc' },
 			where: { published: true },
 		});
 
@@ -21,49 +21,43 @@ export class ObservatoriesService {
 		if (err)
 			return createApiResponse(false, [], 'Unexpected error occurred');
 		if (res && !res.length)
-			return createApiResponse(false, [], 'ObservatoriesList is empty');
+			return createApiResponse(false, [], 'list is empty');
 
-		return createApiResponse(true, res.map(item => pick(item, ['observatoryNanoId', 'observatoryCategoryName', 'observatoryCategoryId', 'observatoryPostContent'])));
+		return createApiResponse(true, res.map(item => pick(item, ['postCategoryId', 'postCategoryName', 'postCategoryNanoId'])));
 	}
 
-	async getObservatoryItem(id: StrIdDto): Promise<ApiResponse<ObservatoryItemDto>> {
+	async getPostCategory(id: StrIdDto): Promise<ApiResponse<PostCategoryFitDto>> {
 		const { success: zodSuccess, error: zodErr, data: safeId } = StrIdSchema.safeParse(id);
 
 		if (!zodSuccess)
-			return createApiResponse(false, defaultObservatoryItemData, `Validation error: ${zodErr.errors[0].message}`);
+			return createApiResponse(false, defaultPostCategoryData, `Validation error: ${zodErr.errors[0].message}`);
 
-		const [err, res] = await tryit(this.prisma.observatoriesList.findFirst)({
-			where: {
-				observatoryNanoId: safeId,
-				published: true,
-			},
+		const [err, res] = await tryit(this.prisma.postCategories.findFirst)({
+			where: { postCategoryNanoId: safeId, published: true },
 		});
 
 		if (err && PrismaErrorSchema.safeParse(err).success)
-			return createApiResponse(false, defaultObservatoryItemData, 'Database error');
+			return createApiResponse(false, defaultPostCategoryData, 'Database error');
 		if (err)
-			return createApiResponse(false, defaultObservatoryItemData, 'Unexpected error occurred');
+			return createApiResponse(false, defaultPostCategoryData, 'Unexpected error occurred');
 		if (!res)
-			return createApiResponse(false, defaultObservatoryItemData, 'observatoryId not found or no changes made');
+			return createApiResponse(false, defaultPostCategoryData, 'postCategoryId not found or no changes made');
 
-		return createApiResponse(true, pick(res, ['observatoryCategoryName', 'observatoryCategoryId', 'observatoryPostContent']));
+		return createApiResponse(true, pick(res, ['postCategoryId', 'postCategoryName']));
 	}
 
-	async updateObservatoryItem(
+	async updatePostCategory(
 		id: StrIdDto,
-		data: UpdateObservatoryItemDto,
+		data: PostCategoryFitDto,
 	): Promise<ApiResponse<null>> {
 		const { success: idZodSuccess, error: idZodErr, data: safeId } = StrIdSchema.safeParse(id);
-		const { success: dataZodSuccess, error: dataZodErr, data: safeData } = updateObservatoryItemSchema.safeParse(data);
+		const { success: dataZodSuccess, error: dataZodErr, data: safeData } = updatePostCategorySchema.safeParse(data);
 
 		if (!dataZodSuccess || !idZodSuccess)
 			return createApiResponse(false, null, `Validation error: ${[dataZodErr?.errors[0].message, idZodErr?.errors[0].message].join('. ')}`);
 
-		const [err, res] = await tryit(this.prisma.observatoriesList.updateMany)({
-			where: {
-				observatoryNanoId: safeId,
-				published: true,
-			},
+		const [err, res] = await tryit(this.prisma.postCategories.updateMany)({
+			where: { postCategoryNanoId: safeId, published: true },
 			data: safeData,
 		});
 
@@ -72,20 +66,20 @@ export class ObservatoriesService {
 		if (err)
 			return createApiResponse(false, null, 'Unexpected error occurred');
 		if (res && !res.count)
-			return createApiResponse(false, null, 'observatoryCategoryId not found or no changes made');
+			return createApiResponse(false, null, 'postCategoryId not found or no changes made');
 
 		return createApiResponse(true, null, 'Update success');
 	}
 
-	async createObservatoryItem(
-		data: UpdateObservatoryItemDto,
+	async createPostCategory(
+		data: PostCategoryFitDto,
 	): Promise<ApiResponse<null>> {
-		const { success: zodSuccess, error: zodErr, data: safeData } = updateObservatoryItemSchema.safeParse(data);
+		const { success: zodSuccess, error: zodErr, data: safeData } = updatePostCategorySchema.safeParse(data);
 
 		if (!zodSuccess)
 			return createApiResponse(false, null, `Validation error: ${zodErr.errors[0].message}`);
 
-		const [err] = await tryit(this.prisma.observatoriesList.create)({
+		const [err] = await tryit(this.prisma.postCategories.create)({
 			data: { ...safeData, published: true },
 		});
 
@@ -97,14 +91,14 @@ export class ObservatoriesService {
 		return createApiResponse(true, null, 'Create success');
 	}
 
-	async deleteFacilityItem(id: StrIdDto): Promise<ApiResponse<null>> {
+	async deletePostCategory(id: StrIdDto): Promise<ApiResponse<null>> {
 		const { success: zodSuccess, error: zodErr, data: safeId } = StrIdSchema.safeParse(id);
 
 		if (!zodSuccess)
 			return createApiResponse(false, null, `Validation error: ${zodErr.errors[0].message}`);
 
-		const [err, res] = await tryit(this.prisma.observatoriesList.updateMany)({
-			where: { observatoryNanoId: safeId, published: true },
+		const [err, res] = await tryit(this.prisma.postCategories.updateMany)({
+			where: { postCategoryNanoId: safeId, published: true },
 			data: { published: false },
 		});
 
@@ -113,7 +107,7 @@ export class ObservatoriesService {
 		if (err)
 			return createApiResponse(false, null, 'Unexpected error occurred');
 		if (res && !res.count)
-			return createApiResponse(false, null, 'observatoryId not found or no changes made');
+			return createApiResponse(false, null, 'postCategoryId not found or no changes made');
 
 		return createApiResponse(true, null, 'Delete success');
 	}

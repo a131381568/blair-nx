@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { PrismaModule } from '../shared/prisma.module';
+import { PrismaModule } from 'nestjs-prisma';
 import { AboutInfoController } from './about-info.controller';
 import { AboutInfoService } from './about-info.service';
 
 @Module({
-	imports: [PrismaModule],
+	imports: [PrismaModule.forRoot()],
 	controllers: [AboutInfoController],
 	providers: [AboutInfoService],
 })
