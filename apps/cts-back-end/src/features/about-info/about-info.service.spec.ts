@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { PrismaModule } from '../shared/prisma.module';
+import { PrismaModule } from 'nestjs-prisma';
 import { AboutInfoService } from './about-info.service';
 import { getAboutInfoDefaultSchema } from './about-info-schemas';
 
@@ -9,7 +9,7 @@ describe('關於我驗證', () => {
 	beforeAll(async () => {
 		const app = await Test.createTestingModule({
 			providers: [AboutInfoService],
-			imports: [PrismaModule],
+			imports: [PrismaModule.forRoot()],
 		}).compile();
 
 		service = app.get<AboutInfoService>(AboutInfoService);

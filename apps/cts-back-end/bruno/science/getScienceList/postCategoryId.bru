@@ -1,0 +1,17 @@
+meta {
+  name: postCategoryId
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{API_HOST}}/{{API_PREFIX}}/science
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "postCategoryId": "story"
+  }
+}

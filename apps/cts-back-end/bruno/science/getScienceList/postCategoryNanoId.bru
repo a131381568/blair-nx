@@ -1,0 +1,17 @@
+meta {
+  name: postCategoryNanoId
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{API_HOST}}/{{API_PREFIX}}/science
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "postCategoryNanoId": "TXoGaQ-iE0"
+  }
+}

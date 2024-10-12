@@ -1,0 +1,17 @@
+meta {
+  name: page
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{API_HOST}}/{{API_PREFIX}}/science
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "page": 4
+  }
+}

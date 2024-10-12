@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { pick, tryit } from 'radash';
-import { PrismaService } from '../shared/prisma.service';
+import { PrismaService } from 'nestjs-prisma';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import { StrIdDto, StrIdSchema } from '../../common/dto/id.dto';

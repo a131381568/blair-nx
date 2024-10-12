@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { isArray } from 'radash';
-import { PrismaModule } from '../shared/prisma.module';
+import { PrismaModule } from 'nestjs-prisma';
 import { FacilitiesService } from './facilities.service';
 import { createFacilityItemFinishSchema, createFacilityItemSchema, getFacilitiesListBaseSchema, updateFacilityItemSchema } from './facilities-schemas';
 
@@ -10,7 +10,7 @@ describe('天文機構驗證', () => {
 	beforeAll(async () => {
 		const app = await Test.createTestingModule({
 			providers: [FacilitiesService],
-			imports: [PrismaModule],
+			imports: [PrismaModule.forRoot()],
 		}).compile();
 
 		service = app.get<FacilitiesService>(FacilitiesService);

@@ -65,7 +65,6 @@ model PostCategories {
 
 model Science {
   title              String?         @db.VarChar
-  categoryId         String?         @map("categoryid") @db.VarChar
   updateTime         DateTime?       @map("updatetime") @db.Date
   content            String?
   image              String?         @db.VarChar
