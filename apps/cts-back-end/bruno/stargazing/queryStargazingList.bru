@@ -1,0 +1,37 @@
+meta {
+  name: queryStargazingList
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{API_HOST}}/{{API_PREFIX}}/stargazing
+  body: none
+  auth: none
+}
+
+params:query {
+  ~limit: 4
+  ~page: 2
+  ~otherrr: brabra
+  ~nid: SMeErF9a1o
+  ~mode: list
+}
+
+body:json {
+  {
+    "keyword": "蓋亞任務"
+  }
+}
+
+docs {
+  ## limit
+  一頁顯示多少筆 (page-sizes)
+  
+  ## nid
+  為 stargazingNanoId
+  
+  ## mode
+    - map: 預設為 c 端的地圖模式
+    - list: 如果帶上此參數, 就會變成請求比較少的列表模式, 運用在 b 端管理後台
+}

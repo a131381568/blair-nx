@@ -85,9 +85,7 @@ model StargazingList {
   stargazingImage       String?  @map("stargazing_image") @db.VarChar
   stargazingDescription String?  @map("stargazing_description")
   stargazingAddress     String?  @map("stargazing_address") @db.VarChar
-  stargazingLink        String?  @map("stargazing_link") @db.VarChar
   published             Boolean?
-  stargazingLid         String?  @map("stargazing_lid") @db.VarChar
   stargazingNanoId      String   @unique @default(dbgenerated("nanoid(10)")) @db.VarChar(10)
   stargazingOrderId     Int      @id @default(autoincrement()) @map("stargazing_orderid")
 
