@@ -1,0 +1,22 @@
+meta {
+  name: getStargazingDetail
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{API_HOST}}/{{API_PREFIX}}/stargazing/SMeErF9a1o
+  body: none
+  auth: none
+}
+
+body:json {
+  {
+    "keyword": "蓋亞任務"
+  }
+}
+
+docs {
+  # :id
+  param 的參數為 stargazingNanoId
+}
