@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiResponse } from '../../core/interceptors/api-response';
 import { StrIdDto } from '../../common/dto/id.dto';
 import { ScienceService } from './science.service';
@@ -9,7 +9,7 @@ export class ScienceController {
 	constructor(private readonly scienceService: ScienceService) {}
 
 	@Get()
-	getScienceList(@Body() data: ScienceQueryDto): Promise<ApiResponse<ScienceListWithPagiDto>> {
+	getScienceList(@Query() data: ScienceQueryDto): Promise<ApiResponse<ScienceListWithPagiDto>> {
 		return this.scienceService.getScienceList(data);
 	}
 
@@ -18,8 +18,18 @@ export class ScienceController {
 		return this.scienceService.getScienceDetail(id);
 	}
 
+	@Put(':id')
+	async updateScienceDetail(@Param('id') id: StrIdDto, @Body() data: CreateScienceDto): Promise<ApiResponse<null>> {
+		return this.scienceService.updateScienceDetail(id, data);
+	}
+
 	@Post('create')
-	async createScienceItem(@Body() data: CreateScienceDto): Promise<ApiResponse<null>> {
-		return this.scienceService.createScienceItem(data);
+	async createScienceDetail(@Body() data: CreateScienceDto): Promise<ApiResponse<null>> {
+		return this.scienceService.createScienceDetail(data);
+	}
+
+	@Delete(':id')
+	async deleteScienceDetail(@Param('id') id: StrIdDto): Promise<ApiResponse<null>> {
+		return this.scienceService.deleteScienceDetail(id);
 	}
 }

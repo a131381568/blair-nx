@@ -2,6 +2,13 @@ import { z } from 'zod';
 import type { PaginationDto } from '../../common/dto/pagi.dto';
 import { paginationDefaultData } from '../../common/dto/pagi.dto';
 
+const scienceItemFit = z.object({
+	title: z.string(),
+	content: z.string(),
+	image: z.string(),
+	postCategoryNanoId: z.string(),
+});
+
 const scienceItemBase = z.object({
 	title: z.string().nullable(),
 	updateTime: z.string().date().nullable(),
@@ -11,13 +18,15 @@ const scienceItemBase = z.object({
 	postCategoryName: z.string().nullable(),
 });
 
-const scienceQuery = z.object({
-	keyword: z.string(),
-	postCategoryId: z.string(),
-	postCategoryNanoId: z.string(),
-	page: z.number().int().positive().finite(),
-	pageSize: z.number().int().positive().finite(),
-}).partial();
+export const scienceQuerySchema = z.object({
+	keyword: z.string().optional(),
+	category: z.string().optional(),
+	cnid: z.string().optional(),
+	page: z.string().default('1'),
+	limit: z.string().default('9'),
+	// page: z.number().int().positive().finite(),
+	// pageSize: z.number().int().positive().finite(),
+}).strict();
 
 export const scienceListBaseSchema = z.array(scienceItemBase);
 export const sciencetWithPagiDefaultData = {
@@ -32,16 +41,12 @@ export const scienceItemBaseDefaultData = {
 	postCategoryId: '',
 	postCategoryName: '',
 };
-export const createScienceSchema = z.object({
-	title: z.string(),
-	content: z.string(),
-	image: z.string(),
-	postCategoryNanoId: z.string(),
-}).strict();
+export const createScienceSchema = scienceItemFit.strict();
+export const defaultScienceQueryData = scienceQuerySchema.parse({});
 
 export type ScienceItemDto = z.infer<typeof scienceItemBase>;
 export type ScienceListDto = z.infer<typeof scienceListBaseSchema>;
-export type ScienceQueryDto = z.infer<typeof scienceQuery>;
+export type ScienceQueryDto = z.infer<typeof scienceQuerySchema>;
 export type CreateScienceDto = z.infer<typeof createScienceSchema>;
 
 export interface ScienceListWithPagiDto {

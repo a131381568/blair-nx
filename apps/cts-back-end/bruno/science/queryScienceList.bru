@@ -1,0 +1,25 @@
+meta {
+  name: queryScienceList
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{API_HOST}}/{{API_PREFIX}}/science
+  body: none
+  auth: none
+}
+
+params:query {
+  ~limit: 2
+  ~keyword: 蓋亞任務
+  ~category: observation
+  ~cnid: TXoGaQ-iE0
+  ~page: 4
+}
+
+body:json {
+  {
+    "keyword": "蓋亞任務"
+  }
+}
