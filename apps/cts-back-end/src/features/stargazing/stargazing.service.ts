@@ -4,8 +4,8 @@ import { get, pick, tryit } from 'radash';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
-import { NanoIdDto } from '../../common/dto/id.dto';
-import { StargazingListWithPagiDto, StargazingQueryDto, defaultStargazingQueryData, stargazingQuerySchema, stargazingWithPagiDefaultData } from './stargazing-schemas';
+import { NanoIdDto, NanoIdSchema } from '../../common/dto/id.dto';
+import { StargazingItemDetailDto, StargazingListWithPagiDto, StargazingQueryDto, defaultStargazingItemDetail, defaultStargazingQueryData, stargazingQuerySchema, stargazingWithPagiDefaultData } from './stargazing-schemas';
 
 @Injectable()
 export class StargazingService {
@@ -54,36 +54,30 @@ export class StargazingService {
 		});
 	}
 
-	/*
-	async getStargazingDetail(id: NanoIdDto): Promise<ApiResponse<ScienceItemDto>> {
-		const { success: zodSuccess, error: zodErr, data: safeId } = StrIdSchema.safeParse(id);
+	async getStargazingDetail(id: NanoIdDto): Promise<ApiResponse<StargazingItemDetailDto>> {
+		const { success: zodSuccess, error: zodErr, data: safeId } = NanoIdSchema.safeParse(id);
 
 		if (!zodSuccess)
-			return createApiResponse(false, scienceItemBaseDefaultData, `Validation error: ${zodErr.errors[0].message}`);
+			return createApiResponse(false, defaultStargazingItemDetail, `Validation error: ${zodErr.errors[0].message}`);
 
-		const [err, res] = await tryit(this.prisma.science.findFirst)({
-			where: { postNanoId: safeId, published: true },
-			include: {
-				quoteCat: { select: { postCategoryName: true, postCategoryId: true } },
-			},
+		const [err, res] = await tryit(this.prisma.stargazingList.findFirst)({
+			where: { stargazingNanoId: safeId, published: true },
 		});
 
 		if (err && PrismaErrorSchema.safeParse(err).success)
-			return createApiResponse(false, scienceItemBaseDefaultData, 'Database error');
+			return createApiResponse(false, defaultStargazingItemDetail, 'Database error');
 		if (err)
-			return createApiResponse(false, scienceItemBaseDefaultData, 'Unexpected error occurred');
+			return createApiResponse(false, defaultStargazingItemDetail, 'Unexpected error occurred');
 		if (!res)
-			return createApiResponse(false, scienceItemBaseDefaultData, 'Id not found or no changes made');
+			return createApiResponse(false, defaultStargazingItemDetail, 'Id not found or no changes made');
 
-		const { title, content, image, updateTime, quoteCat } = res;
+		const stargazingLatitude = res.stargazingLatitude ? res.stargazingLatitude.toString() : null;
+		const stargazingLongitude = res.stargazingLongitude ? res.stargazingLongitude.toString() : null;
+
 		return createApiResponse(true, {
-			title,
-			content,
-			image,
-			updateTime: updateTime ? new Date(updateTime).toLocaleDateString('fr-CA') : '',
-			postCategoryId: get(quoteCat, 'postCategoryId', ''),
-			postCategoryName: get(quoteCat, 'postCategoryName', ''),
+			...pick(res, ['stargazingTitle', 'stargazingImage', 'stargazingDescription', 'stargazingAddress', 'stargazingNanoId']),
+			stargazingLatitude: stargazingLatitude ? new Big(stargazingLatitude) : null,
+			stargazingLongitude: stargazingLongitude ? new Big(stargazingLongitude) : null,
 		});
 	}
-  */
 }

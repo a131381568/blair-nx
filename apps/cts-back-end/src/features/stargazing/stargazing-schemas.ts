@@ -18,10 +18,20 @@ const stargazingItemBase = z.object({
 });
 
 const stargazingItemDetail = stargazingItemBase.extend({
-	stargazingLatitude: bigSchema.nullable(),
-	stargazingLongitude: bigSchema.nullable(),
+	stargazingLatitude: z.union([z.string(), bigSchema]).nullable(),
+	stargazingLongitude: z.union([z.string(), bigSchema]).nullable(),
 	stargazingImage: z.string().nullable(),
 	stargazingDescription: z.string().nullable(),
+});
+
+export const defaultStargazingItemDetail = stargazingItemDetail.parse({
+	stargazingTitle: '',
+	stargazingAddress: '',
+	stargazingNanoId: '',
+	stargazingLatitude: '',
+	stargazingLongitude: '',
+	stargazingImage: '',
+	stargazingDescription: '',
 });
 
 export const stargazingWithPagiDefaultData = {
