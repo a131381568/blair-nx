@@ -13,6 +13,8 @@ export const IntIdSchema = z
 	});
 
 export const StrIdSchema = z.string().min(1).max(15);
+export const NanoIdSchema = z.string().length(10);
 
 export type IntIdDto = z.infer<typeof IntIdSchema>;
 export type StrIdDto = z.infer<typeof StrIdSchema>;
+export type NanoIdDto = z.infer<typeof NanoIdSchema>;

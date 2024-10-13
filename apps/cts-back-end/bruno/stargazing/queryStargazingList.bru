@@ -1,0 +1,24 @@
+meta {
+  name: queryStargazingList
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{API_HOST}}/{{API_PREFIX}}/stargazing
+  body: none
+  auth: none
+}
+
+params:query {
+  ~limit: 4
+  ~page: 2
+  ~otherrr: brabra
+  ~nid: SMeErF9a1o
+}
+
+body:json {
+  {
+    "keyword": "蓋亞任務"
+  }
+}

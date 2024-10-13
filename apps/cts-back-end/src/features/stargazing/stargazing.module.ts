@@ -3,7 +3,7 @@ import { StargazingService } from './stargazing.service';
 import { StargazingController } from './stargazing.controller';
 
 @Module({
-  providers: [StargazingService],
-  controllers: [StargazingController]
+	providers: [StargazingService],
+	controllers: [StargazingController],
 })
 export class StargazingModule {}
