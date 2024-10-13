@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import Big from 'big.js';
-import { get, pick, tryit } from 'radash';
+import { get, omit, pick, tryit } from 'radash';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { NanoIdDto, NanoIdSchema } from '../../common/dto/id.dto';
-import { StargazingItemDetailDto, StargazingListWithPagiDto, StargazingQueryDto, defaultStargazingItemDetail, defaultStargazingQueryData, stargazingQuerySchema, stargazingWithPagiDefaultData } from './stargazing-schemas';
+import { StargazingItemDetailDto, StargazingListWithPagiDto, StargazingQueryDto, UpdateStargazingDetailDto, defaultStargazingItemDetail, defaultStargazingQueryData, stargazingQuerySchema, stargazingWithPagiDefaultData, updateStargazingDetailSchema } from './stargazing-schemas';
 
 @Injectable()
 export class StargazingService {
@@ -44,8 +43,8 @@ export class StargazingService {
 				if (dataMode === 'map') {
 					return {
 						...pick(item, ['stargazingTitle', 'stargazingImage', 'stargazingDescription', 'stargazingAddress', 'stargazingNanoId']),
-						stargazingLatitude: item.stargazingLatitude ? new Big(item.stargazingLatitude.toString()) : null,
-						stargazingLongitude: item.stargazingLongitude ? new Big(item.stargazingLongitude.toString()) : null,
+						stargazingLatitude: String(item.stargazingLatitude),
+						stargazingLongitude: String(item.stargazingLongitude),
 					};
 				}
 				return pick(item, ['stargazingTitle', 'stargazingAddress', 'stargazingNanoId']);
@@ -71,13 +70,79 @@ export class StargazingService {
 		if (!res)
 			return createApiResponse(false, defaultStargazingItemDetail, 'Id not found or no changes made');
 
-		const stargazingLatitude = res.stargazingLatitude ? res.stargazingLatitude.toString() : null;
-		const stargazingLongitude = res.stargazingLongitude ? res.stargazingLongitude.toString() : null;
-
 		return createApiResponse(true, {
 			...pick(res, ['stargazingTitle', 'stargazingImage', 'stargazingDescription', 'stargazingAddress', 'stargazingNanoId']),
-			stargazingLatitude: stargazingLatitude ? new Big(stargazingLatitude) : null,
-			stargazingLongitude: stargazingLongitude ? new Big(stargazingLongitude) : null,
+			stargazingLatitude: String(res.stargazingLatitude),
+			stargazingLongitude: String(res.stargazingLatitude),
 		});
+	}
+
+	async updateStargazingDetail(id: NanoIdDto, data: UpdateStargazingDetailDto): Promise<ApiResponse<null>> {
+		const { success: idZodSuccess, error: idZodErr, data: safeId } = NanoIdSchema.safeParse(id);
+		const { success: dataZodSuccess, error: dataZodErr, data: safeData } = updateStargazingDetailSchema.safeParse(data);
+		if (!dataZodSuccess || !idZodSuccess)
+			return createApiResponse(false, null, `Validation error: ${[dataZodErr?.errors[0].message, idZodErr?.errors[0].message].join('. ')}`);
+
+		const [err, res] = await tryit(this.prisma.stargazingList.updateMany)({
+			where: { stargazingNanoId: safeId, published: true },
+			data: {
+				...safeData,
+				stargazingLatitude: String(safeData.stargazingLatitude),
+				stargazingLongitude: String(safeData.stargazingLongitude),
+			},
+		});
+
+		if (err && PrismaErrorSchema.safeParse(err).success)
+			return createApiResponse(false, null, 'Database error');
+		if (err)
+			return createApiResponse(false, null, 'Unexpected error occurred');
+		if (res && !res.count)
+			return createApiResponse(false, null, 'Id not found or no changes made');
+
+		return createApiResponse(true, null, 'Update success');
+	}
+
+	async createStargazingDetail(data: UpdateStargazingDetailDto): Promise<ApiResponse<null>> {
+		const { success: zodSuccess, error: zodErr, data: safeData } = updateStargazingDetailSchema.safeParse(data);
+		if (!zodSuccess)
+			return createApiResponse(false, null, `Validation error: ${zodErr.errors[0].message}`);
+
+		const [err] = await tryit(this.prisma.stargazingList.create)({
+			data: {
+				...safeData,
+				// ...omit(safeData, ['stargazingLatitude', 'stargazingLongitude']),
+				stargazingLatitude: String(safeData.stargazingLatitude),
+				stargazingLongitude: String(safeData.stargazingLongitude),
+				published: true,
+			},
+		});
+
+		if (err && PrismaErrorSchema.safeParse(err).success)
+			return createApiResponse(false, null, 'Database error');
+		if (err)
+			return createApiResponse(false, null, 'Unexpected error occurred');
+
+		return createApiResponse(true, null, 'Create success');
+	}
+
+	async deleteStargazingDetail(id: NanoIdDto): Promise<ApiResponse<null>> {
+		const { success: zodSuccess, error: zodErr, data: safeId } = NanoIdSchema.safeParse(id);
+
+		if (!zodSuccess)
+			return createApiResponse(false, null, `Validation error: ${zodErr.errors[0].message}`);
+
+		const [err, res] = await tryit(this.prisma.stargazingList.updateMany)({
+			where: { stargazingNanoId: safeId, published: true },
+			data: { published: false },
+		});
+
+		if (err && PrismaErrorSchema.safeParse(err).success)
+			return createApiResponse(false, null, 'Database error');
+		if (err)
+			return createApiResponse(false, null, 'Unexpected error occurred');
+		if (res && !res.count)
+			return createApiResponse(false, null, 'Id not found or no changes made');
+
+		return createApiResponse(true, null, 'Delete success');
 	}
 }

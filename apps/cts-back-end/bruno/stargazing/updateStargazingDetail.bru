@@ -1,0 +1,22 @@
+meta {
+  name: updateStargazingDetail
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{API_HOST}}/{{API_PREFIX}}/stargazing/juPM88MNsA
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "stargazingTitle": "莫恩先生布丁店",
+    "stargazingAddress": "220新北市板橋區文化路一段285巷2弄1號",
+    "stargazingLatitude": "25.021979904724027",
+    "stargazingLongitude": "121.46450600889429",
+    "stargazingImage": "https://i.imgur.com/rHSIXs7.png",
+    "stargazingDescription": "新埔甜點推薦 「用布丁拯救世界」是這間店的 Slogan 也是品牌宗旨，希望用一個最簡單的方式，讓大家的生活中有一些小確幸。"
+  }
+}

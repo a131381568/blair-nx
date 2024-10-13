@@ -18,8 +18,8 @@ const stargazingItemBase = z.object({
 });
 
 const stargazingItemDetail = stargazingItemBase.extend({
-	stargazingLatitude: z.union([z.string(), bigSchema]).nullable(),
-	stargazingLongitude: z.union([z.string(), bigSchema]).nullable(),
+	stargazingLatitude: z.union([z.string(), bigSchema]).default(''),
+	stargazingLongitude: z.union([z.string(), bigSchema]).default(''),
 	stargazingImage: z.string().nullable(),
 	stargazingDescription: z.string().nullable(),
 });
@@ -53,7 +53,12 @@ export const StargazingListWithPagiSchema = z.object({
 	meta: paginationSchema,
 });
 
+export const updateStargazingDetailSchema = stargazingItemDetail.omit({
+	stargazingNanoId: true,
+}).strict();
+
 export type StargazingItemBaseDto = z.infer<typeof stargazingItemBase>;
 export type StargazingListWithPagiDto = z.infer<typeof StargazingListWithPagiSchema>;
 export type StargazingQueryDto = z.infer<typeof stargazingQuerySchema>;
 export type StargazingItemDetailDto = z.infer<typeof stargazingItemDetail>;
+export type UpdateStargazingDetailDto = z.infer<typeof updateStargazingDetailSchema>;
