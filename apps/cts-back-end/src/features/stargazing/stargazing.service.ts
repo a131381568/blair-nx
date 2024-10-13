@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { get, omit, pick, tryit } from 'radash';
+import { get, pick, tryit } from 'radash';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';

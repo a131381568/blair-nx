@@ -48,7 +48,10 @@ export default [
 			'**/cypress.config.ts',
 			'**/apis/*.ts',
 			'**/eslint.config.mjs',
-			'**/encrypt.util.ts'
+			'**/encrypt.util.ts',
+			'**/auth.module.ts',
+			'**/jwt.strategy.ts',
+			'**/auth/auth.service.ts'
 		],
 		rules: {
 			'node/prefer-global/process': ['error', 'always'],
