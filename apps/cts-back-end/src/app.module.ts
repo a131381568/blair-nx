@@ -9,9 +9,10 @@ import { ScienceModule } from './features/science/science.module';
 import { HttpExceptionFilter } from './core/filter/http-exception.filter';
 import { PrismaClientExceptionFilter } from './core/filter/prisma-client-exception.filter';
 import { PostCategoriesModule } from './features/post-categories/post-categories.module';
+import { StargazingModule } from './features/stargazing/stargazing.module';
 
 @Module({
-	imports: [AboutInfoModule, PrismaModule, FacilitiesModule, ObservatoriesModule, PageInfoModule, PostCategoriesModule, ScienceModule],
+	imports: [AboutInfoModule, PrismaModule, FacilitiesModule, ObservatoriesModule, PageInfoModule, PostCategoriesModule, ScienceModule, StargazingModule],
 	providers: [
 		{
 			provide: APP_FILTER,
