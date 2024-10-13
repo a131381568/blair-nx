@@ -4,6 +4,7 @@ import { get, pick, tryit } from 'radash';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
+import { NanoIdDto } from '../../common/dto/id.dto';
 import { StargazingListWithPagiDto, StargazingQueryDto, defaultStargazingQueryData, stargazingQuerySchema, stargazingWithPagiDefaultData } from './stargazing-schemas';
 
 @Injectable()
@@ -37,15 +38,52 @@ export class StargazingService {
 		if (res && !res.length)
 			return createApiResponse(false, stargazingWithPagiDefaultData, 'list is empty');
 
+		const dataMode = get(safeQuery, 'mode', defaultStargazingQueryData.mode);
 		return createApiResponse(true, {
 			list: res[0].map((item) => {
-				return {
-					...pick(item, ['stargazingTitle', 'stargazingImage', 'stargazingDescription', 'stargazingAddress', 'stargazingNanoId']),
-					stargazingLatitude: item.stargazingLatitude ? new Big(item.stargazingLatitude.toString()) : null,
-					stargazingLongitude: item.stargazingLongitude ? new Big(item.stargazingLongitude.toString()) : null,
-				};
+				if (dataMode === 'map') {
+					return {
+						...pick(item, ['stargazingTitle', 'stargazingImage', 'stargazingDescription', 'stargazingAddress', 'stargazingNanoId']),
+						stargazingLatitude: item.stargazingLatitude ? new Big(item.stargazingLatitude.toString()) : null,
+						stargazingLongitude: item.stargazingLongitude ? new Big(item.stargazingLongitude.toString()) : null,
+					};
+				}
+				return pick(item, ['stargazingTitle', 'stargazingAddress', 'stargazingNanoId']);
 			}),
 			meta: res[1],
 		});
 	}
+
+	/*
+	async getStargazingDetail(id: NanoIdDto): Promise<ApiResponse<ScienceItemDto>> {
+		const { success: zodSuccess, error: zodErr, data: safeId } = StrIdSchema.safeParse(id);
+
+		if (!zodSuccess)
+			return createApiResponse(false, scienceItemBaseDefaultData, `Validation error: ${zodErr.errors[0].message}`);
+
+		const [err, res] = await tryit(this.prisma.science.findFirst)({
+			where: { postNanoId: safeId, published: true },
+			include: {
+				quoteCat: { select: { postCategoryName: true, postCategoryId: true } },
+			},
+		});
+
+		if (err && PrismaErrorSchema.safeParse(err).success)
+			return createApiResponse(false, scienceItemBaseDefaultData, 'Database error');
+		if (err)
+			return createApiResponse(false, scienceItemBaseDefaultData, 'Unexpected error occurred');
+		if (!res)
+			return createApiResponse(false, scienceItemBaseDefaultData, 'Id not found or no changes made');
+
+		const { title, content, image, updateTime, quoteCat } = res;
+		return createApiResponse(true, {
+			title,
+			content,
+			image,
+			updateTime: updateTime ? new Date(updateTime).toLocaleDateString('fr-CA') : '',
+			postCategoryId: get(quoteCat, 'postCategoryId', ''),
+			postCategoryName: get(quoteCat, 'postCategoryName', ''),
+		});
+	}
+  */
 }
