@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import Big from 'big.js';
-import type { PaginationDto } from '../../common/dto/pagi.dto';
 import { paginationDefaultData, paginationSchema } from '../../common/dto/pagi.dto';
 import { NanoIdSchema } from '../../common/dto/id.dto';
 

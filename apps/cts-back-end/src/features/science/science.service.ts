@@ -4,7 +4,7 @@ import { ApiResponse, createApiResponse } from '../../core/interceptors/api-resp
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import { StrIdDto, StrIdSchema } from '../../common/dto/id.dto';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
-import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto, createScienceSchema, defaultScienceQueryData, scienceItemBaseDefaultData, scienceQuerySchema, sciencetWithPagiDefaultData } from './science-schemas';
+import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto, createScienceSchema, scienceItemBaseDefaultData, scienceQuerySchema, sciencetWithPagiDefaultData } from './science-schemas';
 import { ScienceSearchService } from './service/science-search.service';
 import { ScienceUpdateService } from './service/science-update.service';
 
