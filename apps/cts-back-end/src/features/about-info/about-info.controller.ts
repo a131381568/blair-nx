@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
 // import { AuthGuard } from '@nestjs/passport';
 import { ApiResponseInterceptor } from '../../core/interceptors/api-response.interceptor';
 import { ApiResponse } from '../../core/interceptors/api-response';
@@ -16,7 +16,7 @@ export class AboutInfoController {
 	}
 
 	@Post()
-	async updateAboutInfo(@Body() aboutInofData: UpdateAboutInfoDto): Promise<ApiResponse<UpdateAboutInfoDto>> {
+	async updateAboutInfo(@Body() aboutInofData: UpdateAboutInfoDto): Promise<ApiResponse<null>> {
 		return this.aboutService.updateAboutInfo(aboutInofData);
 	}
 }

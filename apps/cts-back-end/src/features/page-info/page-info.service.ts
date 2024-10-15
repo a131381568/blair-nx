@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { pick, tryit } from 'radash';
-import { PrismaService } from 'nestjs-prisma';
+import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import { PageListDto } from './page-info-schemas';
 
 @Injectable()
 export class PageInfoService {
-	constructor(private prisma: PrismaService) {}
+	constructor(
+		@InjectPrismaClient()
+		private readonly prisma: ExtendedPrismaClient,
+	) {}
 
 	async getObservatoriesList(): Promise<ApiResponse<PageListDto>> {
 		const [err, res] = await tryit(this.prisma.pageInfo.findMany)({

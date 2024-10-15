@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { omit, tryit } from 'radash';
-import { PrismaService } from 'nestjs-prisma';
+import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import type { GetAboutInfoBaseDto, UpdateAboutInfoDto } from './about-info-schemas';
@@ -8,7 +8,10 @@ import { defaultAboutInfoData, updateAboutInfoSchema } from './about-info-schema
 
 @Injectable()
 export class AboutInfoService {
-	constructor(private prisma: PrismaService) {}
+	constructor(
+		@InjectPrismaClient()
+		private readonly prisma: ExtendedPrismaClient,
+	) {}
 
 	async getAboutInfo(): Promise<ApiResponse<GetAboutInfoBaseDto>> {
 		const [err, res] = await tryit(this.prisma.aboutInfo.findUnique)({
@@ -23,11 +26,11 @@ export class AboutInfoService {
 		return createApiResponse(true, omit(res, ['aboutId']));
 	}
 
-	async updateAboutInfo(data: UpdateAboutInfoDto): Promise<ApiResponse<UpdateAboutInfoDto>> {
+	async updateAboutInfo(data: UpdateAboutInfoDto): Promise<ApiResponse<null>> {
 		const { success: zodSuccess, error: zodErr, data: safeData } = updateAboutInfoSchema.safeParse(data);
 
 		if (!zodSuccess)
-			return createApiResponse(false, data, `Validation error: ${zodErr.errors[0].message}`);
+			return createApiResponse(false, null, `Validation error: ${zodErr.errors[0].message}`);
 
 		const [err, res] = await tryit(this.prisma.aboutInfo.update)({
 			where: { aboutId: 1 },
@@ -35,10 +38,10 @@ export class AboutInfoService {
 		});
 
 		if (err && PrismaErrorSchema.safeParse(err).success)
-			return createApiResponse(false, data, 'Database error');
+			return createApiResponse(false, null, 'Database error');
 		if (err || !res)
-			return createApiResponse(false, data, 'Unexpected error occurred');
+			return createApiResponse(false, null, 'Unexpected error occurred');
 
-		return createApiResponse(true, safeData, 'Update success');
+		return createApiResponse(true, null, 'Update success');
 	}
 }

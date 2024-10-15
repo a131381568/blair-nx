@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { hashSync } from 'bcrypt';
 import { tryit } from 'radash';
-import { PrismaService } from 'nestjs-prisma';
+import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 
 @Injectable()
 export class UsersService {
-	constructor(private prisma: PrismaService) {}
+	constructor(
+		@InjectPrismaClient()
+		private readonly prisma: ExtendedPrismaClient,
+	) {}
 
 	async findAll() {
 		return this.prisma.users.findMany();

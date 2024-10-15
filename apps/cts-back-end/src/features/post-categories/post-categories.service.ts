@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { pick, tryit } from 'radash';
-import { PrismaService } from 'nestjs-prisma';
+import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 import { StrIdDto, StrIdSchema } from '../../common/dto/id.dto';
@@ -8,7 +8,10 @@ import { PostCategoriesDto, PostCategoryFitDto, defaultPostCategoryData, updateP
 
 @Injectable()
 export class PostCategoriesService {
-	constructor(private prisma: PrismaService) {}
+	constructor(
+		@InjectPrismaClient()
+		private readonly prisma: ExtendedPrismaClient,
+	) {}
 
 	async getPostCategories(): Promise<ApiResponse<PostCategoriesDto>> {
 		const [err, res] = await tryit(this.prisma.postCategories.findMany)({
