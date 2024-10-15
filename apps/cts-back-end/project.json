@@ -69,6 +69,13 @@
 				"cwd": "apps/cts-back-end",
 				"command": "prisma validate"
 			}
+		},
+		"docker:d": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/cts-back-end/deployment",
+				"command": "docker-compose up -d"
+			}
 		}
 	},
 	"tags": []
