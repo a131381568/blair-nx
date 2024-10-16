@@ -13,7 +13,7 @@ export class AboutInfoService {
 		private readonly prisma: ExtendedPrismaClient,
 	) {}
 
-	@ErrorAdditional()
+	@ErrorAdditional(defaultAboutInfoData)
 	async getAboutInfo(): Promise<ApiResponse<GetAboutInfoBaseDto>> {
 		const res = await this.prisma.aboutInfo.findFirst({
 			where: { aboutId: 1 },
