@@ -10,26 +10,26 @@ export class ScienceController {
 
 	@Get()
 	getScienceList(@Query() data: ScienceQueryDto): Promise<ApiResponse<ScienceListWithPagiDto>> {
-		return this.scienceService.getScienceList(data);
+		return this.scienceService.getScienceList({ data });
 	}
 
 	@Get(':id')
 	getScienceDetail(@Param('id') id: StrIdDto): Promise<ApiResponse<ScienceItemDto>> {
-		return this.scienceService.getScienceDetail(id);
+		return this.scienceService.getScienceDetail({ id });
 	}
 
 	@Put(':id')
 	async updateScienceDetail(@Param('id') id: StrIdDto, @Body() data: CreateScienceDto): Promise<ApiResponse<null>> {
-		return this.scienceService.updateScienceDetail(id, data);
+		return this.scienceService.updateScienceDetail({ id, data });
 	}
 
 	@Post('create')
 	async createScienceDetail(@Body() data: CreateScienceDto): Promise<ApiResponse<null>> {
-		return this.scienceService.createScienceDetail(data);
+		return this.scienceService.createScienceDetail({ data });
 	}
 
 	@Delete(':id')
 	async deleteScienceDetail(@Param('id') id: StrIdDto): Promise<ApiResponse<null>> {
-		return this.scienceService.deleteScienceDetail(id);
+		return this.scienceService.deleteScienceDetail({ id });
 	}
 }
