@@ -28,6 +28,13 @@
 				"command": "eslint ."
 			}
 		},
+		"lint:fix": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/{projectName}",
+				"command": "eslint . --fix"
+			}
+		},
 		"copy-env": {
 			"executor": "nx:run-commands",
 			"options": {

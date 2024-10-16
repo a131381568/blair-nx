@@ -4,9 +4,7 @@ import pagination from 'prisma-extension-pagination';
 
 export const PRISMA_CLIENT = Symbol('PRISMA_CLIENT');
 
-export function InjectPrismaClient() {
-	return Inject(PRISMA_CLIENT);
-}
+export const InjectPrismaClient = () => Inject(PRISMA_CLIENT);
 
 export const extendedPrismaClient = new PrismaClient().$extends(pagination());
 
