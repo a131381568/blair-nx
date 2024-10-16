@@ -46,7 +46,7 @@ export class FacilitiesService {
 		id: NanoIdDto;
 		data: UpdateFacilityItemDto;
 	}): Promise<ApiResponse<null>> {
-		await this.prisma.facilitiesList.updateMany({
+		await this.prisma.facilitiesList.update({
 			where: { facilitiesNanoId: id },
 			data,
 		});
@@ -70,8 +70,8 @@ export class FacilitiesService {
 	@ErrorAdditional()
 	async deleteFacilityItem({ id }: { id: NanoIdDto }): Promise<ApiResponse<null>> {
 		return this.prisma.$transaction(async (prisma) => {
-			await prisma.facilitiesList.updateMany({
-				where: { facilitiesNanoId: id },
+			await prisma.facilitiesList.update({
+				where: { facilitiesNanoId: id, published: true },
 				data: { published: false },
 			});
 			return createApiResponse(true, null, 'Delete success');
