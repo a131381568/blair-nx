@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { omit, tryit } from 'radash';
+import { omit } from 'radash';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
-import { PrismaErrorSchema } from '../shared/prisma-schemas';
+import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
 import type { GetAboutInfoBaseDto, UpdateAboutInfoDto } from './about-info-schemas';
 import { defaultAboutInfoData, updateAboutInfoSchema } from './about-info-schemas';
 
@@ -13,35 +13,21 @@ export class AboutInfoService {
 		private readonly prisma: ExtendedPrismaClient,
 	) {}
 
+	@ErrorAdditional()
 	async getAboutInfo(): Promise<ApiResponse<GetAboutInfoBaseDto>> {
-		const [err, res] = await tryit(this.prisma.aboutInfo.findUnique)({
+		const res = await this.prisma.aboutInfo.findFirst({
 			where: { aboutId: 1 },
 		});
-
-		if (err && PrismaErrorSchema.safeParse(err).success)
-			return createApiResponse(false, defaultAboutInfoData, 'Database error');
-		if (err || !res)
-			return createApiResponse(false, defaultAboutInfoData, 'Unexpected error occurred');
-
-		return createApiResponse(true, omit(res, ['aboutId']));
+		return createApiResponse(Boolean(res), res ? omit(res, ['aboutId']) : defaultAboutInfoData);
 	}
 
-	async updateAboutInfo(data: UpdateAboutInfoDto): Promise<ApiResponse<null>> {
-		const { success: zodSuccess, error: zodErr, data: safeData } = updateAboutInfoSchema.safeParse(data);
-
-		if (!zodSuccess)
-			return createApiResponse(false, null, `Validation error: ${zodErr.errors[0].message}`);
-
-		const [err, res] = await tryit(this.prisma.aboutInfo.update)({
+	@ValidationAdditional(updateAboutInfoSchema)
+	@ErrorAdditional()
+	async updateAboutInfo({ data }: { data: UpdateAboutInfoDto }): Promise<ApiResponse<null>> {
+		await this.prisma.aboutInfo.update({
 			where: { aboutId: 1 },
-			data: safeData,
+			data,
 		});
-
-		if (err && PrismaErrorSchema.safeParse(err).success)
-			return createApiResponse(false, null, 'Database error');
-		if (err || !res)
-			return createApiResponse(false, null, 'Unexpected error occurred');
-
 		return createApiResponse(true, null, 'Update success');
 	}
 }

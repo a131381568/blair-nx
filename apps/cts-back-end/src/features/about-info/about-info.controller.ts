@@ -16,7 +16,7 @@ export class AboutInfoController {
 	}
 
 	@Post()
-	async updateAboutInfo(@Body() aboutInofData: UpdateAboutInfoDto): Promise<ApiResponse<null>> {
-		return this.aboutService.updateAboutInfo(aboutInofData);
+	async updateAboutInfo(@Body() data: UpdateAboutInfoDto): Promise<ApiResponse<null>> {
+		return this.aboutService.updateAboutInfo({ data });
 	}
 }
