@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { omit, pick } from 'radash';
+import { pick } from 'radash';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { NanoIdDto } from '../../common/dto/id.dto';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
