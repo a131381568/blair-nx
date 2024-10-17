@@ -1,7 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
+import { pick, tryit } from 'radash';
 import { UsersService } from '../users/users.service';
+import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
+import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
+import { AccessTokenDto, GetTokenDto, LoginInputDto, RefreshTokenDto, UserBaseDto, getTokenSchema, loginInputSchema, refreshTokenSchema } from '../shared/users-schemas';
 
 @Injectable()
 export class AuthService {
@@ -10,32 +14,45 @@ export class AuthService {
 		private jwtService: JwtService,
 	) {}
 
-	async validateUser(email: string, pass: string): Promise<any> {
-		const user = await this.usersService.findByEmail(email);
-		if (user && user.password && await compare(pass, user.password)) {
-			const { password, ...result } = user;
-			return result;
+	@ValidationAdditional(loginInputSchema)
+	@ErrorAdditional()
+	async validateUser({ data }: { data: LoginInputDto }): Promise<ApiResponse<UserBaseDto>> {
+		const { success: hasMail, data: userData } = await this.usersService.getPassByEmail({ data: {
+			email: data.email,
+		} });
+
+		if (hasMail && userData && userData.password) {
+			const passIsSame = await compare(data.password, userData.password);
+			if (!passIsSame)
+				return createApiResponse(false, null, 'You entered the wrong password');
+			return createApiResponse(true, userData, 'Validation success');
 		}
-		return null;
+		return createApiResponse(false, null, 'Validation error');
 	}
 
-	async login(user: any) {
-		const payload = { email: user.email, sub: user.orderId };
-		return {
-			access_token: this.jwtService.sign(payload),
-			refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
-		};
+	@ValidationAdditional(getTokenSchema)
+	@ErrorAdditional()
+	async getAllToken({ data }: { data: GetTokenDto }) {
+		const payload = pick(data, ['email', 'nanoId']);
+		return createApiResponse(true, {
+			accessToken: this.jwtService.sign(payload),
+			refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' }),
+		});
 	}
 
-	refreshToken(refreshToken: string) {
-		try {
-			const payload = this.jwtService.verify(refreshToken, { secret: process.env.JWT_SECRET });
-			return {
-				access_token: this.jwtService.sign({ email: payload.email, sub: payload.sub }),
-			};
-		}
-		catch (e) {
-			throw new UnauthorizedException('Invalid refresh token');
-		}
+	@ValidationAdditional(refreshTokenSchema)
+	@ErrorAdditional()
+	async refreshToken({ data }: { data: RefreshTokenDto }): Promise<ApiResponse<AccessTokenDto | null>> {
+		const [err, payload] = await tryit(this.jwtService.verify.bind(this.jwtService))(
+			data.refreshToken,
+			{ secret: process.env.JWT_SECRET },
+		);
+
+		if (err)
+			return createApiResponse(false, null, 'Generate refresh token fail');
+
+		return createApiResponse(true, {
+			accessToken: this.jwtService.sign({ email: payload.email, nanoId: payload.nanoId }),
+		});
 	}
 }

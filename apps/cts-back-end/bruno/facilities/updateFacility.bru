@@ -5,14 +5,18 @@ meta {
 }
 
 put {
-  url: {{API_HOST}}/{{API_PREFIX}}/facilities/33
+  url: {{API_HOST}}/{{API_PREFIX}}/facilities/sG7_EBNryv
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
 }
 
 body:json {
   {
-    "facilitiesTitle": "aaa台北市立天文科學教育館"
+    "facilitiesTitle": "xxx南瀛天文教育館"
   }
 }
 

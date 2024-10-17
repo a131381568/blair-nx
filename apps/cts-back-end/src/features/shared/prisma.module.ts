@@ -1,7 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-
 import { CustomPrismaModule } from 'nestjs-prisma';
-
 import { PRISMA_CLIENT, extendedPrismaClient } from './prisma.extension';
 
 const providers = [

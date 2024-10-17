@@ -1,0 +1,18 @@
+meta {
+  name: not-email-type
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{API_HOST}}/{{API_PREFIX}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "akevinaaa",
+    "password": "123456"
+  }
+}

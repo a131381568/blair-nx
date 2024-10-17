@@ -7,7 +7,11 @@ meta {
 delete {
   url: {{API_HOST}}/{{API_PREFIX}}/post-categories/lCaLnH-19R
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
 }
 
 body:json {

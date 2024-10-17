@@ -1,13 +1,17 @@
 meta {
   name: updateAboutInfo
   type: http
-  seq: 2
+  seq: 1
 }
 
 post {
   url: {{API_HOST}}/{{API_PREFIX}}/about-info
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
 }
 
 body:json {

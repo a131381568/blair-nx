@@ -1,17 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
-const copyEnvFile = (projectName) => {
-  console.log(typeof projectName)
-
-  const rootEnvPath = path.join(__dirname, '../.env');
-  const projectEnvPath = path.join(__dirname, `../apps/${projectName}/bruno/.env`);
-  
+const copyEnvFile = (projectName, envName) => {
+  const rootEnvPath = path.join(__dirname, `../${envName}`);
+  const projectBrunoPath = path.join(__dirname, `../apps/${projectName}/bruno/${envName}`);
+  const projectEnvPath = path.join(__dirname, `../apps/${projectName}/${envName}`);
+ 
   if (fs.existsSync(rootEnvPath)) {
+    fs.copyFileSync(rootEnvPath, projectBrunoPath);
     fs.copyFileSync(rootEnvPath, projectEnvPath);
-    console.log(`Copied .env file to project-${projectName}`);
+    console.log(`Copied ${envName} file to project: ${projectName}`);
   } else {
-    console.error('Root .env file not found');
+    console.error(`Root ${envName} file not found`);
   }
 }
 
@@ -23,4 +23,6 @@ if (!projectName) {
   process.exit(1);
 }
 
-copyEnvFile(projectName);
+copyEnvFile(projectName,`.env`);
+copyEnvFile(projectName,`.env.local`);
+copyEnvFile(projectName,`.env.production`);

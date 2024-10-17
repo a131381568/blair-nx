@@ -1,40 +1,59 @@
 import { Injectable } from '@nestjs/common';
 import { hashSync } from 'bcrypt';
-import { tryit } from 'radash';
-import { PrismaService } from 'nestjs-prisma';
+import { pick } from 'radash';
+import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
+import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
+import { EmailDto, RegisterPayloadDto, UserBaseDto, emailSchema, registerPayloadSchema, userBaseFitDto } from '../shared/users-schemas';
+import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 
 @Injectable()
 export class UsersService {
-	constructor(private prisma: PrismaService) {}
+	constructor(
+		@InjectPrismaClient()
+		private readonly prisma: ExtendedPrismaClient,
+	) {}
 
-	async findAll() {
-		return this.prisma.users.findMany();
+	@ErrorAdditional([])
+	async getUserList(): Promise<ApiResponse<userBaseFitDto[]>> {
+		const res = await this.prisma.users.findMany({
+			orderBy: { orderId: 'asc' },
+		});
+
+		return createApiResponse(
+			true,
+			res.map(item => pick(item, ['name', 'email', 'nanoId'])),
+		);
 	}
 
-	async registerUser(name: string, email: string, password: string) {
-		const hashedPassword = hashSync(password, 10);
+	@ValidationAdditional(emailSchema)
+	@ErrorAdditional()
+	async getPassByEmail({ data }: { data: EmailDto }): Promise<ApiResponse<UserBaseDto>> {
+		const res = await this.prisma.users.findFirst({
+			where: { email: data.email },
+		});
+		if (!res)
+			return createApiResponse(false, null, 'User not found');
+		return createApiResponse(true, pick(res, ['email', 'name', 'nanoId', 'password']));
+	}
 
-		return this.prisma.users.create({
+	@ValidationAdditional(registerPayloadSchema)
+	@ErrorAdditional()
+	async registerUser({ data }: { data: RegisterPayloadDto }): Promise<ApiResponse<null>> {
+		const { success: hasMail } = await this.getPassByEmail({ data: {
+			email: data.email,
+		} });
+
+		if (hasMail)
+			return createApiResponse(false, null, 'The email is already registered');
+
+		const hashedPassword = hashSync(data.password, 10);
+		await this.prisma.users.create({
 			data: {
-				name,
-				email,
+				name: data.name,
+				email: data.email,
 				password: hashedPassword,
 			},
 		});
-	}
-
-	async findByEmail(email: string) {
-		if (!email)
-			return null;
-		const [err, res] = await tryit(this.prisma.users.findFirst)({
-			where: { email },
-		});
-		if (err || !res) {
-			return null;
-		}
-
-		return {
-			password: res.password,
-		};
+		return createApiResponse(true, null, 'Create success');
 	}
 }

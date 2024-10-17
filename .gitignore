@@ -55,8 +55,7 @@ Thumbs.db
 
 # env
 .env
-.env.local
-.env.*.local
+.env.*
 
 # storybook
 storybook-static
