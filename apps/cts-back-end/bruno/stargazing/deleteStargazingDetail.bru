@@ -7,7 +7,11 @@ meta {
 delete {
   url: {{API_HOST}}/{{API_PREFIX}}/stargazing/1U6uV_FYLf
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
 }
 
 body:json {
