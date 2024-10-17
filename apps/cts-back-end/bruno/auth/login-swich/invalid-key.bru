@@ -1,0 +1,19 @@
+meta {
+  name: invalid-key
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{API_HOST}}/{{API_PREFIX}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "akevinaaa",
+    "password": "123456",
+    "wdwdw": "wdwdwdwdd"
+  }
+}

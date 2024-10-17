@@ -55,26 +55,20 @@ export class FacilitiesService {
 
 	@ValidationAdditional(createFacilityItemSchema)
 	@ErrorAdditional()
-	async createFacilityItem({ data }: {
-		data: CreateFacilityItemDto;
-	}): Promise<ApiResponse<null>> {
-		return this.prisma.$transaction(async (prisma) => {
-			await prisma.facilitiesList.create({
-				data: { ...data, published: true },
-			});
-			return createApiResponse(true, null, 'Create success');
+	async createFacilityItem({ data }: { data: CreateFacilityItemDto }): Promise<ApiResponse<null>> {
+		await this.prisma.facilitiesList.create({
+			data: { ...data, published: true },
 		});
+		return createApiResponse(true, null, 'Create success');
 	}
 
 	@ValidationAdditional()
 	@ErrorAdditional()
 	async deleteFacilityItem({ id }: { id: NanoIdDto }): Promise<ApiResponse<null>> {
-		return this.prisma.$transaction(async (prisma) => {
-			await prisma.facilitiesList.update({
-				where: { facilitiesNanoId: id, published: true },
-				data: { published: false },
-			});
-			return createApiResponse(true, null, 'Delete success');
+		await this.prisma.facilitiesList.update({
+			where: { facilitiesNanoId: id, published: true },
+			data: { published: false },
 		});
+		return createApiResponse(true, null, 'Delete success');
 	}
 }

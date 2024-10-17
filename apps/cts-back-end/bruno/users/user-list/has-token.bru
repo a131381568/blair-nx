@@ -1,0 +1,21 @@
+meta {
+  name: has-token
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{API_HOST}}/{{API_PREFIX}}/users
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtldmluQHRlc3QuY29tIiwibmFub0lkIjoiVnB2cXpOdUxhSCIsImlhdCI6MTcyOTE4OTA0NSwiZXhwIjoxNzI5MTg5OTQ1fQ.DOn3rwoGtHbwkPxPZdsejQdspCyVvHLqjEGI75BTUPM
+}
+
+body:json {
+  {
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImtldmluQHRlc3QuY29tIiwibmFub0lkIjoiVnB2cXpOdUxhSCIsImlhdCI6MTcyOTE4NjA5OSwiZXhwIjoxNzI5NzkwODk5fQ.37oKEL6yNcajOcAZPLAf8eJohWJzhreoRQLIaVp-UQk"
+  }
+}

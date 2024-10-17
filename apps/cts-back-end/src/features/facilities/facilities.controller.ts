@@ -1,11 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors } from '@nestjs/common';
 import { ApiResponse } from '../../core/interceptors/api-response';
 import { NanoIdDto } from '../../common/dto/id.dto';
+import { ApiResponseInterceptor } from '../../core/interceptors/api-response.interceptor';
 import { FacilitiesService } from './facilities.service';
 import type { CreateFacilityItemDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, UpdateFacilityItemDto } from './facilities-schemas';
 
 @Controller('facilities')
-
+@UseInterceptors(ApiResponseInterceptor)
 export class FacilitiesController {
 	constructor(private readonly facilitiesService: FacilitiesService) {}
 
@@ -25,12 +26,12 @@ export class FacilitiesController {
 	}
 
 	@Post('create')
-	async createFacilityItem(@Body() data: CreateFacilityItemDto): Promise<ApiResponse<null>> {
+	async createFacilityItem(@Body() data: CreateFacilityItemDto): Promise<any> {
 		return this.facilitiesService.createFacilityItem({ data });
 	}
 
 	@Delete(':id')
-	async deleteFacilityItem(@Param('id') id: NanoIdDto): Promise<ApiResponse<null>> {
+	async deleteFacilityItem(@Param('id') id: NanoIdDto): Promise<any> {
 		return this.facilitiesService.deleteFacilityItem({ id });
 	}
 }
