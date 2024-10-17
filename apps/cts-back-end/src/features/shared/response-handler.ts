@@ -16,7 +16,9 @@ export const ErrorAdditional = (defaultRes: unknown = null) => {
 				return response;
 			}
 			catch (error) {
-				// console.table(error);
+				if (process.env.IS_DEBUG)
+					throw error;
+
 				if (PrismaErrorSchema.safeParse(error).success) {
 					let errorMsg = 'Database error';
 					if (error instanceof Prisma.PrismaClientKnownRequestError)

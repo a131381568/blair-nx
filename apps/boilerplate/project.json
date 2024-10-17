@@ -20,6 +20,9 @@
 				},
 				"staging": {
 					"envFiles": [".env", ".env.staging"]
+				},
+				"production": {
+					"envFiles": [".env", ".env.production"]
 				}
 			},
 			"dependsOn": ["copy-env"]

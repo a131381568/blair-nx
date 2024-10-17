@@ -27,7 +27,12 @@ export default [
 			'**/.eslintrc-auto-import.json',
 			'**/README.md',
 			'**/components.d.ts',
-			'**/prisma/migrations'
+			'**/prisma/migrations',
+			'**/prisma/schema.prisma',
+			'**/.DS_Store',
+			'**/*.bru',
+			'**/.env.*',
+			'**/.env',
 		],
 	},
 	{
@@ -49,9 +54,11 @@ export default [
 			'**/apis/*.ts',
 			'**/eslint.config.mjs',
 			'**/encrypt.util.ts',
-			'**/auth.module.ts',
-			'**/jwt.strategy.ts',
-			'**/auth/auth.service.ts'
+			'!**/apps/cts-back-end/src/features/auth/auth.module.ts',
+			'!**/apps/cts-back-end/src/features/auth/jwt.strategy.ts',
+			'!**/apps/cts-back-end/src/features/auth/auth.service.ts',
+			'!**/apps/cts-back-end/src/main.ts',
+			'!**/apps/cts-back-end/src/features/shared/response-handler.ts'
 		],
 		rules: {
 			'node/prefer-global/process': ['error', 'always'],
