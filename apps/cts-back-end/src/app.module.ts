@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER, HttpAdapterHost } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './features/shared/prisma.module';
 import { AboutInfoModule } from './features/about-info/about-info.module';
 import { PageInfoModule } from './features/page-info/page-info.module';
@@ -12,9 +13,26 @@ import { PostCategoriesModule } from './features/post-categories/post-categories
 import { StargazingModule } from './features/stargazing/stargazing.module';
 import { UsersModule } from './features/users/users.module';
 import { AuthModule } from './features/auth/auth.module';
+import { FileModule } from './features/file/file.module';
 
 @Module({
-	imports: [AboutInfoModule, PrismaModule, FacilitiesModule, ObservatoriesModule, PageInfoModule, PostCategoriesModule, ScienceModule, StargazingModule, UsersModule, AuthModule],
+	imports: [
+		ConfigModule.forRoot({
+			isGlobal: true,
+			envFilePath: ['../.env'],
+		}),
+		AboutInfoModule,
+		PrismaModule,
+		FacilitiesModule,
+		ObservatoriesModule,
+		PageInfoModule,
+		PostCategoriesModule,
+		ScienceModule,
+		StargazingModule,
+		UsersModule,
+		AuthModule,
+		FileModule,
+	],
 	providers: [
 		{
 			provide: APP_FILTER,

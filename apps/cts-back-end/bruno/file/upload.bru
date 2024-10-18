@@ -1,0 +1,15 @@
+meta {
+  name: upload
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{API_HOST}}/{{API_PREFIX}}/file/upload
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  file: @file(/Users/allenwang/Downloads/test_img/1667381821994520.jpeg)
+}
