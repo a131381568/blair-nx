@@ -14,6 +14,6 @@
 		"outDir": "../../dist/out-tsc",
 		"sourceMap": false
 	},
-	"include": ["src/**/*.ts"],
+	"include": ["src/**/*.ts", "src/typings.d.ts"],
 	"exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }

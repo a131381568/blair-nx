@@ -9,8 +9,6 @@ export const getAvatar = (mail: string | undefined) => {
 
 export const generateUUID = (size: number = 21): string => nanoid(size); ;
 
-generateUUID();
-
 export const generateShortUUID = () => nanoid(10);
 
 export const randomValue = (
