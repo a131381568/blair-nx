@@ -126,9 +126,9 @@ module.exports = {
 				'130px': '130px',
 				'15px': '15px',
 				'9px': '9px',
-				'80vh': '80vh',
-				'50vh': '50vh',
-				'40vh': '40vh',
+				'80vh': '80dvh',
+				'50vh': '50dvh',
+				'40vh': '40dvh',
 				'0-2em': '0.2em',
 			},
 			inset: {

@@ -3,10 +3,6 @@ import { computed, ref } from 'vue';
 // import { useRoute } from 'vue-router';
 import HeaderLogo from './svg/HeaderLogo.vue';
 
-// 取得路由對應標題資訊
-// const route = useRoute();
-
-// 選單狀態
 const menuList = ref([
 	{
 		title: '關於我們',
@@ -48,6 +44,7 @@ const menuList = ref([
 const modal = ref(false);
 const getHeaderState = ref(true);
 const fastHide = ref(true);
+const modalShow = ref(false);
 
 const activeTopic = computed(() => ({
 	title: '關於我們',
@@ -118,6 +115,7 @@ const toggleModal = () => {
 		</div>
 	</div>
 	<div
+		v-if="modalShow"
 		id="modal"
 		class="modal-bg animate__animated animate__fadeInDown animate__faster fixed left-0 top-0 size-full overflow-auto bg-secondary"
 		:class="[
