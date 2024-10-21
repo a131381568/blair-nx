@@ -6,7 +6,7 @@ import type {
 	adListParamsSchema,
 	appleDeviceStateSchema,
 	baseAdItemSchema,
-} from '@cts-fe-src/types/schemas/appleDeviceSchema';
+} from '@ctsf-src/types/schemas/appleDeviceSchema';
 
 // test utils
 function mountComponent<T>(component: T) {

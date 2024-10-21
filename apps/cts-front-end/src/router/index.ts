@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '@cts-fe-src/views/Home.vue';
-import About from '@cts-fe-src/views/About.vue';
-import NotFound from '@cts-fe-src/views/NotFound.vue';
-import Science from '@cts-fe-src/views/Science.vue';
+import About from '@ctsf-src/views/About.vue';
+import NotFound from '@ctsf-src/views/NotFound.vue';
+import Science from '@ctsf-src/views/Science.vue';
+import Home from '@ctsf-src/views/Home.vue';
 
 const router = createRouter({
 	history: createWebHistory(),

@@ -34,7 +34,7 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			'@demo-src': path.resolve(__dirname, './src'),
+			'@ctsf-src': path.resolve(__dirname, './src'),
 		},
 	},
 	css: {

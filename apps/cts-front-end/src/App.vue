@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import BgStar from './components/svg/BgStar.vue';
 import Loading from './components/Loading.vue';
-import Enter from './components/Enter.vue';
+// import Enter from './components/Enter.vue';
 
 const el = ref<HTMLElement | null>(null);
 const isLoading = ref(true);

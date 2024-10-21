@@ -16,8 +16,6 @@ export default antfu(
 			css: true,
 			html: true,
 			markdown: 'prettier',
-			vue: true,
-			json: true,
 		},
 		ignores: [
 			'**/fixtures',
@@ -34,6 +32,7 @@ export default antfu(
 			'**/*.bru',
 			'**/.env.*',
 			'**/.env',
+			'**/public',
 		],
 	},
 	{
@@ -74,7 +73,19 @@ export default antfu(
 	// nx rule
 	{
 		rules: {
-			'@nx/enforce-module-boundaries': 'off',
+			'@nx/enforce-module-boundaries': [
+				'error',
+				{
+					enforceBuildableLibDependency: true,
+					allow: ['@ctsf-src'],
+					depConstraints: [
+						{
+							sourceTag: 'type:front_app',
+							onlyDependOnLibsWithTags: ['type:front_libs', 'type:front_ui'],
+						},
+					],
+				},
+			],
 		},
 		plugins: {
 			'@nx': nxPlugins,
@@ -167,10 +178,13 @@ export default antfu(
 						'grid-des-box',
 						'grid-card-read',
 						'divide-gray-100',
-						// 'text-sp-color-light',
-						// 'text-main-color-light',
-						// 'bg-sp-color-light',
-						// 'bg-sub-color-light',
+						'stars',
+						'star',
+						'extras',
+						'comet',
+						'comet-a',
+						'comet-b',
+						'comet-c',
 					],
 				},
 			],

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getToken } from '@blair-nx-composables';
-import { interceptorErrorHandler, interceptorSuccessHandler } from '@cts-fe-src/services/utils/interceptors';
-import { mockUrl, url } from '@cts-fe-src/services/utils/config';
+import { interceptorErrorHandler, interceptorSuccessHandler } from '@ctsf-src/services/utils/interceptors';
+import { mockUrl, url } from '@ctsf-src/services/utils/config';
 
 const token = getToken('token');
 

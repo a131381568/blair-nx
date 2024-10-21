@@ -17,7 +17,7 @@
       "@blair-nx-composables": ["libs/blairComposables/src/index.ts"],
       "@blair-nx-config/*": ["libs/blairConfig/*"],
       "@blair-nx-ui": ["libs/blairUI/src/index.ts"],
-      "@cts-fe-src/*": ["apps/cts-front-end/src/*"],
+      "@ctsf-src/*": ["apps/cts-front-end/src/*"],
       "@demo-src/*": ["apps/boilerplate/src/*"]
     },
     "esModuleInterop": true,
