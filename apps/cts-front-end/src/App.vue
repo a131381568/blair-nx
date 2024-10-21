@@ -5,14 +5,14 @@ import Loading from './components/Loading.vue';
 import Enter from './components/Enter.vue';
 
 const el = ref<HTMLElement | null>(null);
-// const isLoading = ref(false);
-const getFirstEnter = ref(true);
+const isLoading = ref(true);
+const getFirstEnter = ref(false);
 
-setTimeout(() => (getFirstEnter.value = false), 4000);
+setTimeout(() => (getFirstEnter.value = true), 200);
+setTimeout(() => (isLoading.value = false), 500);
 </script>
 
 <template>
-	<!-- min-h-[90rem]  -->
 	<div
 		ref="el"
 		class="relative overflow-y-auto overflow-x-hidden bg-admin-featured bg-cover bg-center bg-no-repeat"
@@ -24,8 +24,6 @@ setTimeout(() => (getFirstEnter.value = false), 4000);
 			<BgStar />
 		</div>
 	</div>
-	<!-- <Loading :loading="isLoading" />
-	<transition>
-		<Enter v-show="getFirstEnter" />
-	</transition> -->
+	<Loading :loading="isLoading" />
+	<!-- <Enter v-show="getFirstEnter" /> -->
 </template>

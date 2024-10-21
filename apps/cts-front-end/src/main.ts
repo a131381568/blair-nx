@@ -1,4 +1,5 @@
 import './assets/index.postcss';
+import 'animate.css';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import zhTW from '@kangc/v-md-editor/lib/lang/zh-TW';
