@@ -88,5 +88,5 @@
 			}
 		}
 	},
-	"tags": []
+	"tags": ["type:back_app", "publish:false", "class:cts"]
 }

@@ -18,6 +18,7 @@
       "@blair-nx-config/*": ["libs/blairConfig/*"],
       "@blair-nx-ui": ["libs/blairUI/src/index.ts"],
       "@ctsf-src/*": ["apps/cts-front-end/src/*"],
+      "@cts-shared/*": ["libs/cts-shared/*"],
       "@demo-src/*": ["apps/boilerplate/src/*"]
     },
     "esModuleInterop": true,

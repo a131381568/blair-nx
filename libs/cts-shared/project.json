@@ -1,0 +1,8 @@
+{
+	"name": "cts-shared",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/cts-shared",
+	"projectType": "library",
+	"targets": {},
+	"tags": ["type:libs", "class:cts"]
+}
