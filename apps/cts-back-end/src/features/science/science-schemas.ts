@@ -16,6 +16,7 @@ const scienceItemBase = z.object({
 	image: z.string().nullable(),
 	postCategoryId: z.string().nullable(),
 	postCategoryName: z.string().nullable(),
+	postNanoId: z.string().nullable(),
 });
 
 export const scienceQuerySchema = z.object({
@@ -40,6 +41,7 @@ export const scienceItemBaseDefaultData = {
 	image: '',
 	postCategoryId: '',
 	postCategoryName: '',
+	postNanoId: '',
 };
 export const createScienceSchema = scienceItemFit.strict();
 export const defaultScienceQueryData = scienceQuerySchema.parse({});

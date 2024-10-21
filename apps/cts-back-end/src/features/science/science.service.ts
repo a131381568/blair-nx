@@ -22,7 +22,7 @@ export class ScienceService {
 
 		const [resData, pagiMeta] = res;
 		const scienceData = resData.map(item => ({
-			...pick(item, ['title', 'content', 'image']),
+			...pick(item, ['title', 'content', 'image', 'postNanoId']),
 			updateTime: item.updateTime ? new Date(item.updateTime).toLocaleDateString('fr-CA') : '',
 			postCategoryName: get(item.quoteCat, 'postCategoryName', ''),
 			postCategoryId: get(item.quoteCat, 'postCategoryId', ''),
@@ -48,7 +48,7 @@ export class ScienceService {
 			Boolean(res),
 			res
 				? {
-						...pick(res, ['title', 'content', 'image']),
+						...pick(res, ['title', 'content', 'image', 'postNanoId']),
 						updateTime: res.updateTime ? new Date(res.updateTime).toLocaleDateString('fr-CA') : '',
 						postCategoryId: get(res.quoteCat, 'postCategoryId', ''),
 						postCategoryName: get(res.quoteCat, 'postCategoryName', ''),
