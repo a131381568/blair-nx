@@ -44,3 +44,4 @@ export const scienceItemBaseDefaultData = {
 };
 export const createScienceSchema = scienceItemFit.strict();
 export const defaultScienceQueryData = scienceQuerySchema.parse({});
+export const scienceQueryPartialSchema = scienceQuerySchema.partial();
