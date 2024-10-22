@@ -18,3 +18,5 @@ export * from './types/post-categories.types';
 export * from './types/science.types';
 export * from './types/stargazing.types';
 export * from './types/users.types';
+// contract
+export * from './contracts/science.contracts';

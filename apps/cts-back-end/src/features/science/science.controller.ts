@@ -1,21 +1,47 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto, StrIdDto } from '@cts-shared';
+import { CreateScienceDto, ScienceQueryPartialDto, StrIdDto, scienceContract } from '@cts-shared';
+import { NestResponseShapes, TsRestHandler, nestControllerContract, tsRestHandler } from '@ts-rest/nest';
 import { ApiResponse } from '../../core/interceptors/api-response';
 import { ScienceService } from './science.service';
 
-@Controller('science')
+const c = nestControllerContract(scienceContract);
+type ResponseShapes = NestResponseShapes<typeof c>;
+const GET_QUERY = 'getScienceList';
+const GET_SINGLE = 'getScienceDetail';
+
+@Controller()
 export class ScienceController {
 	constructor(private readonly scienceService: ScienceService) {}
 
-	@Get()
-	getScienceList(@Query() data: ScienceQueryDto): Promise<ApiResponse<ScienceListWithPagiDto>> {
-		return this.scienceService.getScienceList({ data });
+	@TsRestHandler(c[GET_QUERY])
+	async getScienceList(@Query() data: ScienceQueryPartialDto) {
+		return tsRestHandler(c[GET_QUERY], async (_reqInfo): Promise<ResponseShapes[typeof GET_QUERY]> => {
+			const { data: resList } = await this.scienceService[GET_QUERY]({ data });
+
+			if (process.env.IS_DEBUG) {
+				const { success: zodSuccess, error: zodError } = c[GET_QUERY].responses['200'].safeParse(resList);
+				if (!zodSuccess)
+					throw new Error(zodError.errors.toString());
+			}
+
+			return { status: 200, body: resList };
+		});
 	}
 
-	@Get(':id')
-	getScienceDetail(@Param('id') id: StrIdDto): Promise<ApiResponse<ScienceItemDto>> {
-		return this.scienceService.getScienceDetail({ id });
+	@TsRestHandler(c[GET_SINGLE])
+	async getScienceDetail(@Param('id') id: StrIdDto) {
+		return tsRestHandler(c[GET_SINGLE], async (_reqInfo): Promise<ResponseShapes[typeof GET_SINGLE]> => {
+			const { data: resItem } = await this.scienceService[GET_SINGLE]({ id });
+
+			if (process.env.IS_DEBUG) {
+				const { success: zodSuccess, error: zodError } = c[GET_SINGLE].responses['200'].safeParse(resItem);
+				if (!zodSuccess)
+					throw new Error(zodError.errors.toString());
+			}
+
+			return { status: 200, body: resItem };
+		});
 	}
 
 	@UseGuards(AuthGuard('jwt'))

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { paginationDefaultData } from '../dto/pagi.dto';
+import { paginationDefaultData, paginationSchema } from '../dto/pagi.dto';
 
 const scienceItemFit = z.object({
 	title: z.string(),
@@ -45,3 +45,8 @@ export const scienceItemBaseDefaultData = {
 export const createScienceSchema = scienceItemFit.strict();
 export const defaultScienceQueryData = scienceQuerySchema.parse({});
 export const scienceQueryPartialSchema = scienceQuerySchema.partial();
+
+export const sciencetWithPagiSchema = z.object({
+	list: scienceListBaseSchema,
+	meta: paginationSchema,
+});

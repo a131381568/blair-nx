@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { get, pick } from 'radash';
-import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto, StrIdDto, createScienceSchema, scienceItemBaseDefaultData, scienceQuerySchema, sciencetWithPagiDefaultData } from '@cts-shared';
+import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto, ScienceQueryPartialDto, StrIdDto, createScienceSchema, defaultScienceQueryData, scienceItemBaseDefaultData, scienceQuerySchema, sciencetWithPagiDefaultData } from '@cts-shared';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
@@ -16,8 +16,13 @@ export class ScienceService {
 
 	@ValidationAdditional(scienceQuerySchema)
 	@ErrorAdditional(sciencetWithPagiDefaultData)
-	async getScienceList({ data }: { data: ScienceQueryDto }): Promise<ApiResponse<ScienceListWithPagiDto>> {
-		const res = await this.scienceSearchService.getScienceQuery(data);
+	async getScienceList({ data }: { data: ScienceQueryPartialDto }): Promise<ApiResponse<ScienceListWithPagiDto>> {
+		const payload: ScienceQueryDto = {
+			...data,
+			page: get(data, 'page', defaultScienceQueryData.page),
+			limit: get(data, 'limit', defaultScienceQueryData.limit),
+		};
+		const res = await this.scienceSearchService.getScienceQuery(payload);
 
 		const [resData, pagiMeta] = res;
 		const scienceData = resData.map(item => ({
