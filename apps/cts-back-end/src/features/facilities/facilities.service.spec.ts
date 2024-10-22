@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { createFacilityItemSchema, getFacilitiesListBaseSchema, updateFacilityItemSchema } from '@cts-shared/schemas/facilities.schemas';
+import { createFacilityItemSchema, getFacilitiesListBaseSchema, updateFacilityItemSchema } from '@cts-shared';
 import { PrismaModule } from '../shared/prisma.module';
 import { FacilitiesService } from './facilities.service';
 

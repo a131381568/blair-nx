@@ -1,8 +1,8 @@
 import type { ZodSchema } from 'zod';
 import { get, isArray } from 'radash';
 import { Prisma } from '@prisma/client';
-import type { NanoIdDto } from '@cts-shared/dto/id.dto';
-import { NanoIdSchema } from '@cts-shared/dto/id.dto';
+import type { NanoIdDto } from '@cts-shared';
+import { NanoIdSchema } from '@cts-shared';
 import { createApiResponse } from '../../core/interceptors/api-response';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
 

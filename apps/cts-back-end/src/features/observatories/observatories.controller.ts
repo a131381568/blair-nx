@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto } from '@cts-shared/types/observatories.types';
-import { NanoIdDto } from '@cts-shared/dto/id.dto';
+import { NanoIdDto, ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto } from '@cts-shared';
 import { ApiResponse } from '../../core/interceptors/api-response';
 import { ObservatoriesService } from './observatories.service';
 

@@ -1,11 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { hashSync } from 'bcrypt';
 import { pick } from 'radash';
-import { emailSchema, registerPayloadSchema } from '@cts-shared/schemas/users.schemas';
-import { EmailDto, RegisterPayloadDto, UserBaseDto, UserBaseFitDto } from '@cts-shared/types/users.types';
+import { EmailDto, RegisterPayloadDto, UserBaseDto, UserBaseFitDto, emailSchema, registerPayloadSchema } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
-
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 
 @Injectable()

@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { getAboutInfoDefaultSchema } from '@cts-shared/schemas/about-info.schemas';
+import { getAboutInfoDefaultSchema } from '@cts-shared';
 import { PrismaModule } from '../shared/prisma.module';
 import { AboutInfoService } from './about-info.service';
 

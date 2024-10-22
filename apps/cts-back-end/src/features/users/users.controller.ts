@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { RegisterPayloadDto, UserBaseFitDto } from '@cts-shared/types/users.types';
+import { RegisterPayloadDto, UserBaseFitDto } from '@cts-shared';
 import { ApiResponse } from '../../core/interceptors/api-response';
 import { UsersService } from './users.service';
 

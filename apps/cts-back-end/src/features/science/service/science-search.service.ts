@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { defaultScienceQueryData } from '@cts-shared/schemas/science.schemas';
-import { ScienceQueryDto } from '@cts-shared/types/science.types';
+import { ScienceQueryDto, defaultScienceQueryData } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../../shared/prisma.extension';
 
 @Injectable()

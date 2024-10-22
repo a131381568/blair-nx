@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { get, pick } from 'radash';
-import { defaultStargazingItemDetail, defaultStargazingQueryData, stargazingQuerySchema, stargazingWithPagiDefaultData, updateStargazingDetailSchema } from '@cts-shared/schemas/stargazing.schemas';
-import { StargazingItemDetailDto, StargazingListWithPagiDto, StargazingQueryDto, UpdateStargazingDetailDto } from '@cts-shared/types/stargazing.types';
-import { NanoIdDto } from '@cts-shared/dto/id.dto';
+import { NanoIdDto, StargazingItemDetailDto, StargazingListWithPagiDto, StargazingQueryDto, UpdateStargazingDetailDto, defaultStargazingItemDetail, defaultStargazingQueryData, stargazingQuerySchema, stargazingWithPagiDefaultData, updateStargazingDetailSchema } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';

@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { get, pick } from 'radash';
-import { createScienceSchema, scienceItemBaseDefaultData, scienceQuerySchema, sciencetWithPagiDefaultData } from '@cts-shared/schemas/science.schemas';
-import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto } from '@cts-shared/types/science.types';
-import { StrIdDto } from '@cts-shared/dto/id.dto';
+import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto, StrIdDto, createScienceSchema, scienceItemBaseDefaultData, scienceQuerySchema, sciencetWithPagiDefaultData } from '@cts-shared';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';

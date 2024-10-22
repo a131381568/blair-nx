@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useToggle } from '@vueuse/core';
+import type { PaginationDto, PostCategoryFitDto, ScienceItemDto } from '@cts-shared';
+import { paginationDefaultData } from '@cts-shared';
 import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';
 // import { useRoute } from 'vue-router';
+
 const TITLE_INFO = {
 	title: '天文科普',
 	subTitle: 'Science',
@@ -30,39 +33,12 @@ const API_RES = {
 const getFirstEnter = ref(false);
 
 const changeGridState = ref(false);
-const postList = ref<{
-	title: string;
-	updateTime: string;
-	content: string;
-	image: string;
-	postCategoryId: string;
-	postCategoryName: string;
-	postNanoId: string;
-}[]>([]);
-const sciencePageInfo = ref<{
-	isFirstPage: boolean;
-	isLastPage: boolean;
-	currentPage: number;
-	previousPage: number | null;
-	nextPage: number | null;
-	pageCount: number;
-	totalCount: number;
-}>({
-	isFirstPage: false,
-	isLastPage: false,
-	currentPage: 0,
-	previousPage: null,
-	nextPage: null,
-	pageCount: 0,
-	totalCount: 0,
-});
+const postList = ref<ScienceItemDto[]>([]);
+const sciencePageInfo = ref<PaginationDto>(paginationDefaultData);
 
 // 點選篩選列
 const selectCat = ref('');
-const filterCategories = ref<{
-	postCategoryName: '';
-	postCategoryId: '';
-}[]>([]);
+const filterCategories = ref<PostCategoryFitDto[]>([]);
 const selectName = computed(() => {
 	// const active = store.changeCatName(filterCategories.value, selectCat.value);
 	return '';
@@ -108,15 +84,12 @@ getArtistsCategories();
 defaultData();
 
 const loadMoreData = () => defaultData();
-
-// store method
-const changeDate = (updateTime: string) => updateTime;
 </script>
 
 <template>
 	<Header />
 	<div
-		class="flex-wrap items-start justify-center px-8 pb-32 mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72"
+		class="mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72 flex-wrap items-start justify-center px-8 pb-32"
 		@click.self="closeDefaultMenu()"
 	>
 		<TitleBox
@@ -124,7 +97,7 @@ const changeDate = (updateTime: string) => updateTime;
 			:page-sub-title="TITLE_INFO.subTitle"
 		/>
 		<div
-			class="science-filter-bar animate__animated animate__fadeIn mb-16 mt-6 hidden w-10/12 laptop:inline-flex middle-pc:mb-20 middle-pc:mt-16"
+			class="science-filter-bar animate__animated animate__fadeIn laptop:inline-flex middle-pc:mb-20 middle-pc:mt-16 mb-16 mt-6 hidden w-10/12"
 			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
 		>
 			<ul
@@ -137,21 +110,21 @@ const changeDate = (updateTime: string) => updateTime;
 					class="science-filter-item w-auto min-w-min"
 					@click="reSearchData(String(val.postCategoryId))"
 				>
-					<div class="group flex items-center laptop:mr-6 large-pc:mr-10">
+					<div class="laptop:mr-6 large-pc:mr-10 group flex items-center">
 						<input
 							:id="String(val.postCategoryId)"
 							class="hidden"
 							:value="val.postCategoryId"
 						>
 						<label
-							class="flex flex-none cursor-pointer items-center text-2xl delay-75 duration-1000 group-hover:text-sp-color-light"
+							class="group-hover:text-sp-color-light flex flex-none cursor-pointer items-center text-2xl delay-75 duration-1000"
 							:class="[
 								{ 'text-sub-color-light': val.postCategoryId === selectCat },
 								{ 'text-main-color-light': val.postCategoryId !== selectCat },
 							]"
 						>
 							<span
-								class="border-grey flex-no-shrink mr-2 inline-block size-3 flex-none whitespace-nowrap rounded-full border delay-75 duration-1000 group-hover:bg-sp-color-light"
+								class="border-grey flex-no-shrink group-hover:bg-sp-color-light mr-2 inline-block size-3 flex-none whitespace-nowrap rounded-full border delay-75 duration-1000"
 								:class="{ 'bg-sub-color-light': val.postCategoryId === selectCat }"
 							/>
 							{{ val.postCategoryName }}
@@ -162,12 +135,12 @@ const changeDate = (updateTime: string) => updateTime;
 		</div>
 		<!-- 選單樣式 -->
 		<div
-			class="dropdown-menu animate__animated animate__fadeIn relative z-40 mb-8 h-table:w-10/12 laptop:hidden"
+			class="dropdown-menu animate__animated animate__fadeIn h-table:w-10/12 laptop:hidden relative z-40 mb-8"
 			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
 		>
 			<button
 				id="dropdownDefault"
-				class="relative inline-flex w-200px items-center border border-white/60 bg-white/0 p-3 pl-4 text-center text-xl font-medium tracking-wide-content text-main-color-light duration-1000 hover:border-white/0 hover:bg-white/18 hover:text-sub-color-light focus:border-white/0 focus:bg-white/18 focus:text-sub-color-light focus:outline-none"
+				class="w-200px tracking-wide-content text-main-color-light hover:bg-white/18 hover:text-sub-color-light focus:bg-white/18 focus:text-sub-color-light relative inline-flex items-center border border-white/60 bg-white/0 p-3 pl-4 text-center text-xl font-medium duration-1000 hover:border-white/0 focus:border-white/0 focus:outline-none"
 				type="button"
 				@click.prevent="toggleFilter()"
 			>
@@ -191,13 +164,13 @@ const changeDate = (updateTime: string) => updateTime;
 			<div
 				v-show="toggleFilterVal"
 				id="dropdown"
-				class="divide-gray-100 absolute z-10 w-200px divide-y bg-main-color-light"
+				class="w-200px bg-main-color-light absolute z-10 divide-y divide-gray-100"
 			>
-				<ul class="cursor-pointer py-1 text-sm text-main-color-black">
+				<ul class="text-main-color-black cursor-pointer py-1 text-sm">
 					<li
 						v-for="(val, key) in filterCategories"
 						:key="key"
-						class="block px-4 py-2 tracking-wide-content hover:text-sub-color-dark"
+						class="tracking-wide-content hover:text-sub-color-dark block px-4 py-2"
 						@click.stop="selectDropCat(String(val.postCategoryId))"
 					>
 						{{ val.postCategoryName }}
@@ -208,7 +181,7 @@ const changeDate = (updateTime: string) => updateTime;
 		<!-- post grid -->
 		<div
 			v-if="postList.length > 0 && postList"
-			class="animate__animated animate__fadeInUp grid grid-cols-2 overflow-hidden mobile:grid-cols-1 mobile:gap-5 h-table:w-10/12 h-table:gap-12 laptop:grid-cols-3 pro-pc:gap-24"
+			class="animate__animated animate__fadeInUp mobile:grid-cols-1 mobile:gap-5 h-table:w-10/12 h-table:gap-12 laptop:grid-cols-3 pro-pc:gap-24 grid grid-cols-2 overflow-hidden"
 			:class="[{ 'animate__delay-4s': getFirstEnter }, { animate__fadeOut: changeGridState }]"
 		>
 			<div
@@ -229,8 +202,8 @@ const changeDate = (updateTime: string) => updateTime;
 						{{ val.title }}
 					</p>
 					<!-- date & cat -->
-					<p class="mt-1 text-tiny text-main-color-light">
-						{{ changeDate(val.updateTime) }},
+					<p class="text-tiny text-main-color-light mt-1">
+						{{ val.updateTime }},
 						<span
 							v-if="!val.postCategoryId"
 							class="grid-card-tag grid-card-tag-nothing text-lg"
@@ -245,7 +218,7 @@ const changeDate = (updateTime: string) => updateTime;
 					</p>
 					<!-- des -->
 					<v-md-preview
-						class="grid-des-box mt-5 font-light text-main-color-light"
+						class="grid-des-box text-main-color-light mt-5 font-light"
 						:text="val.content"
 						height="400px"
 					/>
@@ -262,14 +235,14 @@ const changeDate = (updateTime: string) => updateTime;
 		</div>
 		<div
 			v-show="!postList.length"
-			class="h-screen h-table:w-10/12"
+			class="h-table:w-10/12 h-screen"
 		/>
 		<div
 			v-show="sciencePageInfo.nextPage && postList.length"
-			class="text-center h-table:w-10/12"
+			class="h-table:w-10/12 text-center"
 		>
 			<button
-				class="btn draw meet mt-6 mobile:mt-11 h-table:mt-24"
+				class="btn draw meet mobile:mt-11 h-table:mt-24 mt-6"
 				@click.prevent="loadMoreData()"
 			>
 				<span>加載更多</span>

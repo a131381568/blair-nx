@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useIntersectionObserver, useParallax } from '@vueuse/core';
-// import { GetAboutInfoBaseDto, UpdateAboutInfoDto } from '@cts-shared/types/about-info.types';
+// import { GetAboutInfoBaseDto, UpdateAboutInfoDto } from '@cts-shared';
 import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';

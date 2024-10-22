@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto } from '@cts-shared/types/science.types';
-import { StrIdDto } from '@cts-shared/dto/id.dto';
+import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto, StrIdDto } from '@cts-shared';
 import { ApiResponse } from '../../core/interceptors/api-response';
 import { ScienceService } from './science.service';
 

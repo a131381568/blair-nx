@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { StargazingItemDetailDto, StargazingListWithPagiDto, StargazingQueryDto, UpdateStargazingDetailDto } from '@cts-shared/types/stargazing.types';
-import { NanoIdDto } from '@cts-shared/dto/id.dto';
+import { NanoIdDto, StargazingItemDetailDto, StargazingListWithPagiDto, StargazingQueryDto, UpdateStargazingDetailDto } from '@cts-shared';
 import { ApiResponse } from '../../core/interceptors/api-response';
 import { StargazingService } from './stargazing.service';
 
