@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
+import { getAboutInfoDefaultSchema } from '@cts-shared/schemas/about-info.schemas';
 import { PrismaModule } from '../shared/prisma.module';
 import { AboutInfoService } from './about-info.service';
-import { getAboutInfoDefaultSchema } from './about-info-schemas';
 
 describe('關於我驗證', () => {
 	let service: AboutInfoService;

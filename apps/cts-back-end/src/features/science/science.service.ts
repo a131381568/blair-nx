@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { get, pick } from 'radash';
+import { createScienceSchema, scienceItemBaseDefaultData, scienceQuerySchema, sciencetWithPagiDefaultData } from '@cts-shared/schemas/science.schemas';
+import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto } from '@cts-shared/types/science.types';
+import { StrIdDto } from '@cts-shared/dto/id.dto';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
-import { StrIdDto } from '../../common/dto/id.dto';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
-import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto, createScienceSchema, scienceItemBaseDefaultData, scienceQuerySchema, sciencetWithPagiDefaultData } from './science-schemas';
 import { ScienceSearchService } from './service/science-search.service';
 
 @Injectable()

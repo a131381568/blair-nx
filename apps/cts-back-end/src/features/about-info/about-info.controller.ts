@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { GetAboutInfoBaseDto, UpdateAboutInfoDto } from '@cts-shared/types/about-info.types';
 import { ApiResponse } from '../../core/interceptors/api-response';
 import { AboutInfoService } from './about-info.service';
-import type { GetAboutInfoBaseDto, UpdateAboutInfoDto } from './about-info-schemas';
 
 @Controller('about-info')
 export class AboutInfoController {

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { pick } from 'radash';
+import { PageListDto } from '@cts-shared/types/page-info.types';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { ErrorAdditional } from '../shared/response-handler';
-import { PageListDto } from './page-info-schemas';
 
 @Injectable()
 export class PageInfoService {

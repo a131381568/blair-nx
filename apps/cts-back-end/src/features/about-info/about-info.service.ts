@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { omit } from 'radash';
+import { GetAboutInfoBaseDto, UpdateAboutInfoDto } from '@cts-shared/types/about-info.types';
+import { defaultAboutInfoData, updateAboutInfoSchema } from '@cts-shared/schemas/about-info.schemas';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
-import type { GetAboutInfoBaseDto, UpdateAboutInfoDto } from './about-info-schemas';
-import { defaultAboutInfoData, updateAboutInfoSchema } from './about-info-schemas';
 
 @Injectable()
 export class AboutInfoService {

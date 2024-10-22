@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { hashSync } from 'bcrypt';
 import { pick } from 'radash';
+import { emailSchema, registerPayloadSchema } from '@cts-shared/schemas/users.schemas';
+import { EmailDto, RegisterPayloadDto, UserBaseDto, UserBaseFitDto } from '@cts-shared/types/users.types';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
-import { EmailDto, RegisterPayloadDto, UserBaseDto, emailSchema, registerPayloadSchema, userBaseFitDto } from '../shared/users-schemas';
+
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 
 @Injectable()
@@ -14,7 +16,7 @@ export class UsersService {
 	) {}
 
 	@ErrorAdditional([])
-	async getUserList(): Promise<ApiResponse<userBaseFitDto[]>> {
+	async getUserList(): Promise<ApiResponse<UserBaseFitDto[]>> {
 		const res = await this.prisma.users.findMany({
 			orderBy: { orderId: 'asc' },
 		});

@@ -81,7 +81,7 @@ export default antfu(
 					depConstraints: [
 						{
 							sourceTag: 'type:front_app',
-							onlyDependOnLibsWithTags: ['type:front_libs', 'type:front_ui'],
+							onlyDependOnLibsWithTags: ['type:front_libs', 'type:front_ui', 'type:config', 'type:libs'],
 						},
 					],
 				},

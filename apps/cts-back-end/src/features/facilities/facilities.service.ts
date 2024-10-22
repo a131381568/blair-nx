@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { pick } from 'radash';
+import { CreateFacilityItemDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, UpdateFacilityItemDto } from '@cts-shared/types/facilities.types';
+import { createFacilityItemSchema, defaultFacilityItemBase, updateFacilityItemSchema } from '@cts-shared/schemas/facilities.schemas';
+import { NanoIdDto } from '@cts-shared/dto/id.dto';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
-import { NanoIdDto } from '../../common/dto/id.dto';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
-import type { CreateFacilityItemDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, UpdateFacilityItemDto } from './facilities-schemas';
-import { createFacilityItemSchema, defaultFacilityItemBase, updateFacilityItemSchema } from './facilities-schemas';
 
 @Injectable()
 export class FacilitiesService {

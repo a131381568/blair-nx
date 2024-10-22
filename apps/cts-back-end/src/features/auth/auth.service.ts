@@ -1,11 +1,12 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { pick, tryit } from 'radash';
+import { AccessTokenDto, GetTokenDto, LoginInputDto, RefreshTokenDto, UserBaseDto } from '@cts-shared/types/users.types';
+import { getTokenSchema, loginInputSchema, refreshTokenSchema } from '@cts-shared/schemas/users.schemas';
 import { UsersService } from '../users/users.service';
 import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
 import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
-import { AccessTokenDto, GetTokenDto, LoginInputDto, RefreshTokenDto, UserBaseDto, getTokenSchema, loginInputSchema, refreshTokenSchema } from '../shared/users-schemas';
 
 @Injectable()
 export class AuthService {

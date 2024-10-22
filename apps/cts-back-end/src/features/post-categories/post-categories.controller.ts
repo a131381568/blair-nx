@@ -1,9 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { PostCategoriesDto, PostCategoryFitDto } from '@cts-shared/types/post-categories.types';
+import { StrIdDto } from '@cts-shared/dto/id.dto';
 import { ApiResponse } from '../../core/interceptors/api-response';
-import { StrIdDto } from '../../common/dto/id.dto';
 import { PostCategoriesService } from './post-categories.service';
-import { PostCategoriesDto, PostCategoryFitDto } from './post-categories-schemas';
 
 @Controller('post-categories')
 export class PostCategoriesController {

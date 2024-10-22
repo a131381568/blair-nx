@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
+import { AccessTokenDto, LoginInputDto, RefreshTokenDto, TokenGroupDto, UserBaseDto } from '@cts-shared/types/users.types';
 import { ApiResponse } from '../../core/interceptors/api-response';
 import { ApiResponseInterceptor } from '../../core/interceptors/api-response.interceptor';
-import { AccessTokenDto, LoginInputDto, RefreshTokenDto, TokenGroupDto, UserBaseDto } from '../shared/users-schemas';
 import { AuthService } from './auth.service';
 
 @Controller('auth')

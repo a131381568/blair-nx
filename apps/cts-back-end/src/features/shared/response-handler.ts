@@ -1,10 +1,10 @@
 import type { ZodSchema } from 'zod';
 import { get, isArray } from 'radash';
 import { Prisma } from '@prisma/client';
+import type { NanoIdDto } from '@cts-shared/dto/id.dto';
+import { NanoIdSchema } from '@cts-shared/dto/id.dto';
 import { createApiResponse } from '../../core/interceptors/api-response';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
-import type { NanoIdDto } from '../../common/dto/id.dto';
-import { NanoIdSchema } from '../../common/dto/id.dto';
 
 export const ErrorAdditional = (defaultRes: unknown = null) => {
 	return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {

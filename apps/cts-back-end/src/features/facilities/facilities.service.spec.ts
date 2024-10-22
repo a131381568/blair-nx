@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
+import { createFacilityItemSchema, getFacilitiesListBaseSchema, updateFacilityItemSchema } from '@cts-shared/schemas/facilities.schemas';
 import { PrismaModule } from '../shared/prisma.module';
 import { FacilitiesService } from './facilities.service';
-import { createFacilityItemSchema, getFacilitiesListBaseSchema, updateFacilityItemSchema } from './facilities-schemas';
 
 describe('天文機構驗證', () => {
 	let service: FacilitiesService;

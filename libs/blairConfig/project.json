@@ -4,5 +4,5 @@
 	"sourceRoot": "libs/blairConfig",
 	"projectType": "library",
 	"targets": {},
-	"tags": []
+	"tags": ["type:config"]
 }

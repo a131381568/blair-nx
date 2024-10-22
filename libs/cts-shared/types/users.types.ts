@@ -8,5 +8,5 @@ export type GetTokenDto = z.infer<typeof getTokenSchema>;
 export type TokenGroupDto = z.infer<typeof tokenGroupSchema>;
 export type RefreshTokenDto = z.infer<typeof refreshTokenSchema>;
 export type AccessTokenDto = z.infer<typeof accessTokenSchema>;
-export type userBaseFitDto = z.infer<typeof userBaseFitSchema>;
+export type UserBaseFitDto = z.infer<typeof userBaseFitSchema>;
 export type RegisterPayloadDto = z.infer<typeof registerPayloadSchema>;
