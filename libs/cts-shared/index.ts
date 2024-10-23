@@ -21,3 +21,4 @@ export * from './types/stargazing.types';
 export * from './types/users.types';
 // contract
 export * from './contracts/science.contracts';
+export * from './contracts/about.contracts';
