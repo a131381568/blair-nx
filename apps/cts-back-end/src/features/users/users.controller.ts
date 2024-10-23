@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { RegisterPayloadDto, UserBaseFitDto } from '@cts-shared';
-import { ApiResponse } from '../../core/interceptors/api-response';
+import { ApiResponse, RegisterPayloadDto, UserBaseFitDto } from '@cts-shared';
 import { UsersService } from './users.service';
 
 @Controller('users')

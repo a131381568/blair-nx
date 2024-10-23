@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { omit } from 'radash';
-import { GetAboutInfoBaseDto, UpdateAboutInfoDto, defaultAboutInfoData, updateAboutInfoSchema } from '@cts-shared';
+import { ApiResponse, GetAboutInfoBaseDto, UpdateAboutInfoDto, createApiResponse, defaultAboutInfoData, updateAboutInfoSchema } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
-import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
 
 @Injectable()

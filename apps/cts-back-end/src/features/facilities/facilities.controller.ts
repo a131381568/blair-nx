@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateFacilityItemDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, NanoIdDto, UpdateFacilityItemDto } from '@cts-shared';
-import { ApiResponse } from '../../core/interceptors/api-response';
+import { ApiResponse, CreateFacilityItemDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, NanoIdDto, UpdateFacilityItemDto } from '@cts-shared';
 import { FacilitiesService } from './facilities.service';
 
 @Controller('facilities')

@@ -1,7 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { PostCategoriesDto, PostCategoryFitDto, StrIdDto } from '@cts-shared';
-import { ApiResponse } from '../../core/interceptors/api-response';
+import { ApiResponse, PostCategoriesDto, PostCategoryFitDto, StrIdDto } from '@cts-shared';
 import { PostCategoriesService } from './post-categories.service';
 
 @Controller('post-categories')

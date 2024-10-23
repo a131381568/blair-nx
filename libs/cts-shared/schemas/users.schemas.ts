@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { NanoIdSchema } from '../dto/id.dto';
+import { nanoIdSchema } from '../dto/id.dto';
 
 const emailBase = z.string().email().min(6).max(20);
 const passBase = z.string().min(6).max(20);
@@ -13,7 +13,7 @@ const authBase = z.object({
 const userBase = z.object({
 	email: emailBase.nullable(),
 	password: passBase.nullable(),
-	nanoId: NanoIdSchema,
+	nanoId: nanoIdSchema,
 	name: namesBase.nullable(),
 });
 

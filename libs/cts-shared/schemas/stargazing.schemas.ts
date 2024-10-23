@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import Big from 'big.js';
 import { paginationDefaultData, paginationSchema } from '../dto/pagi.dto';
-import { NanoIdSchema } from '../dto/id.dto';
+import { nanoIdSchema } from '../dto/id.dto';
 
 const bigSchema = z
 	.string()
@@ -39,7 +39,7 @@ export const stargazingWithPagiDefaultData = {
 };
 
 export const stargazingQuerySchema = z.object({
-	nid: NanoIdSchema.optional(),
+	nid: nanoIdSchema.optional(),
 	page: z.string().default('1'),
 	limit: z.string().default('10'),
 	mode: z.union([z.literal('map'), z.literal('list')]).default('map'),

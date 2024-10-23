@@ -2,10 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { pick, tryit } from 'radash';
-import { AccessTokenDto, GetTokenDto, LoginInputDto, RefreshTokenDto, UserBaseDto, getTokenSchema, loginInputSchema, refreshTokenSchema } from '@cts-shared';
+import { AccessTokenDto, ApiResponse, GetTokenDto, LoginInputDto, RefreshTokenDto, UserBaseDto, createApiResponse, getTokenSchema, loginInputSchema, refreshTokenSchema } from '@cts-shared';
 import { UsersService } from '../users/users.service';
 import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
-import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
 
 @Injectable()
 export class AuthService {

@@ -1,5 +1,13 @@
 import { z } from 'zod';
 import { paginationDefaultData, paginationSchema } from '../dto/pagi.dto';
+import { nanoIdSchema, strIdSchema } from '../dto/id.dto';
+
+const positiveIntegerString = z.string().max(5).refine((val) => {
+	const number = Number.parseInt(val, 10);
+	return number > 0 && number.toString() === val;
+}, {
+	message: 'Must be a positive integer string of length 5 or less',
+});
 
 const scienceItemFit = z.object({
 	title: z.string(),
@@ -19,13 +27,11 @@ export const scienceItemBase = z.object({
 });
 
 export const scienceQuerySchema = z.object({
-	keyword: z.string().optional(),
-	category: z.string().optional(),
-	cnid: z.string().optional(),
-	page: z.string().default('1'),
-	limit: z.string().default('9'),
-	// page: z.number().int().positive().finite(),
-	// pageSize: z.number().int().positive().finite(),
+	keyword: strIdSchema.optional(),
+	category: strIdSchema.optional(),
+	cnid: nanoIdSchema.optional(),
+	page: positiveIntegerString.default('1'),
+	limit: positiveIntegerString.default('9'),
 }).strict();
 
 export const scienceListBaseSchema = z.array(scienceItemBase);

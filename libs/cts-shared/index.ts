@@ -1,5 +1,6 @@
 export * from './dto/id.dto';
 export * from './dto/pagi.dto';
+export * from './dto/api-response.dto';
 // schemas
 export * from './schemas/about-info.schemas';
 export * from './schemas/facilities.schemas';
