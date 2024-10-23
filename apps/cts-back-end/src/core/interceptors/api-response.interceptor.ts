@@ -9,6 +9,10 @@ export class ApiResponseInterceptor<T> implements NestInterceptor<T, ApiResponse
 		return next.handle().pipe(
 			map((data) => {
 				const [_req, res, _next] = context.getArgs();
+
+				if (data && data.success !== undefined && data.data !== undefined)
+					return data as ApiResponse<T>;
+
 				return createApiResponse(res.statusCode < 400, data);
 			}),
 		);

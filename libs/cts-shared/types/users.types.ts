@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { accessTokenSchema, emailSchema, getTokenSchema, loginInputSchema, refreshTokenSchema, registerPayloadSchema, tokenGroupSchema, userBaseFitSchema, userBaseSchema } from '../schemas/users.schemas';
+import { accessTokenSchema, emailSchema, getTokenSchema, loginInputSchema, refreshTokenSchema, registerPayloadSchema, tokenGroupSchema, userBaseFitSchema, userBaseSchema, validateUserResSchema } from '../schemas/users.schemas';
 
 export type EmailDto = z.infer<typeof emailSchema>;
 export type UserBaseDto = z.infer<typeof userBaseSchema>;
@@ -10,3 +10,4 @@ export type RefreshTokenDto = z.infer<typeof refreshTokenSchema>;
 export type AccessTokenDto = z.infer<typeof accessTokenSchema>;
 export type UserBaseFitDto = z.infer<typeof userBaseFitSchema>;
 export type RegisterPayloadDto = z.infer<typeof registerPayloadSchema>;
+export type ValidateUserResDto = z.infer<typeof validateUserResSchema>;

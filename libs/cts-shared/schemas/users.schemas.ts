@@ -39,9 +39,8 @@ export const passSchema = authBase.pick({ password: true }).strict();
 export const userBaseSchema = userBase.nullable();
 
 export const validateUserResSchema = z.object({
-	success: z.boolean(),
-	data: z.union([passSchema, z.null()]),
-	message: z.string(),
+	userInfo: userBaseSchema,
+	msg: z.string(),
 });
 
 export const registerPayloadSchema = authBase.extend({
