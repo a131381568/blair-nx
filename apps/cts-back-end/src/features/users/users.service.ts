@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { hashSync } from 'bcrypt';
 import { pick } from 'radash';
-import { ApiResponse, EmailDto, RegisterPayloadDto, UserBaseDto, UserBaseFitDto, createApiResponse, emailSchema, registerPayloadSchema } from '@cts-shared';
+import { ApiResponse, EmailDto, RegisterPayloadDto, UserBaseDto, UserBaseFitDto, createApiResponse } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
-import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
 
 @Injectable()
 export class UsersService {
@@ -12,20 +11,13 @@ export class UsersService {
 		private readonly prisma: ExtendedPrismaClient,
 	) {}
 
-	@ErrorAdditional([])
-	async getUserList(): Promise<ApiResponse<UserBaseFitDto[]>> {
+	async getUserList(): Promise<UserBaseFitDto[]> {
 		const res = await this.prisma.users.findMany({
 			orderBy: { orderId: 'asc' },
 		});
-
-		return createApiResponse(
-			true,
-			res.map(item => pick(item, ['name', 'email', 'nanoId'])),
-		);
+		return res.map(item => pick(item, ['name', 'email', 'nanoId']));
 	}
 
-	@ValidationAdditional(emailSchema)
-	@ErrorAdditional()
 	async getPassByEmail({ data }: { data: EmailDto }): Promise<ApiResponse<UserBaseDto>> {
 		const res = await this.prisma.users.findFirst({
 			where: { email: data.email },
@@ -35,15 +27,13 @@ export class UsersService {
 		return createApiResponse(true, pick(res, ['email', 'name', 'nanoId', 'password']));
 	}
 
-	@ValidationAdditional(registerPayloadSchema)
-	@ErrorAdditional()
-	async registerUser({ data }: { data: RegisterPayloadDto }): Promise<ApiResponse<null>> {
+	async registerUser({ data }: { data: RegisterPayloadDto }): Promise<{ result: boolean;msg: string }> {
 		const { success: hasMail } = await this.getPassByEmail({ data: {
 			email: data.email,
 		} });
 
 		if (hasMail)
-			return createApiResponse(false, null, 'The email is already registered');
+			return { result: false, msg: 'The email is already registered' };
 
 		const hashedPassword = hashSync(data.password, 10);
 		await this.prisma.users.create({
@@ -53,6 +43,6 @@ export class UsersService {
 				password: hashedPassword,
 			},
 		});
-		return createApiResponse(true, null, 'Create success');
+		return { result: true, msg: 'Successfully registered' };
 	}
 }

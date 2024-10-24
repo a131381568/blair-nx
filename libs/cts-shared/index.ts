@@ -29,3 +29,4 @@ export * from './contracts/observatories.contracts';
 export * from './contracts/page-info.contracts';
 export * from './contracts/post-categories.contracts';
 export * from './contracts/stargazing.contracts';
+export * from './contracts/users.contracts';
