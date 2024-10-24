@@ -27,3 +27,4 @@ export * from './contracts/facilities.contracts';
 export * from './contracts/file.contracts';
 export * from './contracts/observatories.contracts';
 export * from './contracts/page-info.contracts';
+export * from './contracts/post-categories.contracts';
