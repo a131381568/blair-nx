@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { pick } from 'radash';
-import { ApiResponse, NanoIdDto, ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto, createApiResponse, defaultObservatoryItemData, updateObservatoryItemSchema } from '@cts-shared';
+import { NanoIdDto, ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
-import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
 
 @Injectable()
 export class ObservatoriesService {
