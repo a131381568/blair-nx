@@ -24,3 +24,4 @@ export * from './contracts/science.contracts';
 export * from './contracts/about.contracts';
 export * from './contracts/auth.contracts';
 export * from './contracts/facilities.contracts';
+export * from './contracts/file.contracts';
