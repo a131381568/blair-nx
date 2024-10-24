@@ -25,3 +25,8 @@ export * from './contracts/about.contracts';
 export * from './contracts/auth.contracts';
 export * from './contracts/facilities.contracts';
 export * from './contracts/file.contracts';
+export * from './contracts/observatories.contracts';
+export * from './contracts/page-info.contracts';
+export * from './contracts/post-categories.contracts';
+export * from './contracts/stargazing.contracts';
+export * from './contracts/users.contracts';

@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { initContract } from '@ts-rest/core';
-import { aboutInfoBaseSchema, updateAboutInfoSchema } from '../schemas/about-info.schemas';
 import { apiResponseSchema } from '../dto/api-response.dto';
 
 const c = initContract();

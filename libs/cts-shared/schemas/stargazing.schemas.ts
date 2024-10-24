@@ -23,7 +23,12 @@ export const stargazingItemDetail = stargazingItemBase.extend({
 	stargazingDescription: z.string().nullable(),
 });
 
-export const defaultStargazingItemDetail = stargazingItemDetail.parse({
+export const singleStargazingDetail = stargazingItemDetail.merge(z.object({
+	stargazingLatitude: z.string(),
+	stargazingLongitude: z.string(),
+}));
+
+export const defaultStargazingItemDetail = singleStargazingDetail.parse({
 	stargazingTitle: '',
 	stargazingAddress: '',
 	stargazingNanoId: '',

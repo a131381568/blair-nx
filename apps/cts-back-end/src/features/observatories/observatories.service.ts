@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { pick } from 'radash';
-import { ApiResponse, NanoIdDto, ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto, createApiResponse, defaultObservatoryItemData, updateObservatoryItemSchema } from '@cts-shared';
+import { NanoIdDto, ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
-import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
 
 @Injectable()
 export class ObservatoriesService {
@@ -11,59 +10,41 @@ export class ObservatoriesService {
 		private readonly prisma: ExtendedPrismaClient,
 	) {}
 
-	@ErrorAdditional([])
-	async getObservatoriesList(): Promise<ApiResponse<ObservatoriesListDto>> {
+	async getObservatoriesList(): Promise<ObservatoriesListDto> {
 		const res = await this.prisma.observatoriesList.findMany({
 			orderBy: { observatoryOrderId: 'asc' },
 			where: { published: true },
 		});
-		return createApiResponse(
-			Boolean(res.length),
-			res.map(item => pick(item, ['observatoryNanoId', 'observatoryCategoryName', 'observatoryCategoryId', 'observatoryPostContent'])),
-		);
+		return res.length ? res.map(item => pick(item, ['observatoryNanoId', 'observatoryCategoryName', 'observatoryCategoryId', 'observatoryPostContent'])) : [];
 	}
 
-	@ValidationAdditional()
-	@ErrorAdditional(defaultObservatoryItemData)
-	async getObservatoryItem({ id }: { id: NanoIdDto }): Promise<ApiResponse<ObservatoryItemDto>> {
+	async getObservatoryItem({ id }: { id: NanoIdDto }): Promise<ObservatoryItemDto | null> {
 		const res = await this.prisma.observatoriesList.findFirst({
 			where: { observatoryNanoId: id, published: true },
 		});
-		return createApiResponse(
-			Boolean(res),
-			res ? pick(res, ['observatoryCategoryName', 'observatoryCategoryId', 'observatoryPostContent']) : defaultObservatoryItemData,
-		);
+		return res ? pick(res, ['observatoryCategoryName', 'observatoryCategoryId', 'observatoryPostContent']) : null;
 	}
 
-	@ValidationAdditional(updateObservatoryItemSchema)
-	@ErrorAdditional()
-	async updateObservatoryItem({ id, data }: {
-		id: NanoIdDto;
-		data: UpdateObservatoryItemDto;
-	}): Promise<ApiResponse<null>> {
-		await this.prisma.observatoriesList.update({
+	async createObservatoryItem({ data }: { data: UpdateObservatoryItemDto }): Promise<boolean> {
+		const res = await this.prisma.observatoriesList.create({
+			data: { ...data, published: true },
+		});
+		return Boolean(res);
+	}
+
+	async updateObservatoryItem({ id, data }: { id: NanoIdDto; data: UpdateObservatoryItemDto }): Promise<boolean> {
+		const { count } = await this.prisma.observatoriesList.updateMany({
 			where: { observatoryNanoId: id, published: true },
 			data,
 		});
-		return createApiResponse(true, null, 'Update success');
+		return Boolean(count);
 	}
 
-	@ValidationAdditional(updateObservatoryItemSchema)
-	@ErrorAdditional()
-	async createObservatoryItem({ data }: { data: UpdateObservatoryItemDto }): Promise<ApiResponse<null>> {
-		await this.prisma.observatoriesList.create({
-			data: { ...data, published: true },
-		});
-		return createApiResponse(true, null, 'Create success');
-	}
-
-	@ValidationAdditional()
-	@ErrorAdditional()
-	async deleteFacilityItem({ id }: { id: NanoIdDto }): Promise<ApiResponse<null>> {
-		await this.prisma.observatoriesList.update({
+	async deleteObservatoryItem({ id }: { id: NanoIdDto }): Promise<boolean> {
+		const { count } = await this.prisma.observatoriesList.updateMany({
 			where: { observatoryNanoId: id, published: true },
 			data: { published: false },
 		});
-		return createApiResponse(true, null, 'Delete success');
+		return Boolean(count);
 	}
 }

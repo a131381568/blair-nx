@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { get, pick } from 'radash';
-import { ApiResponse, NanoIdDto, StargazingItemDetailDto, StargazingListWithPagiDto, StargazingQueryDto, UpdateStargazingDetailDto, createApiResponse, defaultStargazingItemDetail, defaultStargazingQueryData, stargazingQuerySchema, stargazingWithPagiDefaultData, updateStargazingDetailSchema } from '@cts-shared';
+import { NanoIdDto, SingleStargazingDetailDto, StargazingListWithPagiDto, StargazingQueryDto, UpdateStargazingDetailDto, defaultStargazingItemDetail, defaultStargazingQueryData } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
-import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
 
 @Injectable()
 export class StargazingService {
@@ -11,9 +10,7 @@ export class StargazingService {
 		private readonly prisma: ExtendedPrismaClient,
 	) {}
 
-	@ValidationAdditional(stargazingQuerySchema)
-	@ErrorAdditional(stargazingWithPagiDefaultData)
-	async getStargazingQuery({ data }: { data: StargazingQueryDto }): Promise<ApiResponse<StargazingListWithPagiDto>> {
+	async getStargazingQuery({ data }: { data: StargazingQueryDto }): Promise<StargazingListWithPagiDto> {
 		const res = await this.prisma.stargazingList.paginate({
 			where: {
 				published: true,
@@ -27,7 +24,7 @@ export class StargazingService {
 		});
 
 		const dataMode = get(data, 'mode', defaultStargazingQueryData.mode);
-		return createApiResponse(true, {
+		return {
 			list: res[0].map((item) => {
 				if (dataMode === 'map') {
 					return {
@@ -39,48 +36,24 @@ export class StargazingService {
 				return pick(item, ['stargazingTitle', 'stargazingAddress', 'stargazingNanoId']);
 			}),
 			meta: res[1],
-		});
+		};
 	}
 
-	@ValidationAdditional()
-	@ErrorAdditional(defaultStargazingItemDetail)
-	async getStargazingDetail({ id }: { id: NanoIdDto }): Promise<ApiResponse<StargazingItemDetailDto>> {
+	async getStargazingDetail({ id }: { id: NanoIdDto }): Promise<SingleStargazingDetailDto> {
 		const res = await this.prisma.stargazingList.findFirst({
 			where: { stargazingNanoId: id, published: true },
 		});
-		return createApiResponse(
-			Boolean(res),
-			res
-				? {
-						...pick(res, ['stargazingTitle', 'stargazingImage', 'stargazingDescription', 'stargazingAddress', 'stargazingNanoId']),
-						stargazingLatitude: String(res.stargazingLatitude),
-						stargazingLongitude: String(res.stargazingLatitude),
-					}
-				: defaultStargazingItemDetail,
-		);
+		return res
+			? {
+					...pick(res, ['stargazingTitle', 'stargazingImage', 'stargazingDescription', 'stargazingAddress', 'stargazingNanoId']),
+					stargazingLatitude: String(res.stargazingLatitude),
+					stargazingLongitude: String(res.stargazingLatitude),
+				}
+			: defaultStargazingItemDetail;
 	}
 
-	@ValidationAdditional(updateStargazingDetailSchema)
-	@ErrorAdditional()
-	async updateStargazingDetail({ id, data }: {
-		id: NanoIdDto;
-		data: UpdateStargazingDetailDto;
-	}): Promise<ApiResponse<null>> {
-		await this.prisma.stargazingList.update({
-			where: { stargazingNanoId: id, published: true },
-			data: {
-				...data,
-				stargazingLatitude: String(data.stargazingLatitude),
-				stargazingLongitude: String(data.stargazingLongitude),
-			},
-		});
-		return createApiResponse(true, null, 'Update success');
-	}
-
-	@ValidationAdditional(updateStargazingDetailSchema)
-	@ErrorAdditional()
-	async createStargazingDetail({ data }: { data: UpdateStargazingDetailDto }): Promise<ApiResponse<null>> {
-		await this.prisma.stargazingList.create({
+	async createStargazingDetail({ data }: { data: UpdateStargazingDetailDto }): Promise<boolean> {
+		const res = await this.prisma.stargazingList.create({
 			data: {
 				...data,
 				stargazingLatitude: String(data.stargazingLatitude),
@@ -88,16 +61,26 @@ export class StargazingService {
 				published: true,
 			},
 		});
-		return createApiResponse(true, null, 'Create success');
+		return Boolean(res);
 	}
 
-	@ValidationAdditional()
-	@ErrorAdditional()
-	async deleteStargazingDetail({ id }: { id: NanoIdDto }): Promise<ApiResponse<null>> {
-		await this.prisma.stargazingList.update({
+	async updateStargazingDetail({ id, data }: { id: NanoIdDto;data: UpdateStargazingDetailDto }): Promise<boolean> {
+		const { count } = await this.prisma.stargazingList.updateMany({
+			where: { stargazingNanoId: id, published: true },
+			data: {
+				...data,
+				stargazingLatitude: String(data.stargazingLatitude),
+				stargazingLongitude: String(data.stargazingLongitude),
+			},
+		});
+		return Boolean(count);
+	}
+
+	async deleteStargazingDetail({ id }: { id: NanoIdDto }): Promise<boolean> {
+		const { count } = await this.prisma.stargazingList.updateMany({
 			where: { stargazingNanoId: id, published: true },
 			data: { published: false },
 		});
-		return createApiResponse(true, null, 'Delete success');
+		return Boolean(count);
 	}
 }
