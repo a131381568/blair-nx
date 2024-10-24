@@ -1,11 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { pick } from 'radash';
-import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
-import { NanoIdDto } from '../../common/dto/id.dto';
+import { CreateFacilityItemDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, NanoIdDto, UpdateFacilityItemDto } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
-import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
-import type { CreateFacilityItemDto, FacilityItemBaseDto, GetFacilitiesListBaseDto, UpdateFacilityItemDto } from './facilities-schemas';
-import { createFacilityItemSchema, defaultFacilityItemBase, updateFacilityItemSchema } from './facilities-schemas';
 
 @Injectable()
 export class FacilitiesService {
@@ -14,61 +10,43 @@ export class FacilitiesService {
 		private readonly prisma: ExtendedPrismaClient,
 	) {}
 
-	@ErrorAdditional([])
-	async getFacilitiesList(): Promise<ApiResponse<GetFacilitiesListBaseDto>> {
+	async getFacilitiesList(): Promise<GetFacilitiesListBaseDto> {
 		const res = await this.prisma.facilitiesList.findMany({
 			orderBy: { facilitiesOrderId: 'asc' },
 			where: { published: true },
 			take: 3,
 		});
 
-		return createApiResponse(
-			true,
-			res.map(item => pick(item, ['facilitiesTitle', 'facilitiesDescription', 'facilitiesImage', 'facilitiesLink', 'facilitiesNanoId'])),
-		);
+		return res.map(item => pick(item, ['facilitiesTitle', 'facilitiesDescription', 'facilitiesImage', 'facilitiesLink', 'facilitiesNanoId']));
 	}
 
-	@ValidationAdditional()
-	@ErrorAdditional(defaultFacilityItemBase)
-	async getFacilityItem({ id }: { id: NanoIdDto }): Promise<ApiResponse<FacilityItemBaseDto>> {
+	async getFacilityItem({ id }: { id: NanoIdDto }): Promise<FacilityItemBaseDto | null> {
 		const res = await this.prisma.facilitiesList.findFirst({
 			where: { facilitiesNanoId: id, published: true },
 		});
-		return createApiResponse(
-			Boolean(res),
-			res ? pick(res, ['facilitiesTitle', 'facilitiesDescription', 'facilitiesImage', 'facilitiesLink']) : defaultFacilityItemBase,
-		);
+		return res ? pick(res, ['facilitiesTitle', 'facilitiesDescription', 'facilitiesImage', 'facilitiesLink']) : null;
 	}
 
-	@ValidationAdditional(updateFacilityItemSchema)
-	@ErrorAdditional()
-	async updateFacilityItem({ id, data }: {
-		id: NanoIdDto;
-		data: UpdateFacilityItemDto;
-	}): Promise<ApiResponse<null>> {
-		await this.prisma.facilitiesList.update({
+	async createFacilityItem({ data }: { data: CreateFacilityItemDto }): Promise<boolean> {
+		const res = await this.prisma.facilitiesList.create({
+			data: { ...data, published: true },
+		});
+		return Boolean(res);
+	}
+
+	async updateFacilityItem({ id, data }: { id: NanoIdDto; data: UpdateFacilityItemDto }): Promise<boolean> {
+		const { count } = await this.prisma.facilitiesList.updateMany({
 			where: { facilitiesNanoId: id },
 			data,
 		});
-		return createApiResponse(true, null, 'Update success');
+		return Boolean(count);
 	}
 
-	@ValidationAdditional(createFacilityItemSchema)
-	@ErrorAdditional()
-	async createFacilityItem({ data }: { data: CreateFacilityItemDto }): Promise<ApiResponse<null>> {
-		await this.prisma.facilitiesList.create({
-			data: { ...data, published: true },
-		});
-		return createApiResponse(true, null, 'Create success');
-	}
-
-	@ValidationAdditional()
-	@ErrorAdditional()
-	async deleteFacilityItem({ id }: { id: NanoIdDto }): Promise<ApiResponse<null>> {
-		await this.prisma.facilitiesList.update({
+	async deleteFacilityItem({ id }: { id: NanoIdDto }): Promise<boolean> {
+		const { count } = await this.prisma.facilitiesList.updateMany({
 			where: { facilitiesNanoId: id, published: true },
 			data: { published: false },
 		});
-		return createApiResponse(true, null, 'Delete success');
+		return Boolean(count);
 	}
 }

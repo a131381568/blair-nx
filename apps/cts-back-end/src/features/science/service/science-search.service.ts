@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { ScienceQueryDto, defaultScienceQueryData } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../../shared/prisma.extension';
-import { ScienceQueryDto, defaultScienceQueryData } from '../science-schemas';
 
 @Injectable()
 export class ScienceSearchService {

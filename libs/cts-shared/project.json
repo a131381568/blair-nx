@@ -1,0 +1,16 @@
+{
+	"name": "cts-shared",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "libs/cts-shared",
+	"projectType": "library",
+	"targets": {
+		"lint": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "libs/{projectName}",
+				"command": "eslint ."
+			}
+		}
+	},
+	"tags": ["type:libs", "class:cts"]
+}

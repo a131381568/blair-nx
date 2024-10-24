@@ -81,7 +81,15 @@ export class PrismaClientExceptionFilter extends BaseExceptionFilter {
 				return super.catch(exception, host);
 
 			return super.catch(
-				new HttpException({ statusCode, message }, statusCode),
+				new HttpException({
+					success: false,
+					data: {
+						code: statusCode,
+						name: 'PrismaClientKnownRequestError',
+						timestamp: new Date().toISOString(),
+					},
+					message,
+				}, statusCode),
 				host,
 			);
 		}

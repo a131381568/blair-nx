@@ -1,39 +1,67 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, NotFoundException, Param, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiResponse } from '../../core/interceptors/api-response';
-import { StrIdDto } from '../../common/dto/id.dto';
+import { CreateScienceDto, NanoIdDto, ScienceQueryPartialDto, scienceContract } from '@cts-shared';
+import { NestResponseShapes, TsRestHandler, nestControllerContract, tsRestHandler } from '@ts-rest/nest';
 import { ScienceService } from './science.service';
-import { CreateScienceDto, ScienceItemDto, ScienceListWithPagiDto, ScienceQueryDto } from './science-schemas';
 
-@Controller('science')
+const GET_QUERY = 'getScienceList';
+const GET_SINGLE = 'getScienceDetail';
+const PUT = 'updateScienceDetail';
+const CREATE = 'createScienceDetail';
+const DELETE = 'deleteScienceDetail';
+const c = nestControllerContract(scienceContract);
+type ResponseShapes = NestResponseShapes<typeof c>;
+
+@Controller()
 export class ScienceController {
 	constructor(private readonly scienceService: ScienceService) {}
 
-	@Get()
-	getScienceList(@Query() data: ScienceQueryDto): Promise<ApiResponse<ScienceListWithPagiDto>> {
-		return this.scienceService.getScienceList({ data });
+	@TsRestHandler(c[GET_QUERY])
+	async getScienceList(@Query() data: ScienceQueryPartialDto) {
+		return tsRestHandler(c[GET_QUERY], async (_reqInfo): Promise<ResponseShapes[typeof GET_QUERY]> => {
+			const listData = await this.scienceService[GET_QUERY]({ data });
+			return { status: 200, body: listData };
+		});
 	}
 
-	@Get(':id')
-	getScienceDetail(@Param('id') id: StrIdDto): Promise<ApiResponse<ScienceItemDto>> {
-		return this.scienceService.getScienceDetail({ id });
-	}
-
-	@UseGuards(AuthGuard('jwt'))
-	@Put(':id')
-	async updateScienceDetail(@Param('id') id: StrIdDto, @Body() data: CreateScienceDto): Promise<ApiResponse<null>> {
-		return this.scienceService.updateScienceDetail({ id, data });
-	}
-
-	@UseGuards(AuthGuard('jwt'))
-	@Post('create')
-	async createScienceDetail(@Body() data: CreateScienceDto): Promise<ApiResponse<null>> {
-		return this.scienceService.createScienceDetail({ data });
+	@TsRestHandler(c[GET_SINGLE])
+	async getScienceDetail(@Param('id') id: NanoIdDto) {
+		return tsRestHandler(c[GET_SINGLE], async (_reqInfo): Promise<ResponseShapes[typeof GET_SINGLE]> => {
+			const resData = await this.scienceService[GET_SINGLE]({ id });
+			if (!resData)
+				throw new NotFoundException('ID does not exist');
+			return { status: 200, body: resData };
+		});
 	}
 
 	@UseGuards(AuthGuard('jwt'))
-	@Delete(':id')
-	async deleteScienceDetail(@Param('id') id: StrIdDto): Promise<ApiResponse<null>> {
-		return this.scienceService.deleteScienceDetail({ id });
+	@TsRestHandler(c[CREATE])
+	async createScienceDetail(@Body() data: CreateScienceDto) {
+		return tsRestHandler(c[CREATE], async (_reqInfo): Promise<ResponseShapes[typeof CREATE]> => {
+			await this.scienceService[CREATE]({ data });
+			return { status: 200, body: 'Create success' };
+		});
+	}
+
+	@UseGuards(AuthGuard('jwt'))
+	@TsRestHandler(c[PUT])
+	async updateScienceDetail(@Param('id') id: NanoIdDto, @Body() data: CreateScienceDto) {
+		return tsRestHandler(c[PUT], async (_reqInfo): Promise<ResponseShapes[typeof PUT]> => {
+			const success = await this.scienceService[PUT]({ id, data });
+			if (!success)
+				throw new NotFoundException('ID does not exist');
+			return { status: 200, body: 'Update success' };
+		});
+	}
+
+	@UseGuards(AuthGuard('jwt'))
+	@TsRestHandler(c[DELETE])
+	async deleteScienceDetail(@Param('id') id: NanoIdDto) {
+		return tsRestHandler(c[DELETE], async (_reqInfo): Promise<ResponseShapes[typeof DELETE]> => {
+			const success = await this.scienceService[DELETE]({ id });
+			if (!success)
+				throw new NotFoundException('ID does not exist');
+			return { status: 200, body: 'Delete success' };
+		});
 	}
 }

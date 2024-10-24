@@ -1,30 +1,48 @@
-import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
-import { ApiResponse } from '../../core/interceptors/api-response';
+import { BadRequestException, Body, Controller, UseInterceptors } from '@nestjs/common';
+import { LoginInputDto, RefreshTokenDto, authContract } from '@cts-shared';
+import { NestResponseShapes, TsRestHandler, nestControllerContract, tsRestHandler } from '@ts-rest/nest';
+import { isString } from 'radash';
 import { ApiResponseInterceptor } from '../../core/interceptors/api-response.interceptor';
-import { AccessTokenDto, LoginInputDto, RefreshTokenDto, TokenGroupDto, UserBaseDto } from '../shared/users-schemas';
 import { AuthService } from './auth.service';
 
-@Controller('auth')
+const LOGIN = 'login';
+const REFRESH = 'refreshToken';
+const c = nestControllerContract(authContract);
+type ResponseShapes = NestResponseShapes<typeof c>;
+
+@Controller()
 @UseInterceptors(ApiResponseInterceptor)
 export class AuthController {
 	constructor(private authService: AuthService) {}
 
-	@Post('login')
-	async login(@Body() data: LoginInputDto): Promise<ApiResponse<TokenGroupDto | UserBaseDto>> {
-		const validationInfo = await this.authService.validateUser({ data });
-		if (validationInfo.success && validationInfo.data) {
-			return this.authService.getAllToken({
-				data: {
-					email: validationInfo.data.email,
-					nanoId: validationInfo.data.nanoId,
-				},
-			});
-		}
-		return validationInfo;
+	@TsRestHandler(c[LOGIN])
+	login(@Body() data: LoginInputDto) {
+		return tsRestHandler(c[LOGIN], async (_reqInfo): Promise<ResponseShapes[typeof LOGIN]> => {
+			const validationInfo = await this.authService.validateUser({ data });
+
+			if (validationInfo.userInfo) {
+				const tokenInfo = await this.authService.getAllToken({
+					data: {
+						email: validationInfo.userInfo.email,
+						nanoId: validationInfo.userInfo.nanoId,
+					},
+				});
+				return { status: 201, body: tokenInfo };
+			}
+
+			throw new BadRequestException(validationInfo.msg);
+		});
 	}
 
-	@Post('refresh')
-	refreshToken(@Body() data: RefreshTokenDto): Promise<ApiResponse<AccessTokenDto | null>> {
-		return this.authService.refreshToken({ data });
+	@TsRestHandler(c[REFRESH])
+	refreshToken(@Body() data: RefreshTokenDto) {
+		return tsRestHandler(c[REFRESH], async (_reqInfo): Promise<ResponseShapes[typeof REFRESH]> => {
+			const refreshInfo = await this.authService.refreshToken({ data });
+
+			if (!isString(refreshInfo) && refreshInfo.accessToken)
+				return { status: 201, body: refreshInfo };
+
+			throw new BadRequestException(refreshInfo);
+		});
 	}
 }

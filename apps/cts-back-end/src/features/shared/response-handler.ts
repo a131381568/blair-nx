@@ -1,10 +1,9 @@
 import type { ZodSchema } from 'zod';
 import { get, isArray } from 'radash';
 import { Prisma } from '@prisma/client';
-import { createApiResponse } from '../../core/interceptors/api-response';
+import type { NanoIdDto } from '@cts-shared';
+import { createApiResponse, nanoIdSchema } from '@cts-shared';
 import { PrismaErrorSchema } from '../shared/prisma-schemas';
-import type { NanoIdDto } from '../../common/dto/id.dto';
-import { NanoIdSchema } from '../../common/dto/id.dto';
 
 export const ErrorAdditional = (defaultRes: unknown = null) => {
 	return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
@@ -46,7 +45,7 @@ export const ValidationAdditional = (dataSchema: ZodSchema | null = null): Metho
 			const { id, data }: { id: NanoIdDto; data: any } = args[0];
 
 			if (id) {
-				const ParsedId = NanoIdSchema.safeParse(id);
+				const ParsedId = nanoIdSchema.safeParse(id);
 				idZodSuccess = ParsedId.success;
 				if (ParsedId.error?.errors && isArray(ParsedId.error.errors))
 					idZodMsg = String(ParsedId.error?.errors[0].message);

@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { omit } from 'radash';
+import { ApiResponse, GetAboutInfoBaseDto, UpdateAboutInfoDto, createApiResponse, defaultAboutInfoData } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
-import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
-import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
-import type { GetAboutInfoBaseDto, UpdateAboutInfoDto } from './about-info-schemas';
-import { defaultAboutInfoData, updateAboutInfoSchema } from './about-info-schemas';
 
 @Injectable()
 export class AboutInfoService {
@@ -13,16 +10,15 @@ export class AboutInfoService {
 		private readonly prisma: ExtendedPrismaClient,
 	) {}
 
-	@ErrorAdditional(defaultAboutInfoData)
-	async getAboutInfo(): Promise<ApiResponse<GetAboutInfoBaseDto>> {
+	async getAboutInfo(): Promise<GetAboutInfoBaseDto> {
 		const res = await this.prisma.aboutInfo.findFirst({
 			where: { aboutId: 1 },
 		});
-		return createApiResponse(Boolean(res), res ? omit(res, ['aboutId']) : defaultAboutInfoData);
+		if (!res)
+			return defaultAboutInfoData;
+		return omit(res, ['aboutId']);
 	}
 
-	@ValidationAdditional(updateAboutInfoSchema)
-	@ErrorAdditional()
 	async updateAboutInfo({ data }: { data: UpdateAboutInfoDto }): Promise<ApiResponse<null>> {
 		await this.prisma.aboutInfo.update({
 			where: { aboutId: 1 },

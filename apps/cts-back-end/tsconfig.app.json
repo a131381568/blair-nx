@@ -3,7 +3,6 @@
 	"compilerOptions": {
 		"target": "es2021",
 		"emitDecoratorMetadata": true,
-		"baseUrl": "./",
 		"module": "commonjs",
 		"types": [
 			"node",

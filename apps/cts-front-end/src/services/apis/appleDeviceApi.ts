@@ -1,6 +1,6 @@
 import qs from 'qs';
-import { apiWithoutToken } from '@cts-fe-src/services/utils/instances';
-import type { AdListParams, BaseAdItem } from '@cts-fe-src/types';
+import { apiWithoutToken } from '@ctsf-src/services/utils/instances';
+import type { AdListParams, BaseAdItem } from '@ctsf-src/types';
 
 export const apiFetchAdList = <T>(params: T) => {
 	return apiWithoutToken({

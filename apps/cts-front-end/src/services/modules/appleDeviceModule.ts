@@ -6,15 +6,15 @@ import {
 	apiFetchAdListByPathId,
 	apiPatchItem,
 	apiPutItem,
-} from '@cts-fe-src/services/apis/appleDeviceApi';
-import { useAppleDeviceStore } from '@cts-fe-src/stores/appleDevice';
+} from '@ctsf-src/services/apis/appleDeviceApi';
+import { useAppleDeviceStore } from '@ctsf-src/stores/appleDevice';
 import type {
 	AdItemDetail,
 	AdItemUpdate,
 	AdListParams,
 	BaseAdItem,
-} from '@cts-fe-src/types';
-import { apiContract } from '@cts-fe-src/services/contracts/appleDeviceContract';
+} from '@ctsf-src/types';
+import { apiContract } from '@ctsf-src/services/contracts/appleDeviceContract';
 
 export const getFetchAdList = async () => {
 	const { updateList } = useAppleDeviceStore();

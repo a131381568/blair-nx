@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { pick } from 'radash';
+import { ApiResponse, PostCategoriesDto, PostCategoryFitDto, StrIdDto, createApiResponse, defaultPostCategoryData, updatePostCategorySchema } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
-import { ApiResponse, createApiResponse } from '../../core/interceptors/api-response';
-import { StrIdDto } from '../../common/dto/id.dto';
 import { ErrorAdditional, ValidationAdditional } from '../shared/response-handler';
-import { PostCategoriesDto, PostCategoryFitDto, defaultPostCategoryData, updatePostCategorySchema } from './post-categories-schemas';
 
 @Injectable()
 export class PostCategoriesService {

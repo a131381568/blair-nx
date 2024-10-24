@@ -1,7 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiResponse } from '../../core/interceptors/api-response';
+import { ApiResponse, PageListDto } from '@cts-shared';
 import { PageInfoService } from './page-info.service';
-import { PageListDto } from './page-info-schemas';
 
 @Controller('page-info')
 export class PageInfoController {

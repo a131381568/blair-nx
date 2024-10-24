@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { RegisterPayloadDto, userBaseFitDto } from '../shared/users-schemas';
-import { ApiResponse } from '../../core/interceptors/api-response';
+import { ApiResponse, RegisterPayloadDto, UserBaseFitDto } from '@cts-shared';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -10,7 +9,7 @@ export class UsersController {
 
 	@UseGuards(AuthGuard('jwt'))
 	@Get()
-	getUserList(): Promise<ApiResponse<userBaseFitDto[]>> {
+	getUserList(): Promise<ApiResponse<UserBaseFitDto[]>> {
 		return this.usersService.getUserList();
 	}
 

@@ -88,7 +88,9 @@ export default [
 			'**/*.module.*.ts',
 			'**/*.controller.*.ts',
 			'**/*.interceptor.ts',
-			'**/*.filter.ts'
+			'**/*.filter.ts',
+			'**/*.types.ts',
+			'**/*.schemas.ts'
 		],
 		rules: {
 			'@typescript-eslint/consistent-type-imports': 'off'

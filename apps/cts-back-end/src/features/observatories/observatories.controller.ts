@@ -1,9 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiResponse } from '../../core/interceptors/api-response';
-import { NanoIdDto } from '../../common/dto/id.dto';
+import { ApiResponse, NanoIdDto, ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto } from '@cts-shared';
 import { ObservatoriesService } from './observatories.service';
-import { ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto } from './observatories-schemas';
 
 @Controller('observatories')
 export class ObservatoriesController {
