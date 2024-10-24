@@ -1,37 +1,67 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiResponse, NanoIdDto, ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto } from '@cts-shared';
+import { ApiResponse, NanoIdDto, ObservatoriesListDto, ObservatoryItemDto, UpdateObservatoryItemDto, observatoriesContract } from '@cts-shared';
+import { NestResponseShapes, TsRestHandler, nestControllerContract, tsRestHandler } from '@ts-rest/nest';
 import { ObservatoriesService } from './observatories.service';
 
-@Controller('observatories')
+const GET_QUERY = 'getObservatoriesList';
+const GET_SINGLE = 'getObservatoryItem';
+const PUT = 'updateObservatoryItem';
+const CREATE = 'createObservatoryItem';
+const DELETE = 'deleteObservatoryItem';
+const c = nestControllerContract(observatoriesContract);
+type ResponseShapes = NestResponseShapes<typeof c>;
+
+@Controller()
 export class ObservatoriesController {
 	constructor(private readonly observatoriesService: ObservatoriesService) {}
 
-	@Get()
-	getObservatoriesList(): Promise<ApiResponse<ObservatoriesListDto>> {
-		return this.observatoriesService.getObservatoriesList();
+	@TsRestHandler(c[GET_QUERY])
+	getObservatoriesList() {
+		return tsRestHandler(c[GET_QUERY], async (_reqInfo): Promise<ResponseShapes[typeof GET_QUERY]> => {
+			const listData = await this.observatoriesService[GET_QUERY]();
+			return { status: 200, body: listData };
+		});
 	}
 
-	@Get(':id')
-	getObservatoryItem(@Param('id') id: NanoIdDto): Promise<ApiResponse<ObservatoryItemDto>> {
-		return this.observatoriesService.getObservatoryItem({ id });
-	}
-
-	@UseGuards(AuthGuard('jwt'))
-	@Put(':id')
-	async updateObservatoryItem(@Param('id') id: NanoIdDto, @Body() data: UpdateObservatoryItemDto): Promise<ApiResponse<null>> {
-		return this.observatoriesService.updateObservatoryItem({ id, data });
-	}
-
-	@UseGuards(AuthGuard('jwt'))
-	@Post('create')
-	async createObservatoryItem(@Body() data: UpdateObservatoryItemDto): Promise<ApiResponse<null>> {
-		return this.observatoriesService.createObservatoryItem({ data });
+	@TsRestHandler(c[GET_SINGLE])
+	getObservatoryItem(@Param('id') id: NanoIdDto) {
+		return tsRestHandler(c[GET_SINGLE], async (_reqInfo): Promise<ResponseShapes[typeof GET_SINGLE]> => {
+			const resData = await this.observatoriesService[GET_SINGLE]({ id });
+			if (!resData)
+				throw new NotFoundException('ID does not exist');
+			return { status: 200, body: resData };
+		});
 	}
 
 	@UseGuards(AuthGuard('jwt'))
-	@Delete(':id')
-	async deleteFacilityItem(@Param('id') id: NanoIdDto): Promise<ApiResponse<null>> {
-		return this.observatoriesService.deleteFacilityItem({ id });
+	@TsRestHandler(c[CREATE])
+	async createObservatoryItem(@Body() data: UpdateObservatoryItemDto) {
+		return tsRestHandler(c[CREATE], async (_reqInfo): Promise<ResponseShapes[typeof CREATE]> => {
+			await this.observatoriesService[CREATE]({ data });
+			return { status: 200, body: 'Create success' };
+		});
+	}
+
+	@UseGuards(AuthGuard('jwt'))
+	@TsRestHandler(c[PUT])
+	updateObservatoryItem(@Param('id') id: NanoIdDto, @Body() data: UpdateObservatoryItemDto) {
+		return tsRestHandler(c[PUT], async (_reqInfo): Promise<ResponseShapes[typeof PUT]> => {
+			const success = await this.observatoriesService[PUT]({ id, data });
+			if (!success)
+				throw new NotFoundException('ID does not exist');
+			return { status: 200, body: 'Update success' };
+		});
+	}
+
+	@UseGuards(AuthGuard('jwt'))
+	@TsRestHandler(c[DELETE])
+	deleteObservatoryItem(@Param('id') id: NanoIdDto) {
+		return tsRestHandler(c[DELETE], async (_reqInfo): Promise<ResponseShapes[typeof DELETE]> => {
+			const success = await this.observatoriesService[DELETE]({ id });
+			if (!success)
+				throw new NotFoundException('ID does not exist');
+			return { status: 200, body: 'Delete success' };
+		});
 	}
 }
