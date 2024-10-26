@@ -2,8 +2,8 @@
 import { initQueryClient } from '@ts-rest/vue-query';
 import { computed, ref } from 'vue';
 import { useToggle } from '@vueuse/core';
-import type { PaginationDto, PostCategoryFitDto, ScienceItemDto } from '@cts-shared';
-import { paginationDefaultData, scienceContract } from '@cts-shared';
+import type { ApiResponse, PaginationDto, PostCategoryFitDto, ScienceItemDto, ScienceListWithPagiDto } from '@cts-shared';
+import { paginationDefaultData, scienceContract, sciencetWithPagiDefaultData } from '@cts-shared';
 // import { getFetchScienceList } from '@ctsf-src/services/modules/scienceModule';
 import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
@@ -11,23 +11,27 @@ import Footer from '../components/Footer.vue';
 // import { useRoute } from 'vue-router';
 // getFetchScienceList();
 
+interface QueryRes<T> {
+	status: number;
+	body: T;
+	headers: unknown;
+}
+
 const vueQuery = initQueryClient(scienceContract, {
 	baseUrl: 'http://localhost:3000/api',
 });
 
-const getScienceDetailFn = async () => {
-	const res = await vueQuery.getScienceDetail.useQuery([], () => ({
-	// query: {
-	// 	page: '1',
-	// },
-		params: {
-			id: 'gXWwimozdU',
-		},
-	}),	{ staleTime: 1000 });
+const { data: listAPI, isLoading, error } = vueQuery.getScienceList.useQuery<
+	QueryRes<ApiResponse<ScienceListWithPagiDto>>
+>([], () => ({}),	{
+	staleTime: 60000,
+});
 
-	const { data, error, isLoading } = res;
-	console.log({ data, error, isLoading });
-};
+const listRef = computed(() => {
+	if (listAPI.value?.status === 200)
+		return listAPI.value.body.data;
+	return sciencetWithPagiDefaultData;
+});
 
 const TITLE_INFO = {
 	title: '天文科普',
@@ -153,6 +157,12 @@ const loadMoreData = () => defaultData();
 					</div>
 				</li>
 			</ul>
+		</div>
+		<div
+			v-if="!isLoading || !error"
+			class="text-white"
+		>
+			{{ listRef }}
 		</div>
 		<!-- 選單樣式 -->
 		<div
