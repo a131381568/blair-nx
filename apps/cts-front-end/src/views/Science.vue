@@ -1,30 +1,25 @@
 <script setup lang="ts">
-import { initQueryClient } from '@ts-rest/vue-query';
 import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { useGlobalStore } from '@ctsf-src/stores/global';
 import { useToggle } from '@vueuse/core';
 import type { ApiResponse, PaginationDto, PostCategoryFitDto, ScienceItemDto, ScienceListWithPagiDto } from '@cts-shared';
-import { paginationDefaultData, scienceContract, sciencetWithPagiDefaultData } from '@cts-shared';
-// import { getFetchScienceList } from '@ctsf-src/services/modules/scienceModule';
+import { paginationDefaultData, sciencetWithPagiDefaultData } from '@cts-shared';
+import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
+import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
 import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';
-// import { useRoute } from 'vue-router';
-// getFetchScienceList();
 
-interface QueryRes<T> {
-	status: number;
-	body: T;
-	headers: unknown;
-}
+const route = useRoute();
+const globalStore = useGlobalStore();
+const { currentPageMeta } = storeToRefs(globalStore);
 
-const vueQuery = initQueryClient(scienceContract, {
-	baseUrl: 'http://localhost:3000/api',
-});
-
-const { data: listAPI, isLoading, error } = vueQuery.getScienceList.useQuery<
-	QueryRes<ApiResponse<ScienceListWithPagiDto>>
->([], () => ({}),	{
-	staleTime: 60000,
+const { data: listAPI, isLoading, error } = queryClient.getScienceList.useQuery<
+	vueQueryRes<ApiResponse<ScienceListWithPagiDto>>
+>(['getScienceList'], () => ({}),	{
+	staleTime: STALE_TIME,
 });
 
 const listRef = computed(() => {
@@ -33,10 +28,8 @@ const listRef = computed(() => {
 	return sciencetWithPagiDefaultData;
 });
 
-const TITLE_INFO = {
-	title: '天文科普',
-	subTitle: 'Science',
-};
+const scienceMeta = computed(() => currentPageMeta.value(String(route.name)));
+
 const API_RES = {
 	success: false,
 	data: {
@@ -53,8 +46,7 @@ const API_RES = {
 		postCategory: [],
 	},
 };
-// const route = useRoute();
-// const routeName = String(route.name);
+
 const getFirstEnter = ref(false);
 
 const changeGridState = ref(false);
@@ -118,8 +110,8 @@ const loadMoreData = () => defaultData();
 		@click.self="closeDefaultMenu()"
 	>
 		<TitleBox
-			:page-title="TITLE_INFO.title"
-			:page-sub-title="TITLE_INFO.subTitle"
+			:page-title="scienceMeta.pageTitle"
+			:page-sub-title="scienceMeta.subPageTitle"
 		/>
 		<div
 			class="science-filter-bar animate__animated animate__fadeIn laptop:inline-flex middle-pc:mb-20 middle-pc:mt-16 mb-16 mt-6 hidden w-10/12"

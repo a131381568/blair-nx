@@ -25,7 +25,8 @@
 		"src/**/*.cy.ts",
 		"components.d.ts",
 		"src/**/*.vue",
-		"src/**/stores/**.ts"
+		"src/**/stores/**.ts",
+		"../../libs/**/*.ts"
 	],
 	"exclude": ["node_modules"]
 }
