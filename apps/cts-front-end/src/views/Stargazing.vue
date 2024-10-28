@@ -4,7 +4,7 @@ import { computed, nextTick, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useGlobalStore } from '@ctsf-src/stores/global';
-import { useToggle, watchOnce } from '@vueuse/core';
+import { until, useToggle } from '@vueuse/core';
 import type { ApiResponse, SingleStargazingDetailDto, StargazingListWithPagiDto } from '@cts-shared';
 import { defaultStargazingItemDetail } from '@cts-shared';
 import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
@@ -86,42 +86,39 @@ const clickSingleInfo = (singleData: SingleStargazingDetailDto) => {
 	togglePlaceVal.value && togglePlace();
 };
 
-const { data: stargazingListAPI } = queryClient.getStargazingQuery.useQuery<
+const { data: stargazingListAPI, isLoading } = queryClient.getStargazingQuery.useQuery<
 	vueQueryRes<ApiResponse<StargazingListWithPagiDto>>
 >(['getStargazingQuery'], () => ({}),	{
 	staleTime: STALE_TIME,
 });
 
-nextTick(() => {
-	// DOM 已經掛載好才初始化地圖
+// DOM 已經掛載好才初始化地圖
+nextTick(async () => {
 	if (!composableMap.value)
 		createMap({ mapRef: mapContainer.value });
-});
 
-watchOnce(stargazingListAPI, (newData) => {
-	// 僅一次的資料綁定地圖
-	if (newData?.status === 200) {
-		const newList = newData.body.data.list as SingleStargazingDetailDto[];
+	await until(isLoading).toBe(false);
+	if (stargazingListAPI.value?.status === 200) {
+		// 資料綁定地圖
+		const newList = stargazingListAPI.value.body.data.list as SingleStargazingDetailDto[];
 		stargazingList.value = newList.map((item) => {
 			return mapValues(item, value => value || '');
 		});
 
-		nextTick(() => {
-			stargazingList.value.forEach((item, index) => {
-				if (!index) {
-					// 將第一筆位置設定成地圖中心
-					composableMap.value?.whenReady(() => {
-						settingDefaultState({ coordinate: [Number(item.stargazingLatitude), Number(item.stargazingLongitude)] });
-					});
-				}
-				// 地圖插點相關事件
-				const marker = addMarker([Number(item.stargazingLatitude), Number(item.stargazingLongitude)], {
-					icon: generateIcon(normalMarkConfig),
-					zIndexOffset: 1,
+		stargazingList.value.forEach((item, index) => {
+			if (!index) {
+				// 將第一筆位置設定成地圖中心
+				composableMap.value?.whenReady(() => {
+					settingDefaultState({ coordinate: [Number(item.stargazingLatitude), Number(item.stargazingLongitude)] });
 				});
-				marker.on('click', () => {
-					clickSingleInfo(item);
-				});
+			}
+			// 地圖插點相關事件
+			const marker = addMarker([Number(item.stargazingLatitude), Number(item.stargazingLongitude)], {
+				icon: generateIcon(normalMarkConfig),
+				zIndexOffset: 1,
+			});
+			marker.on('click', () => {
+				clickSingleInfo(item);
 			});
 		});
 	}
