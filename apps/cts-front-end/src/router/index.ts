@@ -5,6 +5,7 @@ import Science from '@ctsf-src/views/Science.vue';
 import Home from '@ctsf-src/views/Home.vue';
 import SingleScience from '@ctsf-src/views/SingleScience.vue';
 import Story from '@ctsf-src/views/Story.vue';
+import SingleStory from '@ctsf-src/views/SingleStory.vue';
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -53,6 +54,15 @@ const router = createRouter({
 			path: '/story',
 			name: 'Story',
 			component: Story,
+			meta: {
+				title: '星星物語',
+				manage: false,
+			},
+		},
+		{
+			path: '/story/:sid',
+			name: 'SingleStory',
+			component: SingleStory,
 			meta: {
 				title: '星星物語',
 				manage: false,
