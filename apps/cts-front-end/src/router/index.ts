@@ -6,6 +6,7 @@ import Home from '@ctsf-src/views/Home.vue';
 import SingleScience from '@ctsf-src/views/SingleScience.vue';
 import Story from '@ctsf-src/views/Story.vue';
 import SingleStory from '@ctsf-src/views/SingleStory.vue';
+import Stargazing from '@ctsf-src/views/Stargazing.vue';
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -65,6 +66,15 @@ const router = createRouter({
 			component: SingleStory,
 			meta: {
 				title: '星星物語',
+				manage: false,
+			},
+		},
+		{
+			path: '/stargazing',
+			name: 'Stargazing',
+			component: Stargazing,
+			meta: {
+				title: '觀星地點',
 				manage: false,
 			},
 		},
