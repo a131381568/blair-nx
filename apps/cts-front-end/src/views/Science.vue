@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, ref, watch, watchEffect } from 'vue';
+import { get } from 'radash';
+import { computed, ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useGlobalStore } from '@ctsf-src/stores/global';
 import { useToggle } from '@vueuse/core';
-import type { ApiResponse, PaginationDto, PostCategoriesDto, PostCategoryFitDto, ScienceItemDto, ScienceListWithPagiDto } from '@cts-shared';
-import { paginationDefaultData, sciencetWithPagiDefaultData } from '@cts-shared';
+import type { ApiResponse, PostCategoriesDto, ScienceItemDto, ScienceListWithPagiDto } from '@cts-shared';
 import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
 import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
 import Header from '../components/Header.vue';
@@ -15,6 +15,7 @@ import Footer from '../components/Footer.vue';
 const route = useRoute();
 const globalStore = useGlobalStore();
 const { currentPageMeta } = storeToRefs(globalStore);
+const [toggleFilterVal, toggleFilter] = useToggle();
 
 const getFirstEnter = ref(false);
 const changeGridState = ref(false);
@@ -22,43 +23,10 @@ const postListRef = ref<ScienceItemDto[]>([]);
 const currentPage = ref(1);
 const selectCat = ref('all');
 
-const stripMarkdown = (markdown: string) => {
-	return markdown
-	// 移除 HTML 標籤
-		.replace(/<[^>]+(>|$)/g, '')
-	// 移除標題
-		.replace(/^#+\s(.+)/gm, '$1')
-	// 移除粗體和斜體
-		.replace(/(\*\*|__)(.*?)\1/g, '$2')
-		.replace(/(\*|_)(.*?)\1/g, '$2')
-	// 移除超連結
-		.replace(/\[(.*?)\]\(.*?\)/g, '$1')
-	// 移除圖片
-		.replace(/!\[(.*?)\]\(.*?\)/g, '$1')
-	// 移除程式碼區塊
-		.replace(/```[\s\S]*?```/g, '')
-	// 移除行內程式碼
-		.replace(/`(.*?)`/g, '$1')
-	// 移除區塊引言
-		.replace(/^>\s(.+)/gm, '$1')
-	// 移除列表項目
-		.replace(/^(\*|-|\d+\.)\s+/gm, '')
-	// 移除多重換行符和轉義換行符
-		.replace(/\\n\\n|\n\n/g, ' ')
-	// 移除多餘的空白
-		.replace(/^\s+|\s+$/g, '');
-};
-
 const { data: categoriesAPI } = queryClient.getPostCategories.useQuery<
 	vueQueryRes<ApiResponse<PostCategoriesDto>>
 >(['getPostCategories'], () => ({}),	{
 	staleTime: STALE_TIME,
-});
-
-const postCategories = computed(() => {
-	if (categoriesAPI.value?.status === 200)
-		return categoriesAPI.value.body.data.filter((item, index) => item.postCategoryId !== 'story' && index < 8);
-	return [];
 });
 
 const { data: scienceListAPI } = queryClient.getScienceList.useQuery<
@@ -66,48 +34,61 @@ const { data: scienceListAPI } = queryClient.getScienceList.useQuery<
 >(['getScienceList', currentPage, selectCat], () => ({
 	query: {
 		page: String(currentPage.value),
-		category: 'all',
+		category: selectCat.value,
 	},
 }),	{
 	staleTime: STALE_TIME,
 });
 
-// const scienceData = computed(() => {
-// 	if (scienceListAPI.value?.status === 200)
-// 		return scienceListAPI.value.body.data;
-// 	return sciencetWithPagiDefaultData;
-// });
-
-const scienceMeta = computed(() => currentPageMeta.value(String(route.name)));
-
-// 切換選單
-const [toggleFilterVal, toggleFilter] = useToggle();
 const reSearchData = (catId: string) => {
-	selectCat.value = catId;
 	changeGridState.value = true;
 	setTimeout(() => {
-		postListRef.value = [];
+		selectCat.value = catId;
 		currentPage.value = 1;
+		postListRef.value = [];
 		changeGridState.value = false;
-	}, 500);
+	}, 100);
 };
 const selectDropCat = (catId: string) => {
 	toggleFilterVal.value = false;
 	reSearchData(catId);
 };
 const closeDefaultMenu = () => {
-	if (toggleFilterVal.value) {
-		toggleFilterVal.value = false;
-	}
+	toggleFilterVal.value && (toggleFilterVal.value = false);
 };
 
-const loadMoreData = () => {
-	currentPage.value += 1;
+const loadMoreData = () => (currentPage.value += 1);
+
+const stripMarkdown = (markdown: string) => {
+	return markdown
+		.replace(/<[^>]+(>|$)/g, '') // 移除 HTML 標籤
+		.replace(/^#+\s(.+)/gm, '$1') // 移除標題
+		.replace(/(\*\*|__)(.*?)\1/g, '$2')
+		.replace(/(\*|_)(.*?)\1/g, '$2') // 移除粗體和斜體
+		.replace(/\[(.*?)\]\(.*?\)/g, '$1') // 移除超連結
+		.replace(/!\[(.*?)\]\(.*?\)/g, '$1') // 移除圖片
+		.replace(/```[\s\S]*?```/g, '') // 移除程式碼區塊
+		.replace(/`(.*?)`/g, '$1') // 移除行內程式碼
+		.replace(/^>\s(.+)/gm, '$1') // 移除區塊引言
+		.replace(/^(\*|-|\d+\.)\s+/gm, '') // 移除列表項目
+		.replace(/\\n\\n|\n\n/g, ' ') // 移除多重換行符和轉義換行符
+		.replace(/^\s+|\s+$/g, ''); // 移除多餘的空白
 };
 
 watchEffect(() => {
 	if (scienceListAPI.value?.status === 200)
 		postListRef.value = [...postListRef.value, ...scienceListAPI.value.body.data.list];
+});
+
+const postCategories = computed(() => {
+	if (categoriesAPI.value?.status === 200)
+		return categoriesAPI.value.body.data.filter((item, index) => item.postCategoryId !== 'story' && index < 8);
+	return [];
+});
+const scienceMeta = computed(() => currentPageMeta.value(String(route.name)));
+const selectCatName = computed(() => {
+	const currentCat = postCategories.value.find(item => item.postCategoryId === selectCat.value);
+	return get(currentCat, 'postCategoryName', 'all');
 });
 </script>
 
@@ -169,7 +150,7 @@ watchEffect(() => {
 				type="button"
 				@click.prevent="toggleFilter()"
 			>
-				{{ selectCat }}
+				{{ selectCatName }}
 				<svg
 					class="absolute right-4 ml-2 size-4"
 					fill="none"

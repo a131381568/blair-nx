@@ -19,7 +19,7 @@ export class ScienceSearchService {
 		const searchResult = await this.prisma.science.paginate({
 			where: {
 				published: true,
-				OR: (keyword || category || cnid)
+				OR: (keyword || (category !== 'all') || cnid)
 					? [
 							{ title: keyword ? { contains: keyword, mode: 'insensitive' } : undefined },
 							{ content: keyword ? { contains: keyword, mode: 'insensitive' } : undefined },
