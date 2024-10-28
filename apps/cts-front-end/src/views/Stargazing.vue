@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { mapValues } from 'radash';
-import { nextTick, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { useGlobalStore } from '@ctsf-src/stores/global';
 import { useToggle, watchOnce } from '@vueuse/core';
 import type { ApiResponse, SingleStargazingDetailDto, StargazingListWithPagiDto } from '@cts-shared';
 import { defaultStargazingItemDetail } from '@cts-shared';
@@ -15,6 +18,9 @@ import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';
 import ArrowDown from '../components/svg/ArrowDown.vue';
 
+const route = useRoute();
+const globalStore = useGlobalStore();
+const { currentPageMeta } = storeToRefs(globalStore);
 const { createMap, settingDefaultState, composableMap, addMarker, generateIcon, changeCenter } = useLeafletMap();
 const [togglePlaceVal, togglePlace] = useToggle();
 const getFirstEnter = ref(false);
@@ -38,13 +44,38 @@ const activeMarkConfig = {
 	className: 'single__stargazing__mark single__stargazing__active__mark',
 };
 
+const initMarkState = () => {
+	composableMap.value?.eachLayer((layer) => {
+		if (layer instanceof L.Marker)
+			layer.setIcon(generateIcon(normalMarkConfig));
+	});
+};
+
+const actMarkBycoordinate = (latitude: number, longitude: number) => {
+	composableMap.value?.eachLayer((layer) => {
+		if (layer instanceof L.Marker) {
+			const { lat, lng } = layer.getLatLng();
+			if (lat === latitude && lng === longitude) {
+				layer.setIcon(generateIcon(activeMarkConfig));
+				changeCenter([latitude, longitude]);
+			}
+		}
+	});
+};
+
 const showInfoBox = () => (infoBoxState.value = true);
 const hideInfoBox = () => (infoBoxState.value = false);
+const closeInfoBox = () => {
+	hideInfoBox();
+	initMarkState();
+};
 
 const clickSingleInfo = (singleData: SingleStargazingDetailDto) => {
-	changeCenter([Number(singleData.stargazingLatitude), Number(singleData.stargazingLongitude)]);
-	const currentInfoBoxShow = Boolean(infoBoxState.value);
+	// 先全部設成一般顏色, 點擊處再設成 active 色
+	initMarkState();
+	actMarkBycoordinate(Number(singleData.stargazingLatitude), Number(singleData.stargazingLongitude));
 	// 已開啟 infoBox, 就關閉後再開啟
+	const currentInfoBoxShow = Boolean(infoBoxState.value);
 	currentInfoBoxShow && hideInfoBox();
 	setTimeout(() => {
 		showInfoBox();
@@ -89,19 +120,14 @@ watchOnce(stargazingListAPI, (newData) => {
 					zIndexOffset: 1,
 				});
 				marker.on('click', () => {
-					// 先全部設成一般顏色, 點擊處再設成 active 色
-					composableMap.value?.eachLayer((layer) => {
-						if (layer instanceof L.Marker)
-							layer.setIcon(generateIcon(normalMarkConfig));
-					});
-					marker.setIcon(generateIcon(activeMarkConfig));
-					// 最後開啟資訊欄
 					clickSingleInfo(item);
 				});
 			});
 		});
 	}
 });
+
+const stargazingMeta = computed(() => currentPageMeta.value(String(route.name)));
 </script>
 
 <template>
@@ -110,8 +136,8 @@ watchOnce(stargazingListAPI, (newData) => {
 		class="flex-wrap items-start justify-center px-8 pb-7 mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72"
 	>
 		<TitleBox
-			page-title="觀星地點"
-			page-sub-title="stargazing"
+			:page-title="stargazingMeta.pageTitle"
+			:page-sub-title="stargazingMeta.subPageTitle"
 		/>
 	</div>
 	<!---------- 地點列表 ---------->
@@ -183,7 +209,7 @@ watchOnce(stargazingListAPI, (newData) => {
 			</h2>
 			<button
 				class="close-stargazing-menu-btn relative bottom-[7px] right-7 -m-6 size-[15px] p-6 before:absolute before:left-[15px] before:h-[15px] before:w-[2px] before:rotate-45 before:bg-black after:absolute after:left-[15px] after:h-[15px] after:w-[2px] after:-rotate-45 after:bg-black mobile:right-2"
-				@click.stop="hideInfoBox"
+				@click.stop="closeInfoBox"
 			/>
 		</div>
 		<div
