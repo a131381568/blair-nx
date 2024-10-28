@@ -33,7 +33,7 @@ watchEffect(() => {
 <template>
 	<div
 		ref="el"
-		class="relative overflow-y-auto overflow-x-hidden bg-admin-featured bg-cover bg-center bg-no-repeat"
+		class="relative overflow-y-auto overflow-x-hidden bg-admin-featured bg-cover bg-fixed bg-center bg-no-repeat"
 	>
 		<router-view />
 		<div
