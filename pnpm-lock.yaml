@@ -62,6 +62,9 @@ dependencies:
   '@vueuse/core':
     specifier: ^11.1.0
     version: 11.1.0(vue@3.4.38)
+  '@yeger/vue-masonry-wall':
+    specifier: ^5.0.16
+    version: 5.0.16(vue@3.4.38)
   animate.css:
     specifier: ^4.1.1
     version: 4.1.1
@@ -6032,7 +6035,7 @@ packages:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.4.38(typescript@5.5.4)
-      vue-component-type-helpers: 2.1.6
+      vue-component-type-helpers: 2.1.8
     dev: true
 
   /@stylistic/eslint-plugin@2.8.0(eslint@8.57.1)(typescript@5.5.4):
@@ -7530,6 +7533,30 @@ packages:
       js-yaml: 3.14.1
       tslib: 2.7.0
     dev: true
+
+  /@yeger/debounce@2.0.10:
+    resolution: {integrity: sha512-61K6anfnaJ6ziIXiFOKCqtWCmxy6SeVGxKsG2ae+98SihFo1lT8p/Ny351+sXM5rfa5136u09277JxTXymgalw==}
+    dev: false
+
+  /@yeger/vue-lib-adapter@2.0.10:
+    resolution: {integrity: sha512-rHmTZxdrpuh+BheAjQcCZrY4ERpMGpLZHYY99nsqd5RoG1nXXzRkhhNlT3tfWlikW0Wr8UpoxA+/dOlYrCDrtQ==}
+    dev: false
+
+  /@yeger/vue-masonry-wall-core@5.0.13:
+    resolution: {integrity: sha512-Sh4kj9uijz/SPy6M0ryVcakIIB31rw6FRlDGZYCADT6ublAYB+39MCcTITIUPAsFtEqk4Nl0IMCS6Gs29LDYVA==}
+    dependencies:
+      '@yeger/debounce': 2.0.10
+      '@yeger/vue-lib-adapter': 2.0.10
+    dev: false
+
+  /@yeger/vue-masonry-wall@5.0.16(vue@3.4.38):
+    resolution: {integrity: sha512-UbgQhUSwtsALa4ovW/zYCaQjgxIsKQsGNQffE2Lx/hzbNjPoP6wluBbWbQWszPSEEw1wh3JfcVx5uvoH5dK6Rg==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      '@yeger/vue-masonry-wall-core': 5.0.13
+      vue: 3.4.38(typescript@5.5.4)
+    dev: false
 
   /@zkochan/js-yaml@0.0.7:
     resolution: {integrity: sha512-nrUSn7hzt7J6JWgWGz78ZYI8wj+gdIJdk0Ynjpp8l+trkn58Uqsf6RYrYkEK+3X18EX+TNdtJI0WxAtc+L84SQ==}
@@ -17929,6 +17956,10 @@ packages:
 
   /vue-component-type-helpers@2.1.6:
     resolution: {integrity: sha512-ng11B8B/ZADUMMOsRbqv0arc442q7lifSubD0v8oDXIFoMg/mXwAPUunrroIDkY+mcD0dHKccdaznSVp8EoX3w==}
+    dev: true
+
+  /vue-component-type-helpers@2.1.8:
+    resolution: {integrity: sha512-ii36gDzrYAfOQIkOlo44yceDdT5269gKmNGxf07Qx6seH2U50+tQ2ol02XLhYPmxrh6YabAsOdte8WDrpaO6Tw==}
     dev: true
 
   /vue-demi@0.13.11(vue@3.4.38):
