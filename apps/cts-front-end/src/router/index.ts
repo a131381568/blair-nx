@@ -3,6 +3,7 @@ import About from '@ctsf-src/views/About.vue';
 import NotFound from '@ctsf-src/views/NotFound.vue';
 import Science from '@ctsf-src/views/Science.vue';
 import Home from '@ctsf-src/views/Home.vue';
+import SingleScience from '@ctsf-src/views/SingleScience.vue';
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -33,6 +34,15 @@ const router = createRouter({
 			path: '/science',
 			name: 'Science',
 			component: Science,
+			meta: {
+				title: '天文科普',
+				manage: false,
+			},
+		},
+		{
+			path: '/science/:sid',
+			name: 'SingleScience',
+			component: SingleScience,
 			meta: {
 				title: '天文科普',
 				manage: false,
