@@ -110,7 +110,6 @@ module.exports = {
 				'28px': '28px',
 				'29px': '29px',
 				'64px': '64px',
-				'77px': '77px',
 				'1-8em': '1.8em',
 				'admin-m-content': 'calc( 100% - 2.75rem )',
 			},

@@ -1,9 +1,11 @@
 import { z } from 'zod';
 import { nanoIdSchema } from '../dto/id.dto';
 
-const emailBase = z.string().email().min(6).max(20);
-const passBase = z.string().min(6).max(20);
-const namesBase = z.string().min(3).max(20);
+export const LOGIN_INPUT_MAX_LENGTH = 20;
+
+const emailBase = z.string().email({ message: '請提供有效的 email' }).min(6, { message: '至少需要 6 個字元' }).max(LOGIN_INPUT_MAX_LENGTH, { message: `email 不能超過 ${LOGIN_INPUT_MAX_LENGTH} 個字元` });
+const passBase = z.string().min(6, { message: '至少需要 6 個字元' }).max(LOGIN_INPUT_MAX_LENGTH, { message: `不能超過 ${LOGIN_INPUT_MAX_LENGTH} 個字元` });
+const namesBase = z.string().min(3, { message: '至少需要 3 個字元' }).max(LOGIN_INPUT_MAX_LENGTH, { message: `不能超過 ${LOGIN_INPUT_MAX_LENGTH} 個字元` });
 
 const authBase = z.object({
 	email: emailBase,
@@ -20,8 +22,8 @@ const userBase = z.object({
 export const userBaseFitSchema = userBase.omit({ password: true });
 
 export const tokenGroupSchema = z.object({
-	accessToken: z.string().min(20, 'Access Token must be at least 20 characters long'),
-	refreshToken: z.string().min(20, 'Refresh Token must be at least 20 characters long'),
+	accessToken: z.string().min(20, 'Access Token 必須為 20 個字元'),
+	refreshToken: z.string().min(20, 'Refresh Token 必須為 20 個字元'),
 });
 
 export const refreshTokenSchema = tokenGroupSchema.pick({ refreshToken: true }).strict();

@@ -217,6 +217,8 @@ export default antfu(
 						'post-grid-items',
 						'post-grid-item',
 						'oops-before',
+						'admin-login-svg-obj',
+						'errors-tip',
 					],
 				},
 			],

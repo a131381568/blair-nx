@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+export const systemErrorSchema = z.object({
+	code: z.number().int().min(100).max(600),
+	name: z.string(),
+	timestamp: z.string().refine(val => !Number.isNaN(Date.parse(val)), {
+		message: '須為時間戳記格式', // Invalid timestamp format
+	}),
+});
+
 export const apiResponseSchema = z.object({
 	success: z.boolean(),
 	data: z.unknown(),
@@ -17,3 +25,5 @@ export const createApiResponse = <T>(
 	data,
 	message,
 });
+
+export type SystemErrorDto = z.infer<typeof systemErrorSchema>;

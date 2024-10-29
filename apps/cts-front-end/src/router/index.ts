@@ -10,6 +10,8 @@ import Stargazing from '@ctsf-src/views/Stargazing.vue';
 import Facilities from '@ctsf-src/views/Facilities.vue';
 import Search from '@ctsf-src/views/Search.vue';
 import Archive from '@ctsf-src/views/Archive.vue';
+import Login from '@ctsf-src/views/admin/Login.vue';
+import Board from '@ctsf-src/views/admin/Board.vue';
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -106,6 +108,25 @@ const router = createRouter({
 			meta: {
 				title: '標籤',
 				manage: false,
+			},
+		},
+		// admin pages
+		{
+			path: '/login',
+			name: 'Login',
+			component: Login,
+			meta: {
+				title: '後台系統登入',
+				manage: true,
+			},
+		},
+		{
+			path: '/board',
+			name: 'Board',
+			component: Board,
+			meta: {
+				title: '後台系統管理',
+				manage: true,
 			},
 		},
 		{

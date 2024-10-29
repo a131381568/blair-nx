@@ -20,10 +20,10 @@ export class AuthService {
 		if (hasMail && userData && userData.password) {
 			const passIsSame = await compare(data.password, userData.password);
 			if (!passIsSame)
-				return { userInfo: null, msg: 'Password incorrect' };
-			return { userInfo: userData, msg: 'ValidateUser success' };
+				return { userInfo: null, msg: '密碼不正確' }; // Password incorrect
+			return { userInfo: userData, msg: '驗證成功' }; // ValidateUser success
 		}
-		return { userInfo: null, msg: 'Validation error' };
+		return { userInfo: null, msg: '驗證失敗' }; // Validation error
 	}
 
 	async getAllToken({ data }: { data: GetTokenDto }) {
@@ -41,7 +41,7 @@ export class AuthService {
 		);
 
 		if (err)
-			return 'Generate refresh token fail';
+			return '生成 refresh token 失敗'; // Generate refresh token fail
 
 		return { accessToken: this.jwtService.sign({ email: payload.email, nanoId: payload.nanoId }) };
 	}
