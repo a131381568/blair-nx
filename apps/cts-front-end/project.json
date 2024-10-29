@@ -76,6 +76,13 @@
 				"cwd": "apps/{projectName}",
 				"command": "eslint ."
 			}
+		},
+		"lint:fix": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/{projectName}",
+				"command": "eslint . --fix"
+			}
 		}
 	},
 	"tags": ["type:front_app", "publish:false", "class:cts"]

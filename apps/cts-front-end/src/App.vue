@@ -1,21 +1,39 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
+import type { ApiResponse, PageListDto } from '@cts-shared';
+import { queryClient } from '@ctsf-src/services/utils/vue-query-client';
+import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
+import { useGlobalStore } from '@ctsf-src/stores/global';
 import BgStar from './components/svg/BgStar.vue';
 import Loading from './components/Loading.vue';
 // import Enter from './components/Enter.vue';
+
+const globalStore = useGlobalStore();
+const { updatePageInfo } = globalStore;
 
 const el = ref<HTMLElement | null>(null);
 const isLoading = ref(true);
 const getFirstEnter = ref(false);
 
+const { data: pageInfoData } = queryClient.getPageInfoList.useQuery<
+	vueQueryRes<ApiResponse<PageListDto>>
+>(['getPageInfoList'], () => ({}),	{
+	staleTime: Infinity,
+});
+
 setTimeout(() => (getFirstEnter.value = true), 200);
 setTimeout(() => (isLoading.value = false), 500);
+
+watchEffect(() => {
+	if (pageInfoData.value && pageInfoData.value.status === 200)
+		updatePageInfo(pageInfoData.value.body.data);
+});
 </script>
 
 <template>
 	<div
 		ref="el"
-		class="relative overflow-y-auto overflow-x-hidden bg-admin-featured bg-cover bg-center bg-no-repeat"
+		class="relative overflow-y-auto overflow-x-hidden bg-admin-featured bg-cover bg-fixed bg-center bg-no-repeat"
 	>
 		<router-view />
 		<div

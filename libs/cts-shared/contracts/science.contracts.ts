@@ -1,12 +1,13 @@
 import { z } from 'zod';
 import { initContract } from '@ts-rest/core';
+import type { ClientInferRequest } from '@ts-rest/core';
 import { createScienceSchema, scienceItemBase, scienceQueryPartialSchema, sciencetWithPagiSchema } from '../schemas/science.schemas';
 import { nanoIdSchema } from '../dto/id.dto';
 import { apiResponseSchema } from '../dto/api-response.dto';
 
 const c = initContract();
 
-export const scienceContract = c.router({
+const scienceContract = c.router({
 	getScienceList: {
 		method: 'GET',
 		path: '/science',
@@ -70,3 +71,6 @@ export const scienceContract = c.router({
 		summary: 'delete single science item',
 	},
 });
+
+export type ScienceContract = ClientInferRequest<typeof scienceContract>;
+export { scienceContract };

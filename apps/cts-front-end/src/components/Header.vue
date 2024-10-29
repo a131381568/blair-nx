@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-// import { useRoute } from 'vue-router';
 import HeaderLogo from './svg/HeaderLogo.vue';
 
 const menuList = ref([
@@ -54,7 +53,8 @@ const activeTopic = computed(() => ({
 }));
 
 const toggleModal = () => {
-	//
+	modalShow.value = !modalShow.value;
+	modal.value = !modal.value;
 };
 </script>
 

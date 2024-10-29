@@ -1,91 +1,80 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { get } from 'radash';
+import { computed, ref, watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { useGlobalStore } from '@ctsf-src/stores/global';
 import { useToggle } from '@vueuse/core';
-import type { PaginationDto, PostCategoryFitDto, ScienceItemDto } from '@cts-shared';
-import { paginationDefaultData } from '@cts-shared';
-// import { getFetchScienceList } from '@ctsf-src/services/modules/scienceModule';
+import type { ApiResponse, PostCategoriesDto, ScienceItemDto, ScienceListWithPagiDto } from '@cts-shared';
+import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
+import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
+import { stripMarkdown } from '@ctsf-src/helper/markDown';
 import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';
-// import { useRoute } from 'vue-router';
-// getFetchScienceList();
 
-const TITLE_INFO = {
-	title: '天文科普',
-	subTitle: 'Science',
-};
-const API_RES = {
-	success: false,
-	data: {
-		list: [],
-		meta: {
-			isFirstPage: false,
-			isLastPage: false,
-			currentPage: 0,
-			previousPage: null,
-			nextPage: null,
-			pageCount: 0,
-			totalCount: 0,
-		},
-		postCategory: [],
-	},
-};
-// const route = useRoute();
-// const routeName = String(route.name);
+const route = useRoute();
+const globalStore = useGlobalStore();
+const { currentPageMeta } = storeToRefs(globalStore);
+const [toggleFilterVal, toggleFilter] = useToggle();
+
 const getFirstEnter = ref(false);
-
 const changeGridState = ref(false);
-const postList = ref<ScienceItemDto[]>([]);
-const sciencePageInfo = ref<PaginationDto>(paginationDefaultData);
+const postListRef = ref<ScienceItemDto[]>([]);
+const currentPage = ref(1);
+const selectCat = ref('all');
 
-// 點選篩選列
-const selectCat = ref('');
-const filterCategories = ref<PostCategoryFitDto[]>([]);
-const selectName = computed(() => {
-	// const active = store.changeCatName(filterCategories.value, selectCat.value);
-	return '';
+const { data: categoriesAPI } = queryClient.getPostCategories.useQuery<
+	vueQueryRes<ApiResponse<PostCategoriesDto>>
+>(['getPostCategories'], () => ({}),	{
+	staleTime: STALE_TIME,
 });
 
-const defaultData = async () => {
-	const originalList = postList.value;
-	const pushList = originalList.concat(API_RES.data.list);
-	// 設置文章區塊
-	postList.value = pushList;
-	sciencePageInfo.value = API_RES.data.meta;
-};
+const { data: scienceListAPI } = queryClient.getScienceList.useQuery<
+	vueQueryRes<ApiResponse<ScienceListWithPagiDto>>
+>(['getScienceList', currentPage, selectCat], () => ({
+	query: {
+		page: String(currentPage.value),
+		category: selectCat.value,
+	},
+}),	{
+	staleTime: STALE_TIME,
+});
 
-// 切換選單
-const [toggleFilterVal, toggleFilter] = useToggle();
 const reSearchData = (catId: string) => {
-	selectCat.value = catId;
 	changeGridState.value = true;
 	setTimeout(() => {
-		postList.value = [];
-		defaultData();
+		selectCat.value = catId;
+		currentPage.value = 1;
+		postListRef.value = [];
 		changeGridState.value = false;
-	}, 500);
+	}, 100);
 };
 const selectDropCat = (catId: string) => {
 	toggleFilterVal.value = false;
 	reSearchData(catId);
 };
 const closeDefaultMenu = () => {
-	if (toggleFilterVal.value) {
-		toggleFilterVal.value = false;
-	}
+	toggleFilterVal.value && (toggleFilterVal.value = false);
 };
 
-// 取得篩選列
-const getArtistsCategories = async () => {
-	// const filterBar = API_RES.data.postCategory.filter(item => item.post_category_id !== 'story');
-	filterCategories.value = [];
-};
+const loadMoreData = () => (currentPage.value += 1);
 
-getArtistsCategories();
+watchEffect(() => {
+	if (scienceListAPI.value?.status === 200)
+		postListRef.value = [...postListRef.value, ...scienceListAPI.value.body.data.list];
+});
 
-defaultData();
-
-const loadMoreData = () => defaultData();
+const postCategories = computed(() => {
+	if (categoriesAPI.value?.status === 200)
+		return categoriesAPI.value.body.data.filter((item, index) => item.postCategoryId !== 'story' && index < 8);
+	return [];
+});
+const scienceMeta = computed(() => currentPageMeta.value(String(route.name)));
+const selectCatName = computed(() => {
+	const currentCat = postCategories.value.find(item => item.postCategoryId === selectCat.value);
+	return get(currentCat, 'postCategoryName', 'all');
+});
 </script>
 
 <template>
@@ -95,19 +84,19 @@ const loadMoreData = () => defaultData();
 		@click.self="closeDefaultMenu()"
 	>
 		<TitleBox
-			:page-title="TITLE_INFO.title"
-			:page-sub-title="TITLE_INFO.subTitle"
+			:page-title="scienceMeta.pageTitle"
+			:page-sub-title="scienceMeta.subPageTitle"
 		/>
 		<div
 			class="science-filter-bar animate__animated animate__fadeIn mb-16 mt-6 hidden w-10/12 laptop:inline-flex middle-pc:mb-20 middle-pc:mt-16"
 			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
 		>
 			<ul
-				v-if="filterCategories.length && filterCategories"
+				v-if="postCategories.length && postCategories"
 				class="flex"
 			>
 				<li
-					v-for="(val, key) in filterCategories"
+					v-for="(val, key) in postCategories"
 					:key="key"
 					class="science-filter-item w-auto min-w-min"
 					@click="reSearchData(String(val.postCategoryId))"
@@ -146,7 +135,7 @@ const loadMoreData = () => defaultData();
 				type="button"
 				@click.prevent="toggleFilter()"
 			>
-				{{ selectName }}
+				{{ selectCatName }}
 				<svg
 					class="absolute right-4 ml-2 size-4"
 					fill="none"
@@ -166,11 +155,11 @@ const loadMoreData = () => defaultData();
 			<div
 				v-show="toggleFilterVal"
 				id="dropdown"
-				class="divide-gray-100 absolute z-10 w-200px divide-y bg-main-color-light"
+				class="absolute z-10 w-200px divide-y divide-gray-100 bg-main-color-light"
 			>
 				<ul class="cursor-pointer py-1 text-sm text-main-color-black">
 					<li
-						v-for="(val, key) in filterCategories"
+						v-for="(val, key) in postCategories"
 						:key="key"
 						class="block px-4 py-2 tracking-wide-content hover:text-sub-color-dark"
 						@click.stop="selectDropCat(String(val.postCategoryId))"
@@ -182,17 +171,17 @@ const loadMoreData = () => defaultData();
 		</div>
 		<!-- post grid -->
 		<div
-			v-if="postList.length > 0 && postList"
+			v-if="postListRef.length"
 			class="animate__animated animate__fadeInUp grid grid-cols-2 overflow-hidden mobile:grid-cols-1 mobile:gap-5 h-table:w-10/12 h-table:gap-12 laptop:grid-cols-3 pro-pc:gap-24"
 			:class="[{ 'animate__delay-4s': getFirstEnter }, { animate__fadeOut: changeGridState }]"
 		>
 			<div
-				v-for="(val, key) in postList"
+				v-for="(val, key) in postListRef"
 				:key="key"
 			>
 				<!-- card -->
 				<div
-					class="grid-card animate__animated animate__fadeInUp h-96 border border-white/0 px-8 py-12 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0"
+					class="animate__animated animate__fadeInUp grid-card h-96 border border-white/0 px-8 py-12 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0"
 					:class="[
 						{ 'bg-opacity/18': (key + 1) % 3 === 0 },
 						{ 'bg-opacity/12': (key + 3) % 3 === 1 },
@@ -206,12 +195,7 @@ const loadMoreData = () => defaultData();
 					<!-- date & cat -->
 					<p class="mt-1 text-tiny text-main-color-light">
 						{{ val.updateTime }},
-						<span
-							v-if="!val.postCategoryId"
-							class="grid-card-tag grid-card-tag-nothing text-lg"
-						>未分類</span>
 						<router-link
-							v-else
 							:to="`/archive/${val.postCategoryId}`"
 							class="grid-card-tag text-sub-color-light hover:text-sp-color-light"
 						>
@@ -219,12 +203,12 @@ const loadMoreData = () => defaultData();
 						</router-link>
 					</p>
 					<!-- des -->
-					<v-md-preview
+					<p
 						class="grid-des-box mt-5 font-light text-main-color-light"
-						:text="val.content"
 						height="400px"
-					/>
-
+					>
+						{{ stripMarkdown(String(val.content)) }}
+					</p>
 					<!-- link -->
 					<router-link
 						class="btn draw meet grid-card-read mt-10 inline-block"
@@ -236,16 +220,16 @@ const loadMoreData = () => defaultData();
 			</div>
 		</div>
 		<div
-			v-show="!postList.length"
+			v-show="!postListRef.length"
 			class="h-screen h-table:w-10/12"
 		/>
 		<div
-			v-show="sciencePageInfo.nextPage && postList.length"
+			v-show="scienceListAPI?.body.data.meta.nextPage"
 			class="text-center h-table:w-10/12"
 		>
 			<button
 				class="btn draw meet mt-6 mobile:mt-11 h-table:mt-24"
-				@click.prevent="loadMoreData()"
+				@click.prevent="loadMoreData"
 			>
 				<span>加載更多</span>
 			</button>
