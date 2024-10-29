@@ -212,6 +212,8 @@ export default antfu(
 						'search-btn',
 						'search-nothing-tip',
 						'search-loadmore',
+						'search-items',
+						'search-item',
 						'post-grid-items',
 						'post-grid-item',
 					],

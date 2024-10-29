@@ -9,6 +9,7 @@ import SingleStory from '@ctsf-src/views/SingleStory.vue';
 import Stargazing from '@ctsf-src/views/Stargazing.vue';
 import Facilities from '@ctsf-src/views/Facilities.vue';
 import Search from '@ctsf-src/views/Search.vue';
+import Archive from '@ctsf-src/views/Archive.vue';
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -95,6 +96,15 @@ const router = createRouter({
 			component: Search,
 			meta: {
 				title: '搜尋頁面',
+				manage: false,
+			},
+		},
+		{
+			path: '/archive/:tagid',
+			name: 'Archive',
+			component: Archive,
+			meta: {
+				title: '標籤',
 				manage: false,
 			},
 		},
