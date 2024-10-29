@@ -216,6 +216,7 @@ export default antfu(
 						'search-item',
 						'post-grid-items',
 						'post-grid-item',
+						'oops-before',
 					],
 				},
 			],
