@@ -8,6 +8,7 @@ import Story from '@ctsf-src/views/Story.vue';
 import SingleStory from '@ctsf-src/views/SingleStory.vue';
 import Stargazing from '@ctsf-src/views/Stargazing.vue';
 import Facilities from '@ctsf-src/views/Facilities.vue';
+import Search from '@ctsf-src/views/Search.vue';
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -85,6 +86,15 @@ const router = createRouter({
 			component: Facilities,
 			meta: {
 				title: '天文設施',
+				manage: false,
+			},
+		},
+		{
+			path: '/search',
+			name: 'Search',
+			component: Search,
+			meta: {
+				title: '搜尋頁面',
 				manage: false,
 			},
 		},

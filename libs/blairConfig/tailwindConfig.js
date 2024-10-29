@@ -17,7 +17,6 @@ module.exports = {
 				'demo-main': '#104a65',
 				'demo-sub': '#e9d6bd',
 				'transparent': 'transparent',
-				'gray': '#808080',
 				'sp-color-light': '#80b884',
 				'sp-color-dark': '#00910a',
 				'main-color-light': '#c5c5ca',

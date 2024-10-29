@@ -155,7 +155,7 @@ const selectCatName = computed(() => {
 			<div
 				v-show="toggleFilterVal"
 				id="dropdown"
-				class="divide-gray-100 absolute z-10 w-200px divide-y bg-main-color-light"
+				class="absolute z-10 w-200px divide-y divide-gray-100 bg-main-color-light"
 			>
 				<ul class="cursor-pointer py-1 text-sm text-main-color-black">
 					<li

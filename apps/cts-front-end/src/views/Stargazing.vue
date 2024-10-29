@@ -156,7 +156,7 @@ const stargazingMeta = computed(() => currentPageMeta.value(String(route.name)))
 		<div
 			v-show="togglePlaceVal"
 			id="dropdown"
-			class="divide-gray-100 absolute z-10 w-full divide-y bg-main-color-light"
+			class="absolute z-10 w-full divide-y divide-gray-100 bg-main-color-light"
 		>
 			<ul class="h-[200px] cursor-pointer overflow-y-auto py-1 text-sm text-main-color-black">
 				<li
