@@ -55,13 +55,13 @@ watchEffect(() => {
 
 <template>
 	<Header />
-	<div class="mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72 flex-wrap items-start justify-center px-8 pb-32">
+	<div class="flex-wrap items-start justify-center px-8 pb-32 mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72">
 		<TitleBox
 			:page-title="archiveMeta.pageTitle"
 			:page-sub-title="archiveMeta.subPageTitle"
 		/>
 		<div
-			class="animate__animated animate__flipInY w-table:block w-table:w-5/12 middle-pc:w-4/12 mt-20 hidden h-full"
+			class="animate__animated animate__flipInY mt-20 hidden h-full w-table:block w-table:w-5/12 middle-pc:w-4/12"
 			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
 		>
 			<img
@@ -71,7 +71,7 @@ watchEffect(() => {
 		</div>
 		<!-- post grid -->
 		<div
-			class="search-items animate__animated animate__fadeInUp mobile:w-full w-table:mt-36 w-table:w-5/12 middle-pc:w-6/12 grid w-10/12 grid-cols-1 overflow-hidden"
+			class="search-items animate__animated animate__fadeInUp grid w-10/12 grid-cols-1 overflow-hidden mobile:w-full w-table:mt-36 w-table:w-5/12 middle-pc:w-6/12"
 			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
 		>
 			<div
@@ -81,11 +81,11 @@ watchEffect(() => {
 			>
 				<router-link :to="`/science/${val.postCategoryId}`">
 					<!-- card -->
-					<div class="bg-white/6 laptop:py-8 laptop:px-16 mb-1 border border-white/0 p-6 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0">
-						<p class="h-table:text-3xl text-xl font-normal text-white">
+					<div class="mb-1 border border-white/0 bg-white/6 p-6 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0 laptop:px-16 laptop:py-8">
+						<p class="text-xl font-normal text-white h-table:text-3xl">
 							{{ val.title }}
 						</p>
-						<p class="text-main-color-light h-table:mt-5 mt-1 truncate text-lg font-light">
+						<p class="mt-1 truncate text-lg font-light text-main-color-light h-table:mt-5">
 							{{ stripMarkdown(String(val.content)) }}
 						</p>
 					</div>
