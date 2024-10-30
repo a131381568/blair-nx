@@ -11,6 +11,8 @@ import type { ApiResponse, SystemErrorDto, TokenGroupDto } from '@cts-shared';
 import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
 import { queryClient } from '@ctsf-src/services/utils/vue-query-client';
 import { setCookie } from '@blair-nx-composables';
+import { AUTH_CONFIG } from '@ctsf-src/services/utils/config';
+import { linkBoardPage } from '@ctsf-src/helper/customCtsRoute';
 
 const { showMsg } = useMessageModal();
 
@@ -49,9 +51,9 @@ const validateForm = useDebounceFn(async () => {
 		}) as vueQueryRes<ApiResponse<TokenGroupDto | SystemErrorDto>>;
 
 		if (result.status === 201) {
-			setCookie('accessToken', get(result.body.data, 'accessToken', ''), 0.01042);
-			setCookie('refreshToken', get(result.body.data, 'refreshToken', ''), 7);
-			router.push({ path: '/board' });
+			setCookie(AUTH_CONFIG.ACCESS_TOKEN_KEY, get(result.body.data, AUTH_CONFIG.ACCESS_TOKEN_KEY, ''), AUTH_CONFIG.TOKEN_EXPIRY_DAYS);
+			setCookie(AUTH_CONFIG.REFRESH_TOKEN_KEY, get(result.body.data, AUTH_CONFIG.REFRESH_TOKEN_KEY, ''), AUTH_CONFIG.REFRESH_EXPIRY_DAYS);
+			linkBoardPage(router);
 		}
 		else {
 			showMsg('error', get(result.body, 'message', '登入失敗'));
