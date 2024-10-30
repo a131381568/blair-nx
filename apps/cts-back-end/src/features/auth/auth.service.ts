@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { pick, tryit } from 'radash';
-import { AccessTokenDto, GetTokenDto, LoginInputDto, RefreshTokenDto, ValidateUserResDto } from '@cts-shared';
+import { AUTH_CONFIG, AccessTokenDto, GetTokenDto, LoginInputDto, RefreshTokenDto, ValidateUserResDto } from '@cts-shared';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -29,8 +29,8 @@ export class AuthService {
 	async getAllToken({ data }: { data: GetTokenDto }) {
 		const payload = pick(data, ['email', 'nanoId']);
 		return {
-			accessToken: this.jwtService.sign(payload), // auth.module.ts 預設 15m
-			refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' }),
+			accessToken: this.jwtService.sign(payload), // auth.module.ts (expiresIn: JwtModule.signOptions)
+			refreshToken: this.jwtService.sign(payload, { expiresIn: AUTH_CONFIG.REFRESH_EXPIRY }),
 		};
 	}
 

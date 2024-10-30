@@ -4,14 +4,13 @@ import { useRouter } from 'vue-router';
 import LoginLogo from '@ctsf-src/components/svg/LoginLogo.vue';
 import Footer from '@ctsf-src/components/Footer.vue';
 import { useDebounceFn } from '@vueuse/core';
-import { LOGIN_INPUT_MAX_LENGTH, loginInputSchema } from '@cts-shared';
+import { AUTH_CONFIG, LOGIN_INPUT_MAX_LENGTH, loginInputSchema } from '@cts-shared';
 import { useMessageModal } from '@blair-nx-ui';
 import { get } from 'radash';
 import type { ApiResponse, SystemErrorDto, TokenGroupDto } from '@cts-shared';
 import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
 import { queryClient } from '@ctsf-src/services/utils/vue-query-client';
 import { setCookie } from '@blair-nx-composables';
-import { AUTH_CONFIG } from '@ctsf-src/services/utils/config';
 import { linkBoardPage } from '@ctsf-src/helper/customCtsRoute';
 
 const { showMsg } = useMessageModal();
@@ -51,8 +50,9 @@ const validateForm = useDebounceFn(async () => {
 		}) as vueQueryRes<ApiResponse<TokenGroupDto | SystemErrorDto>>;
 
 		if (result.status === 201) {
-			setCookie(AUTH_CONFIG.ACCESS_TOKEN_KEY, get(result.body.data, AUTH_CONFIG.ACCESS_TOKEN_KEY, ''), AUTH_CONFIG.TOKEN_EXPIRY_DAYS);
-			setCookie(AUTH_CONFIG.REFRESH_TOKEN_KEY, get(result.body.data, AUTH_CONFIG.REFRESH_TOKEN_KEY, ''), AUTH_CONFIG.REFRESH_EXPIRY_DAYS);
+			const { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, TOKEN_EXPIRY, REFRESH_EXPIRY } = AUTH_CONFIG;
+			setCookie(ACCESS_TOKEN_KEY, get(result.body.data, ACCESS_TOKEN_KEY, ''), TOKEN_EXPIRY);
+			setCookie(REFRESH_TOKEN_KEY, get(result.body.data, REFRESH_TOKEN_KEY, ''), REFRESH_EXPIRY);
 			linkBoardPage(router);
 		}
 		else {

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { AUTH_CONFIG } from '@cts-shared';
 import { UsersModule } from '../users/users.module'; // Import UsersModule to access user service
 import { PrismaModule } from '../shared/prisma.module';
 import { AuthService } from './auth.service';
@@ -14,7 +15,7 @@ import { AuthController } from './auth.controller';
 		PassportModule,
 		JwtModule.register({
 			secret: process.env.JWT_SECRET, // Use env var for production
-			signOptions: { expiresIn: '15m' }, // Access token expiration time
+			signOptions: { expiresIn: AUTH_CONFIG.TOKEN_EXPIRY }, // Access token expiration time
 		}),
 	],
 	providers: [AuthService, JwtStrategy],

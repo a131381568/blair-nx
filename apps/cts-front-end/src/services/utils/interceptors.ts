@@ -1,7 +1,7 @@
 import type { AxiosError } from 'axios';
 import { isString } from 'radash';
 import { getToken, setCookie } from '@blair-nx-composables';
-import { AUTH_CONFIG } from '@ctsf-src/services/utils/config';
+import { AUTH_CONFIG } from '@cts-shared';
 import { apiFetchRefreshAuth } from '@ctsf-src/services/apis/authApi';
 import { hrefLoginPage } from '../../helper/customCtsRoute';
 import { axiosInstance, isRefreshing, onRefreshed, refreshSubscribers, resetRefreshState } from './instances';
@@ -41,7 +41,7 @@ axiosInstance.interceptors.response.use(
 				if (isString(refreshToken)) {
 					const response = await apiFetchRefreshAuth(refreshToken);
 					const { accessToken } = response.data.data;
-					setCookie(AUTH_CONFIG.ACCESS_TOKEN_KEY, accessToken, AUTH_CONFIG.TOKEN_EXPIRY_DAYS);
+					setCookie(AUTH_CONFIG.ACCESS_TOKEN_KEY, accessToken, AUTH_CONFIG.TOKEN_EXPIRY);
 					onRefreshed(accessToken);
 				}
 				return axiosInstance(originalRequest);
