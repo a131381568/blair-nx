@@ -12,6 +12,7 @@ import Search from '@ctsf-src/views/Search.vue';
 import Archive from '@ctsf-src/views/Archive.vue';
 import Login from '@ctsf-src/views/admin/Login.vue';
 import Board from '@ctsf-src/views/admin/Board.vue';
+import UserList from '@ctsf-src/views/admin/UserList.vue';
 
 const router = createRouter({
 	history: createWebHistory(),
@@ -126,6 +127,15 @@ const router = createRouter({
 			component: Board,
 			meta: {
 				title: '後台系統管理',
+				manage: true,
+			},
+		},
+		{
+			path: '/users',
+			name: 'Users',
+			component: UserList,
+			meta: {
+				title: '管理者列表',
 				manage: true,
 			},
 		},
