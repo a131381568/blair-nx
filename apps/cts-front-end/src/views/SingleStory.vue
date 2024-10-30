@@ -7,6 +7,7 @@ import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
 import type { ApiResponse, ScienceItemDto } from '@cts-shared';
 import { scienceItemBaseDefaultData } from '@cts-shared';
 import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
+import { linkNotFoundPage } from '@ctsf-src/helper/customCtsRoute';
 import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';
@@ -38,7 +39,7 @@ const { data: scienceDetailAPI } = queryClient.getScienceDetail.useQuery<
 	retry: false,
 	onError: (err) => {
 		if (err.status >= 400)
-			router.push('/notfound');
+			linkNotFoundPage(router);
 	},
 });
 
