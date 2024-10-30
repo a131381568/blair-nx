@@ -29,7 +29,7 @@ export class AuthService {
 	async getAllToken({ data }: { data: GetTokenDto }) {
 		const payload = pick(data, ['email', 'nanoId']);
 		return {
-			accessToken: this.jwtService.sign(payload),
+			accessToken: this.jwtService.sign(payload), // auth.module.ts 預設 15m
 			refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' }),
 		};
 	}
