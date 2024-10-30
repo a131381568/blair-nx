@@ -6,6 +6,7 @@ import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
 import { paginationDefaultData } from '@cts-shared';
 import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
 import { stripMarkdown } from '@ctsf-src/helper/markDown';
+import { linkNotFoundPage } from '@ctsf-src/helper/customCtsRoute';
 import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';
@@ -23,7 +24,7 @@ const archiveMeta = computed(() => ({
 	pageRoute: 'Archive',
 }));
 
-const goToNotFound = () => router.push('/notfound');
+const goToNotFound = () => linkNotFoundPage(router);
 
 const { data: searchTagQueryData } = queryClient.getScienceList.useQuery<
 	vueQueryRes<ApiResponse<ScienceListWithPagiDto>>
@@ -79,7 +80,7 @@ watchEffect(() => {
 				:key="key"
 				class="search-item animate__animated animate__fadeInUp"
 			>
-				<router-link :to="`/science/${val.postCategoryId}`">
+				<router-link :to="`/science/${val.postNanoId}`">
 					<!-- card -->
 					<div class="mb-1 border border-white/0 bg-white/6 p-6 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0 laptop:px-16 laptop:py-8">
 						<p class="text-xl font-normal text-white h-table:text-3xl">
