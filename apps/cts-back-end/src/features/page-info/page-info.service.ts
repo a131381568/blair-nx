@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { pick } from 'radash';
-import { PageListDto } from '@cts-shared';
+import { NanoIdDto, PageListDto, UpdatePageItemDto } from '@cts-shared';
 import { ExtendedPrismaClient, InjectPrismaClient } from '../shared/prisma.extension';
 
 @Injectable()
@@ -14,6 +14,14 @@ export class PageInfoService {
 		const res = await this.prisma.pageInfo.findMany({
 			orderBy: { pageId: 'asc' },
 		});
-		return res.map(item => pick(item, ['pageTitle', 'subPageTitle', 'pageRoute']));
+		return res.map(item => pick(item, ['pageTitle', 'subPageTitle', 'pageRoute', 'pageNanoId']));
+	}
+
+	async updatePageItem({ id, data }: { id: NanoIdDto; data: UpdatePageItemDto }): Promise<boolean> {
+		const { count } = await this.prisma.pageInfo.updateMany({
+			where: { pageNanoId: id },
+			data,
+		});
+		return Boolean(count);
 	}
 }

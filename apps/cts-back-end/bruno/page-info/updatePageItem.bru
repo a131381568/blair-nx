@@ -1,0 +1,33 @@
+meta {
+  name: updatePageItem
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{API_HOST}}/{{API_PREFIX}}/facilities/sG7_EBNryv
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
+}
+
+body:json {
+  {
+    "facilitiesTitle": "xxx南瀛天文教育館"
+  }
+}
+
+docs {
+  1. 驗證型別為 updateAboutInfoSchema
+  2. 可輸入參數(皆為字串)：
+     - visual,
+     - slogan,
+     - philosophy,
+     - quote,
+     - epilogue
+     
+  
+}
