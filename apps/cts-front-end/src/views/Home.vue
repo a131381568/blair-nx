@@ -2,17 +2,12 @@
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGlobalStore } from '@ctsf-src/stores/global';
+import { CLIENT_HOME_OFFLINE_DATA } from '@ctsf-src/constants/static-data';
 import Header from '../components/Header.vue';
 
 const globalStore = useGlobalStore();
 const { pageInfo: pageInfoData } = storeToRefs(globalStore);
 const getFirstEnter = ref(true);
-
-const DEFAULT_DATA = {
-	pageTitle: ['Stars', 'are', 'blind'],
-	subPageTitle: '往上看天上的星星而不是往下看你的腳，試圖理解你所看到的，思索宇宙為何存在，好奇一點。<p>&nbsp;</p>——史蒂芬・霍金',
-	pageRoute: 'Home',
-};
 
 const homeData = computed(() => {
 	const homeItem = pageInfoData.value.find(item => item.pageRoute === 'Home');
@@ -22,7 +17,7 @@ const homeData = computed(() => {
 			pageTitle: homeItem.pageTitle ? homeItem.pageTitle.split(' ') : [],
 		};
 	}
-	return DEFAULT_DATA;
+	return CLIENT_HOME_OFFLINE_DATA;
 });
 </script>
 
