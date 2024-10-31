@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { get } from 'radash';
+import { get, pick } from 'radash';
 import { storeToRefs } from 'pinia';
 import { useGlobalStore } from '@ctsf-src/stores/global';
-import { aboutQuery } from '@ctsf-src/services/apis/aboutApi';
+import { aboutMutation, aboutQuery } from '@ctsf-src/services/apis/aboutApi';
 import { pageMutation, pageQuery } from '@ctsf-src/services/apis/pageApi';
 import AdminSidebar from '@ctsf-src/components/AdminSidebar.vue';
 import Footer from '@ctsf-src/components/Footer.vue';
 import { useDebounceFn, watchTriggerable } from '@vueuse/core';
 import type { GetAboutInfoBaseDto } from '@cts-shared';
-import { ARTICLE_MAX_LENGTH, COMMON_ID_MAX_LENGTH, defaultAboutInfoData, mutationPageItemSchema } from '@cts-shared';
+import { ARTICLE_MAX_LENGTH, COMMON_ID_MAX_LENGTH, defaultAboutInfoData, mutationPageItemSchema, updateAboutInfoSchema } from '@cts-shared';
 import { useMessageModal } from '@blair-nx-ui';
 
 const route = useRoute();
@@ -18,14 +18,10 @@ const router = useRouter();
 const globalStore = useGlobalStore();
 const { updatePageInfo } = globalStore;
 const { pageInfo: pageInfoStoreData } = storeToRefs(globalStore);
-const { data: aboutAPI } = aboutQuery();
-const { data: pageInfoData, refetch } = pageQuery();
+const { data: aboutAPI, refetch: refetchAbout } = aboutQuery();
+const { data: pageInfoData, refetch: refetchPage } = pageQuery();
 const { showMsg } = useMessageModal();
 
-const homeSloganEditMode = ref(false);
-const aboutSloganEditMode = ref(false);
-const aboutQuoteEditMode = ref(false);
-const aboutEpilogueEditMode = ref(false);
 const aboutSloganColRef = ref<HTMLElement | null>(null);
 const editPageTitle = ref('');
 const editPageSubTitle = ref('');
@@ -36,13 +32,50 @@ const epilogueRef = ref('');
 const homeData = computed(() => pageInfoStoreData.value.find(item => item.pageRoute === 'Home'));
 const aboutData = ref<GetAboutInfoBaseDto>(defaultAboutInfoData);
 
-const homeInputInfo = ref({
+interface InputInfo {
+	placeholder: string;
+	editMode: boolean;
+	error: string;
+}
+
+interface SloganInputInfo {
+	pageTitle: InputInfo;
+	subPageTitle: InputInfo;
+	slogan: InputInfo;
+	philosophy: InputInfo;
+	quote: InputInfo;
+	epilogue: InputInfo;
+}
+
+const sloganInputInfo = ref<SloganInputInfo>({
 	pageTitle: {
 		placeholder: '主視覺標語',
+		editMode: false,
 		error: '',
 	},
 	subPageTitle: {
 		placeholder: '主視覺引言',
+		editMode: false,
+		error: '',
+	},
+	slogan: {
+		placeholder: '關於我們標語',
+		editMode: false,
+		error: '',
+	},
+	philosophy: {
+		placeholder: '關於我們理念',
+		editMode: false,
+		error: '',
+	},
+	quote: {
+		placeholder: '關於我們引言',
+		editMode: false,
+		error: '',
+	},
+	epilogue: {
+		placeholder: '關於我們結語',
+		editMode: false,
 		error: '',
 	},
 });
@@ -51,68 +84,97 @@ const homeInputInfo = ref({
 const setEditMode = (refName: string) => {
 	switch (refName) {
 		case 'homeSloganForm':
-			homeSloganEditMode.value = true;
+			sloganInputInfo.value.pageTitle.editMode = true;
 			editPageTitle.value = homeData.value?.pageTitle || '';
 			editPageSubTitle.value = homeData.value?.subPageTitle || '';
 			break;
 		case 'aboutSloganForm':
-			aboutSloganEditMode.value = true;
+			sloganInputInfo.value.slogan.editMode = true;
+			sloganRef.value = aboutData.value.slogan || '';
+			philosophyRef.value = aboutData.value.philosophy || '';
 			break;
 		case 'aboutQuoteForm':
-			aboutQuoteEditMode.value = true;
+			sloganInputInfo.value.quote.editMode = true;
+			quoteRef.value = aboutData.value.quote || '';
 			break;
 		case 'aboutEpilogueForm':
-			aboutEpilogueEditMode.value = true;
+			sloganInputInfo.value.epilogue.editMode = true;
+			epilogueRef.value = aboutData.value.epilogue || '';
 			break;
 		default:
 			break;
 	}
 };
 
-const submitHomeSloganForm = async () => {
-	const UPDATE_PAYLOAD = {
+const submitAboutSloganForm = async (relevantList: (keyof SloganInputInfo)[]) => {
+	const isAboutForm = !relevantList.includes('pageTitle') && !relevantList.includes('subPageTitle');
+	const updateSchema = isAboutForm ? updateAboutInfoSchema : mutationPageItemSchema;
+
+	const allAboutInputVal = {
+		slogan: sloganRef.value,
+		philosophy: philosophyRef.value,
+		quote: quoteRef.value,
+		epilogue: epilogueRef.value,
+	};
+
+	const aboutPayload = pick(allAboutInputVal, relevantList.filter((item): item is keyof Omit<SloganInputInfo, 'pageTitle' | 'subPageTitle'> => {
+		return !['pageTitle', 'subPageTitle'].includes(item);
+	}));
+
+	const pagePayload = {
 		pageTitle: editPageTitle.value,
 		subPageTitle: editPageSubTitle.value,
 		pageRoute: get(homeData.value, 'pageRoute', 'Home'),
 		pageNanoId: get(homeData.value, 'pageNanoId', ''),
 	};
 
-	const { success, error } = mutationPageItemSchema.safeParse(UPDATE_PAYLOAD);
+	const { success, error } = updateSchema.safeParse(isAboutForm ? aboutPayload : pagePayload);
+
 	// 初始化錯誤訊息
-	homeInputInfo.value.pageTitle.error = '';
-	homeInputInfo.value.subPageTitle.error = '';
+	relevantList.forEach((itemName: keyof SloganInputInfo) => {
+		sloganInputInfo.value[itemName].error = '';
+	});
 
 	if (!success && error) {
 		error.errors.forEach((info) => {
-			if (info.path.includes('pageTitle'))
-				homeInputInfo.value.pageTitle.error = info.message;
-			if (info.path.includes('subPageTitle'))
-				homeInputInfo.value.subPageTitle.error = info.message;
+			relevantList.forEach((itemName: keyof SloganInputInfo) => {
+				if (info.path.includes(itemName))
+					sloganInputInfo.value[itemName].error = info.message;
+			});
 		});
 	}
 
 	if (success) {
-		const homeInfoMutationResult = await pageMutation(UPDATE_PAYLOAD);
-		const isSuccess = homeInfoMutationResult.status === 200;
+		const mutationResult = isAboutForm ? await aboutMutation(aboutPayload) : await pageMutation(pagePayload);
+		const isSuccess = mutationResult.status === 200;
 		if (isSuccess) {
-			await refetch();
-			if (pageInfoData.value && pageInfoData.value.status === 200)
+			isAboutForm ? await refetchAbout() : await refetchPage();
+			// 頁面的 api 才去更新 store
+			if (!isAboutForm && pageInfoData.value && pageInfoData.value.status === 200)
 				updatePageInfo(pageInfoData.value.body.data);
-			homeSloganEditMode.value = false;
+
+			relevantList.forEach((itemName: keyof SloganInputInfo) => {
+				sloganInputInfo.value[itemName].editMode = false;
+			});
 		}
 		showMsg(
 			isSuccess ? 'success' : 'error',
-			get(homeInfoMutationResult.body, isSuccess ? 'data' : 'message', ''),
+			get(mutationResult.body, isSuccess ? 'data' : 'message', ''),
 			'更新訊息',
 		);
 	}
 };
 
-const setConfirmModal = useDebounceFn(async (formName: string) => {
-	if (formName === 'homeSloganForm') {
-		submitHomeSloganForm();
-	};
-}, 1000);
+const setConfirmModal = useDebounceFn((formName: string) => {
+	if (formName === 'homeSloganForm')
+		submitAboutSloganForm(['pageTitle', 'subPageTitle']);
+	if (formName === 'aboutSloganForm')
+		submitAboutSloganForm(['slogan', 'philosophy']);
+	if (formName === 'aboutQuoteForm')
+		submitAboutSloganForm(['quote']);
+	if (formName === 'aboutEpilogueForm')
+		submitAboutSloganForm(['epilogue']);
+}, 400);
 
 // watch
 const { trigger: watchAboutQuery } = watchTriggerable(() => route.query.edit === 'about', (isAbout) => {
@@ -127,9 +189,8 @@ nextTick(() => {
 });
 
 watchEffect(() => {
-	if (aboutAPI.value?.status === 200) {
+	if (aboutAPI.value?.status === 200)
 		aboutData.value = aboutAPI.value.body.data;
-	}
 });
 </script>
 
@@ -151,31 +212,22 @@ watchEffect(() => {
 							首頁—主視覺文字
 						</h2>
 						<button
-							v-if="!homeSloganEditMode"
-							class="admin-sbtn"
-							@click.prevent="setEditMode('homeSloganForm')"
-						>
-							編輯標語
-						</button>
-						<button
-							v-if="homeSloganEditMode"
+							v-if="sloganInputInfo.pageTitle.editMode"
 							class="admin-edit-sbtn"
 							@click.prevent="setConfirmModal('homeSloganForm')"
 						>
 							儲存標語
 						</button>
+						<button
+							v-else
+							class="admin-sbtn"
+							@click.prevent="setEditMode('homeSloganForm')"
+						>
+							編輯標語
+						</button>
 					</div>
 					<div
-						v-if="!homeSloganEditMode"
-						class="editer-inner view-mode"
-					>
-						<h4 class="home-title home-content-title">
-							{{ homeData?.pageTitle }}
-						</h4>
-						<p>{{ homeData?.subPageTitle }}</p>
-					</div>
-					<div
-						v-if="homeSloganEditMode"
+						v-if="sloganInputInfo.pageTitle.editMode"
 						class="editer-inner edit-mode mb-8 grid gap-4"
 					>
 						<div>
@@ -185,13 +237,13 @@ watchEffect(() => {
 								autocomplete="off"
 								class="home-title-input bottom-line-input-gray"
 								:maxlength="COMMON_ID_MAX_LENGTH"
-								:placeholder="homeInputInfo.pageTitle.placeholder"
+								:placeholder="sloganInputInfo.pageTitle.placeholder"
 							>
 							<span
-								v-show="homeInputInfo.pageTitle.error"
+								v-show="sloganInputInfo.pageTitle.error"
 								class="mt-2 block h-5 text-xs text-sp-color-dark"
 							>
-								{{ homeInputInfo.pageTitle.error }}
+								{{ sloganInputInfo.pageTitle.error }}
 							</span>
 						</div>
 						<div>
@@ -201,15 +253,24 @@ watchEffect(() => {
 								autocomplete="off"
 								class="home-slogan bottom-line-input-gray"
 								:maxlength="ARTICLE_MAX_LENGTH"
-								:placeholder="homeInputInfo.subPageTitle.placeholder"
+								:placeholder="sloganInputInfo.subPageTitle.placeholder"
 							>
 							<span
-								v-show="homeInputInfo.subPageTitle.error"
+								v-show="sloganInputInfo.subPageTitle.error"
 								class="mt-2 block h-5 text-xs text-sp-color-dark"
 							>
-								{{ homeInputInfo.subPageTitle.error }}
+								{{ sloganInputInfo.subPageTitle.error }}
 							</span>
 						</div>
+					</div>
+					<div
+						v-else
+						class="editer-inner view-mode"
+					>
+						<h4 class="home-title home-content-title">
+							{{ homeData?.pageTitle }}
+						</h4>
+						<p>{{ homeData?.subPageTitle }}</p>
 					</div>
 				</div>
 				<div
@@ -224,22 +285,22 @@ watchEffect(() => {
 							關於我們—理念
 						</h2>
 						<button
-							v-if="!aboutSloganEditMode"
-							class="admin-sbtn"
-							@click.prevent="setEditMode('aboutSloganForm')"
-						>
-							編輯標語
-						</button>
-						<button
-							v-if="aboutSloganEditMode"
+							v-if="sloganInputInfo.slogan.editMode"
 							class="admin-edit-sbtn"
 							@click.prevent="setConfirmModal('aboutSloganForm')"
 						>
 							儲存標語
 						</button>
+						<button
+							v-else
+							class="admin-sbtn"
+							@click.prevent="setEditMode('aboutSloganForm')"
+						>
+							編輯標語
+						</button>
 					</div>
 					<div
-						v-if="!aboutSloganEditMode"
+						v-if="!sloganInputInfo.slogan.editMode"
 						class="editer-inner view-mode mb-14"
 					>
 						<h4 class="about-content-title text-xl">
@@ -253,27 +314,39 @@ watchEffect(() => {
 						/>
 					</div>
 					<div
-						v-if="aboutSloganEditMode"
-						class="editer-inner edit-mode md-container"
+						v-if="sloganInputInfo.slogan.editMode"
+						class="editer-inner edit-mode md-container grid gap-4 bg-white px-10 pb-10 pt-6"
 					>
-						<input
-							v-model="sloganRef"
-							name="sloganRule"
-							class="p-6"
-							placeholder="關於我們標語"
-							autocomplete="off"
-						>
-						<input
-							v-show="false"
-							v-model="philosophyRef"
-							name="philosophyRule"
-							autocomplete="off"
-						>
-						<v-md-editor
-							v-model="philosophyRef"
-							class="markdown-body"
-							height="400px"
-						/>
+						<span>
+							<input
+								v-model="sloganRef"
+								name="sloganRule"
+								class="bottom-line-input-gray"
+								:placeholder="sloganInputInfo.slogan.placeholder"
+								autocomplete="off"
+								:maxlength="ARTICLE_MAX_LENGTH"
+							>
+							<span
+								v-show="sloganInputInfo.slogan.error"
+								class="mt-2 block h-5 text-xs text-sp-color-dark"
+							>
+								{{ sloganInputInfo.slogan.error }}
+							</span>
+						</span>
+						<span>
+							<v-md-editor
+								v-model="philosophyRef"
+								class="markdown-body"
+								height="400px"
+								:placeholder="sloganInputInfo.philosophy.placeholder"
+							/>
+							<span
+								v-show="sloganInputInfo.philosophy.error"
+								class="mt-2 block h-5 text-xs text-sp-color-dark"
+							>
+								{{ sloganInputInfo.philosophy.error }}
+							</span>
+						</span>
 					</div>
 				</div>
 				<div class="about-quote mb-14 w-full">
@@ -282,43 +355,45 @@ watchEffect(() => {
 							關於我們—引言
 						</h2>
 						<button
-							v-if="!aboutQuoteEditMode"
-							class="admin-sbtn"
-							@click.prevent="setEditMode('aboutQuoteForm')"
-						>
-							編輯標語
-						</button>
-						<button
-							v-if="aboutQuoteEditMode"
+							v-if="sloganInputInfo.quote.editMode"
 							class="admin-edit-sbtn"
 							@click.prevent="setConfirmModal('aboutQuoteForm')"
 						>
 							儲存標語
 						</button>
+
+						<button
+							v-else
+							class="admin-sbtn"
+							@click.prevent="setEditMode('aboutQuoteForm')"
+						>
+							編輯標語
+						</button>
 					</div>
 					<div
-						v-if="!aboutQuoteEditMode"
+						v-if="sloganInputInfo.quote.editMode"
+						class="editer-inner edit-mode md-container bg-white p-10"
+					>
+						<v-md-editor
+							v-model="quoteRef"
+							class="markdown-body"
+							height="400px"
+							:placeholder="sloganInputInfo.quote.placeholder"
+						/>
+						<span
+							v-show="sloganInputInfo.quote.error"
+							class="mt-2 block h-5 text-xs text-sp-color-dark"
+						>
+							{{ sloganInputInfo.quote.error }}
+						</span>
+					</div>
+					<div
+						v-else
 						class="editer-inner view-mode mb-14"
 					>
 						<v-md-preview
 							class="markdown-body"
 							:text="aboutData?.quote"
-							height="400px"
-						/>
-					</div>
-					<div
-						v-if="aboutQuoteEditMode"
-						class="editer-inner edit-mode md-container"
-					>
-						<input
-							v-show="false"
-							v-model="quoteRef"
-							name="quoteRule"
-							autocomplete="off"
-						>
-						<v-md-editor
-							v-model="quoteRef"
-							class="markdown-body"
 							height="400px"
 						/>
 					</div>
@@ -329,43 +404,44 @@ watchEffect(() => {
 							關於我們—結語
 						</h2>
 						<button
-							v-if="!aboutEpilogueEditMode"
-							class="admin-sbtn"
-							@click.prevent="setEditMode('aboutEpilogueForm')"
-						>
-							編輯標語
-						</button>
-						<button
-							v-if="aboutEpilogueEditMode"
+							v-if="sloganInputInfo.epilogue.editMode"
 							class="admin-edit-sbtn"
 							@click.prevent="setConfirmModal('aboutEpilogueForm')"
 						>
 							儲存標語
 						</button>
+						<button
+							v-else
+							class="admin-sbtn"
+							@click.prevent="setEditMode('aboutEpilogueForm')"
+						>
+							編輯標語
+						</button>
 					</div>
 					<div
-						v-if="!aboutEpilogueEditMode"
+						v-if="sloganInputInfo.epilogue.editMode"
+						class="editer-inner edit-mode md-container bg-white p-10"
+					>
+						<v-md-editor
+							v-model="epilogueRef"
+							class="markdown-body"
+							height="400px"
+							:placeholder="sloganInputInfo.epilogue.placeholder"
+						/>
+						<span
+							v-show="sloganInputInfo.epilogue.error"
+							class="mt-2 block h-5 text-xs text-sp-color-dark"
+						>
+							{{ sloganInputInfo.epilogue.error }}
+						</span>
+					</div>
+					<div
+						v-else
 						class="editer-inner view-mode mb-14"
 					>
 						<v-md-preview
 							class="markdown-body"
 							:text="aboutData?.epilogue"
-							height="400px"
-						/>
-					</div>
-					<div
-						v-if="aboutEpilogueEditMode"
-						class="editer-inner edit-mode md-container"
-					>
-						<input
-							v-show="false"
-							v-model="epilogueRef"
-							name="epilogueRule"
-							autocomplete="off"
-						>
-						<v-md-editor
-							v-model="epilogueRef"
-							class="markdown-body"
 							height="400px"
 						/>
 					</div>
