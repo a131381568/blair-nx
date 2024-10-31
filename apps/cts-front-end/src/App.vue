@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import type { ApiResponse, PageListDto } from '@cts-shared';
-import { queryClient } from '@ctsf-src/services/utils/vue-query-client';
-import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
 import { useGlobalStore } from '@ctsf-src/stores/global';
+import { pageQuery } from '@ctsf-src/services/apis/pageApi';
 import { ModalsContainer } from 'vue-final-modal';
 import BgStar from './components/svg/BgStar.vue';
 // import Loading from './components/Loading.vue';
@@ -11,16 +9,12 @@ import BgStar from './components/svg/BgStar.vue';
 
 const globalStore = useGlobalStore();
 const { updatePageInfo } = globalStore;
-
+const { data: pageInfoData, refetch } = pageQuery();
 const el = ref<HTMLElement | null>(null);
+
+refetch();
 // const isLoading = ref(false);
 // const getFirstEnter = ref(false);
-
-const { data: pageInfoData } = queryClient.getPageInfoList.useQuery<
-	vueQueryRes<ApiResponse<PageListDto>>
->(['getPageInfoList'], () => ({}),	{
-	staleTime: Infinity,
-});
 
 // setTimeout(() => (getFirstEnter.value = true), 200);
 // setTimeout(() => (isLoading.value = false), 500);

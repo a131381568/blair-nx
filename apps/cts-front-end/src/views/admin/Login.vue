@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import LoginLogo from '@ctsf-src/components/svg/LoginLogo.vue';
 import Footer from '@ctsf-src/components/Footer.vue';
 import { useDebounceFn } from '@vueuse/core';
-import { AUTH_CONFIG, LOGIN_INPUT_MAX_LENGTH, loginInputSchema } from '@cts-shared';
+import { AUTH_CONFIG, COMMON_ID_MAX_LENGTH, loginInputSchema } from '@cts-shared';
 import { useMessageModal } from '@blair-nx-ui';
 import { get } from 'radash';
 import type { ApiResponse, SystemErrorDto, TokenGroupDto } from '@cts-shared';
@@ -56,7 +56,7 @@ const validateForm = useDebounceFn(async () => {
 			linkBoardPage(router);
 		}
 		else {
-			showMsg('error', get(result.body, 'message', '登入失敗'));
+			showMsg('error', get(result.body, 'message', '登入失敗'), '登入訊息');
 		}
 	}
 }, 1000);
@@ -82,7 +82,7 @@ const validateForm = useDebounceFn(async () => {
 						name="email"
 						type="text"
 						autocomplete="off"
-						:maxlength="LOGIN_INPUT_MAX_LENGTH"
+						:maxlength="COMMON_ID_MAX_LENGTH"
 						class="m-auto block h-8 w-10/12 border-x-0 border-b-2 border-t-0 bg-transparent px-0 py-7 text-middle placeholder:text-main-color-dark focus:border-main-color-black/70 focus:outline-0 focus:ring-0 focus:placeholder:text-transparent h-table:w-5/12"
 						:class="[
 							{ 'border-sp-color-dark': validateLoginMsg.email },
@@ -103,7 +103,7 @@ const validateForm = useDebounceFn(async () => {
 						name="password"
 						type="password"
 						autocomplete="off"
-						:maxlength="LOGIN_INPUT_MAX_LENGTH"
+						:maxlength="COMMON_ID_MAX_LENGTH"
 						class="m-auto mt-2 block h-8 w-10/12 border-x-0 border-b-2 border-t-0 bg-transparent px-0 py-7 text-middle placeholder:text-main-color-dark focus:border-main-color-black/70 focus:outline-0 focus:ring-0 focus:placeholder:text-transparent h-table:w-5/12"
 						:class="[
 							{ 'border-sp-color-dark': validateLoginMsg.password },

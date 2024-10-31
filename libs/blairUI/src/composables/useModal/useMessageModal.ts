@@ -8,13 +8,19 @@ export default function useMessageModal() {
 	 * @param {object} params.msgConfig.message - 要顯示的內容
 	 */
 
-	const showMsg = (type: string, message: string, ms?: number | null) => {
+	const showMsg = (
+		type: string,
+		message: string,
+		title?: string,
+		ms?: number | null,
+	) => {
 		let timeout: ReturnType<typeof setTimeout> | null = null;
 
 		const { open, close } = useModal({
 			component: MessageModal,
 			attrs: {
 				type,
+				title,
 				content: message,
 			},
 			slots: {
