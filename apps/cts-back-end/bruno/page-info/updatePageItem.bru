@@ -5,7 +5,7 @@ meta {
 }
 
 put {
-  url: {{API_HOST}}/{{API_PREFIX}}/facilities/sG7_EBNryv
+  url: {{API_HOST}}/{{API_PREFIX}}/page-info/7H7WpBGe46
   body: json
   auth: bearer
 }
@@ -16,18 +16,8 @@ auth:bearer {
 
 body:json {
   {
-    "facilitiesTitle": "xxx南瀛天文教育館"
+    "pageTitle": "Catch the stars",
+    "subPageTitle": "誰能數得清天上的星星？誰能說出它們對世界的影響？——詹·湯姆遜",
+    "pageRoute": "Home"
   }
-}
-
-docs {
-  1. 驗證型別為 updateAboutInfoSchema
-  2. 可輸入參數(皆為字串)：
-     - visual,
-     - slogan,
-     - philosophy,
-     - quote,
-     - epilogue
-     
-  
 }

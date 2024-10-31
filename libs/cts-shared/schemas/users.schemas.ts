@@ -1,11 +1,17 @@
 import { z } from 'zod';
 import { nanoIdSchema } from '../dto/id.dto';
+import { COMMON_ID_MAX_LENGTH, strIdSchema } from '../dto/string.dto';
 
-export const LOGIN_INPUT_MAX_LENGTH = 20;
+const LOGIN_MIN_INPUT_LENGTH = 6;
+const JWT_LENGTH = 191;
 
-const emailBase = z.string().email({ message: '請提供有效的 email' }).min(6, { message: '至少需要 6 個字元' }).max(LOGIN_INPUT_MAX_LENGTH, { message: `email 不能超過 ${LOGIN_INPUT_MAX_LENGTH} 個字元` });
-const passBase = z.string().min(6, { message: '至少需要 6 個字元' }).max(LOGIN_INPUT_MAX_LENGTH, { message: `不能超過 ${LOGIN_INPUT_MAX_LENGTH} 個字元` });
-const namesBase = z.string().min(3, { message: '至少需要 3 個字元' }).max(LOGIN_INPUT_MAX_LENGTH, { message: `不能超過 ${LOGIN_INPUT_MAX_LENGTH} 個字元` });
+const emailBase = z.string().email({ message: '請提供有效的 email' })
+	.min(LOGIN_MIN_INPUT_LENGTH, { message: `至少需要 ${LOGIN_MIN_INPUT_LENGTH} 個字元` })
+	.max(COMMON_ID_MAX_LENGTH, { message: `email 不能超過 ${COMMON_ID_MAX_LENGTH} 個字元` });
+const passBase = z.string()
+	.min(LOGIN_MIN_INPUT_LENGTH, { message: `至少需要 ${LOGIN_MIN_INPUT_LENGTH} 個字元` })
+	.max(COMMON_ID_MAX_LENGTH, { message: `不能超過 ${COMMON_ID_MAX_LENGTH} 個字元` });
+const namesBase = strIdSchema;
 
 const authBase = z.object({
 	email: emailBase,
@@ -22,8 +28,8 @@ const userBase = z.object({
 export const userBaseFitSchema = userBase.omit({ password: true });
 
 export const tokenGroupSchema = z.object({
-	accessToken: z.string().min(20, 'Access Token 必須為 20 個字元'),
-	refreshToken: z.string().min(20, 'Refresh Token 必須為 20 個字元'),
+	accessToken: z.string().length(JWT_LENGTH, `Access Token 必須為 ${JWT_LENGTH} 個字元`),
+	refreshToken: z.string().length(JWT_LENGTH, `Refresh Token 必須為 ${JWT_LENGTH} 個字元`),
 });
 
 export const refreshTokenSchema = tokenGroupSchema.pick({ refreshToken: true }).strict();

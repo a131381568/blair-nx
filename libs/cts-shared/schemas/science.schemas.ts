@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { paginationDefaultData, paginationSchema } from '../dto/pagi.dto';
-import { nanoIdSchema, strIdSchema } from '../dto/id.dto';
+import { strIdSchema } from '../dto/string.dto';
+import { nanoIdSchema } from '../dto/id.dto';
 
 const positiveIntegerString = z.string().max(5).refine((val) => {
 	const number = Number.parseInt(val, 10);

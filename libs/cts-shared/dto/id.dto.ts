@@ -12,9 +12,7 @@ export const IntIdSchema = z
 		return val;
 	});
 
-export const strIdSchema = z.string().min(1).max(15);
 export const nanoIdSchema = z.string().length(10);
 
 export type IntIdDto = z.infer<typeof IntIdSchema>;
-export type StrIdDto = z.infer<typeof strIdSchema>;
 export type NanoIdDto = z.infer<typeof nanoIdSchema>;
