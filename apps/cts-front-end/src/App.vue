@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
+import { useRoute } from 'vue-router';
 import { useGlobalStore } from '@ctsf-src/stores/global';
 import { pageQuery } from '@ctsf-src/services/apis/pageApi';
 import { ModalsContainer } from 'vue-final-modal';
@@ -11,6 +12,9 @@ const globalStore = useGlobalStore();
 const { updatePageInfo } = globalStore;
 const { data: pageInfoData, refetch } = pageQuery();
 const el = ref<HTMLElement | null>(null);
+
+const route = useRoute();
+const routManage = computed(() => route.meta.manage);
 
 refetch();
 // const isLoading = ref(false);
@@ -28,7 +32,8 @@ watchEffect(() => {
 <template>
 	<div
 		ref="el"
-		class="relative overflow-y-auto overflow-x-hidden bg-admin-featured bg-cover bg-fixed bg-center bg-no-repeat"
+		class="relative overflow-y-auto overflow-x-hidden bg-cover bg-fixed bg-center bg-no-repeat"
+		:class="{ 'bg-admin-featured': routManage }"
 	>
 		<router-view />
 		<div
