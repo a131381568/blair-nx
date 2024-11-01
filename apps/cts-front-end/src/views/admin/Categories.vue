@@ -5,7 +5,7 @@ import AdminSidebar from '@ctsf-src/components/AdminSidebar.vue';
 import Footer from '@ctsf-src/components/Footer.vue';
 import EditIcon from '@ctsf-src/components/svg/EditIcon.vue';
 import DeleteIcon from '@ctsf-src/components/svg/DeleteIcon.vue';
-import { categoriesDelete, categoriesQuery } from '@ctsf-src/services/apis/categoriesApi';
+import { categoriesQuery, categoryDelete } from '@ctsf-src/services/apis/categoriesApi';
 import type { NanoIdDto, PostCategoriesDto } from '@cts-shared';
 import { useConfirmModal, useMessageModal } from '@blair-nx-ui';
 
@@ -24,7 +24,7 @@ const setConfirmModal = async (id: NanoIdDto) => {
 	if (!checkDel)
 		return;
 
-	const delResult = await categoriesDelete(id);
+	const delResult = await categoryDelete(id);
 	const isSuccess = delResult.status === 200;
 	if (isSuccess)
 		await categoriesRefetch();

@@ -3,8 +3,8 @@ import Board from '@ctsf-src/views/admin/Board.vue';
 import UserList from '@ctsf-src/views/admin/UserList.vue';
 import Slogan from '@ctsf-src/views/admin/Slogan.vue';
 import Categories from '@ctsf-src/views/admin/Categories.vue';
-import AddSingleCategories from '@ctsf-src/views/admin/AddSingleCategories.vue';
 import EditSingleCategories from '@ctsf-src/views/admin/EditSingleCategories.vue';
+import AddSingleCategories from '@ctsf-src/views/admin/AddSingleCategories.vue';
 
 export const adminRoute = [
 	{
