@@ -5,6 +5,9 @@ import Slogan from '@ctsf-src/views/admin/Slogan.vue';
 import Categories from '@ctsf-src/views/admin/Categories.vue';
 import EditSingleCategories from '@ctsf-src/views/admin/EditSingleCategories.vue';
 import AddSingleCategories from '@ctsf-src/views/admin/AddSingleCategories.vue';
+import Article from '@ctsf-src/views/admin/Article.vue';
+import EditSingleArticle from '@ctsf-src/views/admin/EditSingleArticle.vue';
+import AddSingleArticle from '@ctsf-src/views/admin/AddSingleArticle.vue';
 
 export const adminRoute = [
 	{
@@ -67,6 +70,33 @@ export const adminRoute = [
 		component: AddSingleCategories,
 		meta: {
 			title: '新增文章分類',
+			manage: true,
+		},
+	},
+	{
+		path: '/board/article',
+		name: 'Article',
+		component: Article,
+		meta: {
+			title: '文章列表',
+			manage: true,
+		},
+	},
+	{
+		path: '/board/article/edit/:pid',
+		name: 'EditSingleArticle',
+		component: EditSingleArticle,
+		meta: {
+			title: '編輯文章',
+			manage: true,
+		},
+	},
+	{
+		path: '/board/article/add',
+		name: 'AddSingleArticle',
+		component: AddSingleArticle,
+		meta: {
+			title: '新增文章',
 			manage: true,
 		},
 	},

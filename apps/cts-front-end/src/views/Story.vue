@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia';
 import { useGlobalStore } from '@ctsf-src/stores/global';
 import { computed, reactive, ref, watchEffect } from 'vue';
 import { useElementSize, useWindowSize } from '@vueuse/core';
-import type { ApiResponse, ScienceItemDto, ScienceListWithPagiDto } from '@cts-shared';
+import type { ApiResponse, ScienceListDto, ScienceListWithPagiDto } from '@cts-shared';
 import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
 import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
 import { stripMarkdown } from '@ctsf-src/helper/markDown';
@@ -21,7 +21,7 @@ const { width } = useWindowSize();
 
 const size = reactive(useElementSize(masonryRef));
 const currentPage = ref(1);
-const timeLineRef = ref<ScienceItemDto[]>([]);
+const timeLineRef = ref<ScienceListDto>([]);
 
 const masonryRefWidth = computed(() => size.width || 600);
 const gridWidth = computed(() => {
@@ -46,7 +46,7 @@ const loadMoreTimeLine = () => (currentPage.value += 1);
 
 watchEffect(() => {
 	if (storyListAPI.value?.status === 200)
-		timeLineRef.value = [...timeLineRef.value, ...storyListAPI.value.body.data.list];
+		timeLineRef.value = [...timeLineRef.value, ...storyListAPI.value.body.data.list] as ScienceListDto;
 });
 </script>
 

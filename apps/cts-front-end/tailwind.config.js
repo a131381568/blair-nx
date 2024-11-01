@@ -139,7 +139,6 @@ module.exports = {
 			},
 			padding: {
 				'320px': '320px',
-				'2px': '2px',
 				'4px': '4px',
 			},
 			margin: {

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { paginationDefaultData, paginationSchema } from '../dto/pagi.dto';
-import { baseStringSchema, strIdSchema } from '../dto/string.dto';
+import { baseStringSchema, strArticleSchema, strIdSchema } from '../dto/string.dto';
 import { nanoIdSchema } from '../dto/id.dto';
 
 const positiveIntegerString = z.string().max(5).refine((val) => {
@@ -13,7 +13,7 @@ const positiveIntegerString = z.string().max(5).refine((val) => {
 const scienceItemFit = z.object({
 	title: baseStringSchema,
 	content: z.string(),
-	image: baseStringSchema,
+	image: strArticleSchema,
 	postCategoryNanoId: nanoIdSchema,
 });
 
@@ -21,7 +21,7 @@ export const scienceItemBase = z.object({
 	title: baseStringSchema.nullable(),
 	updateTime: z.string().date().nullable(),
 	content: z.string().nullable(),
-	image: baseStringSchema.nullable(),
+	image: strArticleSchema.nullable(),
 	postCategoryId: strIdSchema.nullable(),
 	postCategoryName: baseStringSchema.nullable(),
 	postNanoId: nanoIdSchema.nullable(),
@@ -34,13 +34,15 @@ export const scienceItemListModeSchema = z.object({
 	postNanoId: nanoIdSchema.nullable(),
 });
 
+export const switchQueryModeSchema = z.union([z.literal('list'), z.literal('grid')]);
+
 export const scienceQuerySchema = z.object({
-	keyword: strIdSchema.optional(),
+	keyword: baseStringSchema.optional(),
 	category: strIdSchema.optional(),
 	cnid: nanoIdSchema.optional(),
 	page: positiveIntegerString.default('1'),
 	limit: positiveIntegerString.default('9'),
-	mode: z.union([z.literal('list'), z.literal('grid')]).default('grid'),
+	mode: switchQueryModeSchema.default('grid'),
 }).strict();
 
 export const scienceListBaseSchema = z.array(scienceItemBase);
