@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { paginationDefaultData, paginationSchema } from '../dto/pagi.dto';
-import { baseStringSchema, strArticleSchema, strIdSchema } from '../dto/string.dto';
+import { baseStringSchema, keyWordSchema, strArticleSchema, strIdSchema } from '../dto/string.dto';
 import { nanoIdSchema } from '../dto/id.dto';
 
 const positiveIntegerString = z.string().max(5).refine((val) => {
@@ -37,7 +37,7 @@ export const scienceItemListModeSchema = z.object({
 export const switchQueryModeSchema = z.union([z.literal('list'), z.literal('grid')]);
 
 export const scienceQuerySchema = z.object({
-	keyword: baseStringSchema.optional(),
+	keyword: keyWordSchema.optional(),
 	category: strIdSchema.optional(),
 	cnid: nanoIdSchema.optional(),
 	page: positiveIntegerString.default('1'),
