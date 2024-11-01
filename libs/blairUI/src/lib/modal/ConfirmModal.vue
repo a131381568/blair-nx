@@ -1,26 +1,36 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { VueFinalModal } from 'vue-final-modal';
-import WarningIcon from '../../svg/WarningIcon.vue';
 import CloseIcon from '../../svg/CloseIcon.vue';
-import SuccessIcon from '../../svg/SuccessIcon.vue';
+import Annotation from '../../svg/Annotation.vue';
 
-const props = defineProps({
-	type: {
+defineProps({
+	content: {
 		type: String,
-		default: 'success',
+		default: '',
+	},
+	confirmText: {
+		type: String,
+		default: '確定',
+	},
+	cancelText: {
+		type: String,
+		default: '取消',
 	},
 	title: {
 		type: String,
 		default: '通知訊息',
 	},
-	content: {
-		type: String,
-		default: '',
+	singleBtn: {
+		type: Boolean,
+		default: false,
+	},
+	showCloseBtn: {
+		type: Boolean,
+		default: true,
 	},
 });
 
-const typeIcon = computed(() => props.type === 'success' ? SuccessIcon : WarningIcon);
+const emit = defineEmits(['confirm', 'cancel']);
 </script>
 
 <template>
@@ -53,17 +63,18 @@ const typeIcon = computed(() => props.type === 'success' ? SuccessIcon : Warning
 		>
 			<div class="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
 				<button
+					v-show="showCloseBtn"
 					type="button"
 					data-behavior="cancel"
 					class="focus:ring-main-color-middle rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-0 focus:ring-offset-0"
 				>
 					<span class="sr-only">Close</span>
-					<CloseIcon />
+					<CloseIcon @click="emit('cancel')" />
 				</button>
 			</div>
 			<div class="sm:flex sm:items-center">
 				<div class="bg-main-color-light mx-auto flex size-12 shrink-0 items-center justify-center rounded-full sm:mx-0 sm:size-10">
-					<component :is="typeIcon" />
+					<Annotation />
 				</div>
 				<div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
 					<h3
@@ -84,15 +95,18 @@ const typeIcon = computed(() => props.type === 'success' ? SuccessIcon : Warning
 					type="button"
 					data-behavior="confirm"
 					class="bg-main-color-dark hover:bg-main-color-black focus:ring-main-color-middle inline-flex w-full justify-center rounded-md border border-transparent px-4 py-2 text-base font-medium text-white shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-0 sm:ml-3 sm:w-auto sm:text-sm"
+					@click="emit('confirm')"
 				>
-					了解
+					{{ confirmText }}
 				</button>
 				<button
+					v-show="!singleBtn"
 					type="button"
 					data-behavior="cancel"
 					class="focus:ring-main-color-middle mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:ring-1 focus:ring-offset-0 sm:mt-0 sm:w-auto sm:text-sm"
+					@click="emit('cancel')"
 				>
-					取消
+					{{ cancelText }}
 				</button>
 			</div>
 		</div>

@@ -2,6 +2,9 @@ import Login from '@ctsf-src/views/admin/Login.vue';
 import Board from '@ctsf-src/views/admin/Board.vue';
 import UserList from '@ctsf-src/views/admin/UserList.vue';
 import Slogan from '@ctsf-src/views/admin/Slogan.vue';
+import Categories from '@ctsf-src/views/admin/Categories.vue';
+import AddSingleCategories from '@ctsf-src/views/admin/AddSingleCategories.vue';
+import EditSingleCategories from '@ctsf-src/views/admin/EditSingleCategories.vue';
 
 export const adminRoute = [
 	{
@@ -37,6 +40,33 @@ export const adminRoute = [
 		component: Slogan,
 		meta: {
 			title: '標語管理',
+			manage: true,
+		},
+	},
+	{
+		path: '/board/categories',
+		name: 'Categories',
+		component: Categories,
+		meta: {
+			title: '文章分類管理',
+			manage: true,
+		},
+	},
+	{
+		path: '/board/categories/edit/:cid',
+		name: 'EditSingleCategories',
+		component: EditSingleCategories,
+		meta: {
+			title: '編輯文章分類',
+			manage: true,
+		},
+	},
+	{
+		path: '/board/categories/add',
+		name: 'AddSingleCategories',
+		component: AddSingleCategories,
+		meta: {
+			title: '新增文章分類',
 			manage: true,
 		},
 	},

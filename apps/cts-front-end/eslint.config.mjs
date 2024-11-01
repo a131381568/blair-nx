@@ -241,6 +241,8 @@ export default antfu(
 						'home-title-input',
 						'editer-container',
 						'admin-title',
+						'cls-1',
+						'categories-title-box',
 					],
 				},
 			],
