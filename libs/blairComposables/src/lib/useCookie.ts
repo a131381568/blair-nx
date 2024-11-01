@@ -22,11 +22,29 @@ export const getToken = (key: string | null = null): string | undefined => {
 	return key ? cookies[key] : undefined;
 };
 
-export const setCookie = (name: string, value: string, days: number) => {
+export const setCookie = (name: string, value: string, time: string) => {
 	let expires = '';
-	if (days) {
+	if (time) {
+		const unit = time.slice(-1); // 獲取時間單位
+		const quantity = Number.parseInt(time.slice(0, -1), 10); // 獲取數量
+		let milliseconds = 0;
+
+		switch (unit) {
+			case 'd':
+				milliseconds = quantity * 24 * 60 * 60 * 1000;
+				break;
+			case 'h':
+				milliseconds = quantity * 60 * 60 * 1000;
+				break;
+			case 'm':
+				milliseconds = quantity * 60 * 1000;
+				break;
+			default:
+				throw new Error('Invalid time format');
+		}
+
 		const date = new Date();
-		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+		date.setTime(date.getTime() + milliseconds);
 		expires = `; expires=${date.toUTCString()}`;
 	}
 	document.cookie = `${name}=${value || ''}${expires}; path=/`;

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { paginationDefaultData, paginationSchema } from '../dto/pagi.dto';
-import { nanoIdSchema, strIdSchema } from '../dto/id.dto';
+import { baseStringSchema, keyWordSchema, strArticleSchema, strIdSchema } from '../dto/string.dto';
+import { nanoIdSchema } from '../dto/id.dto';
 
 const positiveIntegerString = z.string().max(5).refine((val) => {
 	const number = Number.parseInt(val, 10);
@@ -10,31 +11,42 @@ const positiveIntegerString = z.string().max(5).refine((val) => {
 });
 
 const scienceItemFit = z.object({
-	title: z.string(),
+	title: baseStringSchema,
 	content: z.string(),
-	image: z.string(),
-	postCategoryNanoId: z.string(),
+	image: strArticleSchema,
+	postCategoryNanoId: nanoIdSchema,
 });
 
 export const scienceItemBase = z.object({
-	title: z.string().nullable(),
+	title: baseStringSchema.nullable(),
 	updateTime: z.string().date().nullable(),
 	content: z.string().nullable(),
-	image: z.string().nullable(),
-	postCategoryId: z.string().nullable(),
-	postCategoryName: z.string().nullable(),
-	postNanoId: z.string().nullable(),
+	image: strArticleSchema.nullable(),
+	postCategoryId: strIdSchema.nullable(),
+	postCategoryName: baseStringSchema.nullable(),
+	postNanoId: nanoIdSchema.nullable(),
 });
 
+export const scienceItemListModeSchema = z.object({
+	title: baseStringSchema.nullable(),
+	updateTime: z.string().date().nullable(),
+	postCategoryName: strIdSchema.nullable(),
+	postNanoId: nanoIdSchema.nullable(),
+});
+
+export const switchQueryModeSchema = z.union([z.literal('list'), z.literal('grid')]);
+
 export const scienceQuerySchema = z.object({
-	keyword: strIdSchema.optional(),
+	keyword: keyWordSchema.optional(),
 	category: strIdSchema.optional(),
 	cnid: nanoIdSchema.optional(),
 	page: positiveIntegerString.default('1'),
 	limit: positiveIntegerString.default('9'),
+	mode: switchQueryModeSchema.default('grid'),
 }).strict();
 
 export const scienceListBaseSchema = z.array(scienceItemBase);
+export const scienceArrayListModeSchema = z.array(scienceItemListModeSchema);
 export const sciencetWithPagiDefaultData = {
 	list: [],
 	meta: paginationDefaultData,
@@ -53,6 +65,6 @@ export const defaultScienceQueryData = scienceQuerySchema.parse({});
 export const scienceQueryPartialSchema = scienceQuerySchema.partial();
 
 export const sciencetWithPagiSchema = z.object({
-	list: scienceListBaseSchema,
+	list: z.union([scienceListBaseSchema, scienceArrayListModeSchema]),
 	meta: paginationSchema,
 });

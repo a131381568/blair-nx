@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import type { ApiResponse, PaginationDto, ScienceItemDto, ScienceListWithPagiDto } from '@cts-shared';
+import type { ApiResponse, PaginationDto, ScienceListDto, ScienceListWithPagiDto } from '@cts-shared';
 import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
 import { paginationDefaultData } from '@cts-shared';
 import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
 import { stripMarkdown } from '@ctsf-src/helper/markDown';
+import { linkNotFoundPage } from '@ctsf-src/helper/customCtsRoute';
 import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';
@@ -13,7 +14,7 @@ import Footer from '../components/Footer.vue';
 const router = useRouter();
 const route = useRoute();
 const getFirstEnter = ref(false);
-const postListRef = ref<ScienceItemDto[]>([]);
+const postListRef = ref<ScienceListDto>([]);
 const pagiMeta = ref<PaginationDto>(paginationDefaultData);
 const currentPage = ref(1);
 const tagid = computed(() => String(route.params.tagid));
@@ -23,7 +24,7 @@ const archiveMeta = computed(() => ({
 	pageRoute: 'Archive',
 }));
 
-const goToNotFound = () => router.push('/notfound');
+const goToNotFound = () => linkNotFoundPage(router);
 
 const { data: searchTagQueryData } = queryClient.getScienceList.useQuery<
 	vueQueryRes<ApiResponse<ScienceListWithPagiDto>>
@@ -47,7 +48,7 @@ watchEffect(() => {
 	if (searchTagQueryData.value?.status === 200) {
 		(!searchTagQueryData.value.body.data.list.length) && goToNotFound();
 
-		postListRef.value = [...postListRef.value, ...searchTagQueryData.value.body.data.list];
+		postListRef.value = [...postListRef.value, ...searchTagQueryData.value.body.data.list] as ScienceListDto;
 		pagiMeta.value = searchTagQueryData.value.body.data.meta;
 	}
 });
@@ -79,7 +80,7 @@ watchEffect(() => {
 				:key="key"
 				class="search-item animate__animated animate__fadeInUp"
 			>
-				<router-link :to="`/science/${val.postCategoryId}`">
+				<router-link :to="`/science/${val.postNanoId}`">
 					<!-- card -->
 					<div class="mb-1 border border-white/0 bg-white/6 p-6 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0 laptop:px-16 laptop:py-8">
 						<p class="text-xl font-normal text-white h-table:text-3xl">

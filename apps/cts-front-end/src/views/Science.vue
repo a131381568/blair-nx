@@ -5,10 +5,11 @@ import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useGlobalStore } from '@ctsf-src/stores/global';
 import { useToggle } from '@vueuse/core';
-import type { ApiResponse, PostCategoriesDto, ScienceItemDto, ScienceListWithPagiDto } from '@cts-shared';
+import type { ApiResponse, PostCategoriesDto, ScienceListDto } from '@cts-shared';
 import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
 import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
 import { stripMarkdown } from '@ctsf-src/helper/markDown';
+import { sciencesQuery } from '@ctsf-src/services/apis/sciencesApi';
 import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';
@@ -20,7 +21,7 @@ const [toggleFilterVal, toggleFilter] = useToggle();
 
 const getFirstEnter = ref(false);
 const changeGridState = ref(false);
-const postListRef = ref<ScienceItemDto[]>([]);
+const postListRef = ref<ScienceListDto>([]);
 const currentPage = ref(1);
 const selectCat = ref('all');
 
@@ -30,15 +31,10 @@ const { data: categoriesAPI } = queryClient.getPostCategories.useQuery<
 	staleTime: STALE_TIME,
 });
 
-const { data: scienceListAPI } = queryClient.getScienceList.useQuery<
-	vueQueryRes<ApiResponse<ScienceListWithPagiDto>>
->(['getScienceList', currentPage, selectCat], () => ({
-	query: {
-		page: String(currentPage.value),
-		category: selectCat.value,
-	},
-}),	{
-	staleTime: STALE_TIME,
+const { data: scienceListAPI } = sciencesQuery({
+	activePage: currentPage,
+	selectCategory: selectCat,
+	queryMode: 'grid',
 });
 
 const reSearchData = (catId: string) => {
@@ -62,7 +58,7 @@ const loadMoreData = () => (currentPage.value += 1);
 
 watchEffect(() => {
 	if (scienceListAPI.value?.status === 200)
-		postListRef.value = [...postListRef.value, ...scienceListAPI.value.body.data.list];
+		postListRef.value = [...postListRef.value, ...scienceListAPI.value.body.data.list] as ScienceListDto;
 });
 
 const postCategories = computed(() => {

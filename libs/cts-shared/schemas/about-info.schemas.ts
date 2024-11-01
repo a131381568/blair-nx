@@ -1,11 +1,13 @@
 import { z } from 'zod';
 
+import { strArticleSchema } from '../dto/string.dto';
+
 export const aboutInfoBaseSchema = z.object({
-	visual: z.string().nullable(),
-	slogan: z.string().nullable(),
-	philosophy: z.string().nullable(),
-	quote: z.string().nullable(),
-	epilogue: z.string().nullable(),
+	visual: strArticleSchema.nullable(),
+	slogan: strArticleSchema.nullable(),
+	philosophy: strArticleSchema.nullable(),
+	quote: strArticleSchema.nullable(),
+	epilogue: strArticleSchema.nullable(),
 });
 
 export const getAboutInfoSchema = aboutInfoBaseSchema.extend({

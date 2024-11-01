@@ -2,12 +2,10 @@
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useIntersectionObserver, useParallax } from '@vueuse/core';
-import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
-import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
-import type { ApiResponse, GetAboutInfoBaseDto } from '@cts-shared';
 import { defaultAboutInfoData } from '@cts-shared';
 import { storeToRefs } from 'pinia';
 import { useGlobalStore } from '@ctsf-src/stores/global';
+import { aboutQuery } from '@ctsf-src/services/apis/aboutApi';
 import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';
@@ -15,12 +13,7 @@ import Footer from '../components/Footer.vue';
 const route = useRoute();
 const globalStore = useGlobalStore();
 const { currentPageMeta } = storeToRefs(globalStore);
-
-const { data: aboutAPI } = queryClient.getAboutInfo.useQuery<
-	vueQueryRes<ApiResponse<GetAboutInfoBaseDto>>
->(['getAboutInfo'], () => ({}),	{
-	staleTime: STALE_TIME,
-});
+const { data: aboutAPI } = aboutQuery();
 
 const getFirstEnter = ref(true);
 const photo = ref(null);

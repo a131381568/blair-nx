@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { pick, tryit } from 'radash';
-import { AccessTokenDto, GetTokenDto, LoginInputDto, RefreshTokenDto, ValidateUserResDto } from '@cts-shared';
+import { AUTH_CONFIG, AccessTokenDto, GetTokenDto, LoginInputDto, RefreshTokenDto, ValidateUserResDto } from '@cts-shared';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -20,17 +20,17 @@ export class AuthService {
 		if (hasMail && userData && userData.password) {
 			const passIsSame = await compare(data.password, userData.password);
 			if (!passIsSame)
-				return { userInfo: null, msg: 'Password incorrect' };
-			return { userInfo: userData, msg: 'ValidateUser success' };
+				return { userInfo: null, msg: '密碼不正確' }; // Password incorrect
+			return { userInfo: userData, msg: '驗證成功' }; // ValidateUser success
 		}
-		return { userInfo: null, msg: 'Validation error' };
+		return { userInfo: null, msg: '驗證失敗' }; // Validation error
 	}
 
 	async getAllToken({ data }: { data: GetTokenDto }) {
 		const payload = pick(data, ['email', 'nanoId']);
 		return {
-			accessToken: this.jwtService.sign(payload),
-			refreshToken: this.jwtService.sign(payload, { expiresIn: '7d' }),
+			accessToken: this.jwtService.sign(payload), // auth.module.ts (expiresIn: JwtModule.signOptions)
+			refreshToken: this.jwtService.sign(payload, { expiresIn: AUTH_CONFIG.REFRESH_EXPIRY }),
 		};
 	}
 
@@ -41,7 +41,7 @@ export class AuthService {
 		);
 
 		if (err)
-			return 'Generate refresh token fail';
+			return '生成 refresh token 失敗'; // Generate refresh token fail
 
 		return { accessToken: this.jwtService.sign({ email: payload.email, nanoId: payload.nanoId }) };
 	}

@@ -33,7 +33,7 @@ export class UsersService {
 		} });
 
 		if (hasMail)
-			return { result: false, msg: 'The email is already registered' };
+			return { result: false, msg: '此信箱已經註冊' }; // The email is already registered
 
 		const hashedPassword = hashSync(data.password, 10);
 		await this.prisma.users.create({
@@ -43,6 +43,6 @@ export class UsersService {
 				password: hashedPassword,
 			},
 		});
-		return { result: true, msg: 'Successfully registered' };
+		return { result: true, msg: '註冊成功' }; // Successfully registered
 	}
 }

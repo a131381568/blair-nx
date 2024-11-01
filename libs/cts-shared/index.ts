@@ -1,4 +1,5 @@
 export * from './dto/id.dto';
+export * from './dto/string.dto';
 export * from './dto/pagi.dto';
 export * from './dto/api-response.dto';
 // schemas
@@ -30,3 +31,5 @@ export * from './contracts/page-info.contracts';
 export * from './contracts/post-categories.contracts';
 export * from './contracts/stargazing.contracts';
 export * from './contracts/users.contracts';
+// constants
+export * from './constants/auth-config';

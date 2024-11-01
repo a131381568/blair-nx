@@ -4,7 +4,7 @@ import { until, useDebounceFn, watchDebounced } from '@vueuse/core';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useGlobalStore } from '@ctsf-src/stores/global';
-import type { ApiResponse, PaginationDto, ScienceItemDto, ScienceListWithPagiDto } from '@cts-shared';
+import type { ApiResponse, PaginationDto, ScienceListDto, ScienceListWithPagiDto } from '@cts-shared';
 import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
 import { paginationDefaultData } from '@cts-shared';
 import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
@@ -20,13 +20,13 @@ const { currentPageMeta } = storeToRefs(globalStore);
 
 const searchWord = ref('');
 const getFirstEnter = ref(false);
-const postListRef = ref<ScienceItemDto[]>([]);
+const postListRef = ref<ScienceListDto>([]);
 const pagiMeta = ref<PaginationDto>(paginationDefaultData);
 const currentPage = ref(1);
 const searchMeta = computed(() => currentPageMeta.value(String(route.name)));
 
 const updatePostListRef = (mode: string, data: ScienceListWithPagiDto) => {
-	postListRef.value = (mode === 'loadMore') ? [...postListRef.value, ...data.list] : data.list;
+	postListRef.value = ((mode === 'loadMore') ? [...postListRef.value, ...data.list] : data.list) as ScienceListDto;
 	pagiMeta.value = data.meta;
 };
 

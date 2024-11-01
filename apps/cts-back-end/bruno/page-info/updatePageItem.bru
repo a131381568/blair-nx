@@ -1,0 +1,23 @@
+meta {
+  name: updatePageItem
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{API_HOST}}/{{API_PREFIX}}/page-info/7H7WpBGe46
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{ACCESS_TOKEN}}
+}
+
+body:json {
+  {
+    "pageTitle": "Catch the stars",
+    "subPageTitle": "誰能數得清天上的星星？誰能說出它們對世界的影響？——詹·湯姆遜",
+    "pageRoute": "Home"
+  }
+}

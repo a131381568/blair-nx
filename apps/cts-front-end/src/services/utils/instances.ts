@@ -1,11 +1,8 @@
 import axios from 'axios';
 import { getToken } from '@blair-nx-composables';
-import { interceptorErrorHandler, interceptorSuccessHandler } from '@ctsf-src/services/utils/interceptors';
-import { mockUrl, url } from '@ctsf-src/services/utils/config';
+import { url } from '@ctsf-src/services/utils/config';
 
-const token = getToken('token');
-
-const apiWithoutToken = axios.create({
+export const axiosInstance = axios.create({
 	baseURL: url,
 	headers: {
 		'Content-Type': 'application/json',
@@ -13,33 +10,27 @@ const apiWithoutToken = axios.create({
 	},
 });
 
-const apiWithToken = axios.create({
-	baseURL: url,
-	headers: {
-		'Content-Type': 'application/json',
-		'Accept': 'application/json',
-		'Authorization': `Bearer ${token}`,
-	},
-});
+export type RefreshSubscriber = (token: string) => void;
 
-const apiWithFormData = axios.create({
+// 刷新狀態管理
+/* eslint-disable import/no-mutable-exports */
+export let isRefreshing = false;
+export let refreshSubscribers: RefreshSubscriber[] = [];
+
+export const resetRefreshState = () => {
+	isRefreshing = false;
+	refreshSubscribers = [];
+};
+
+export const onRefreshed = (token: string) => {
+	refreshSubscribers.forEach(cb => cb(token));
+	refreshSubscribers = [];
+};
+
+export const apiWithFormData = axios.create({
 	baseURL: url,
 	headers: {
 		'Content-Type': 'multipart/form-data',
-		'Authorization': `Bearer ${token}`,
+		'Authorization': `Bearer ${getToken('accessToken')}`,
 	},
 });
-
-const apiTest = axios.create({
-	baseURL: mockUrl,
-	headers: {
-		'Content-Type': 'application/json',
-		'Accept': 'application/json',
-	},
-});
-
-apiWithToken.interceptors.response.use(interceptorSuccessHandler, interceptorErrorHandler);
-apiWithoutToken.interceptors.response.use(interceptorSuccessHandler, interceptorErrorHandler);
-apiTest.interceptors.response.use(interceptorSuccessHandler, interceptorErrorHandler);
-
-export { apiTest, apiWithFormData, apiWithToken, apiWithoutToken };
