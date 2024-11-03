@@ -12,7 +12,7 @@ export const IntIdSchema = z
 		return val;
 	});
 
-export const nanoIdSchema = z.string().length(10);
+export const nanoIdSchema = z.string().length(10, { message: '必須是 10 個字元' });
 
 export type IntIdDto = z.infer<typeof IntIdSchema>;
 export type NanoIdDto = z.infer<typeof nanoIdSchema>;

@@ -1,5 +1,5 @@
 import type { Ref } from 'vue';
-import type { ApiResponse, NanoIdDto, ScienceListWithPagiDto, StrIdDto, switchQueryModeDto } from '@cts-shared';
+import type { ApiResponse, CreateScienceDto, NanoIdDto, ScienceListWithPagiDto, StrIdDto, switchQueryModeDto } from '@cts-shared';
 import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
 import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
 
@@ -21,6 +21,20 @@ export const sciencesQuery = ({
 	},
 }),	{
 	staleTime: STALE_TIME,
+});
+
+export const scienceCreate = ({
+	title,
+	content,
+	image,
+	postCategoryNanoId,
+}: CreateScienceDto) => queryClient.createScienceDetail.mutation({
+	body: {
+		title,
+		content,
+		image,
+		postCategoryNanoId,
+	},
 });
 
 export const scienceDelete = (postId: NanoIdDto) => queryClient.deleteScienceDetail.mutation({
