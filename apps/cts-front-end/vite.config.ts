@@ -5,7 +5,6 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 import commonjs from '@rollup/plugin-commonjs';
 import requireTransfrom from 'vite-plugin-require-transform';
-import vueDevTools from 'vite-plugin-vue-devtools';
 
 export default defineConfig({
 	root: __dirname,
@@ -18,7 +17,6 @@ export default defineConfig({
 		requireTransfrom({
 			fileRegex: /.js$|.vue$|.png$|.ts$|.jpg$|.json$/,
 		}),
-		vueDevTools(),
 	],
 	build: {
 		// 設定遷移至 project.json
