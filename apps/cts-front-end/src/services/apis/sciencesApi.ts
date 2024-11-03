@@ -1,7 +1,9 @@
-import type { Ref } from 'vue';
-import type { ApiResponse, CreateScienceDto, NanoIdDto, ScienceListWithPagiDto, StrIdDto, switchQueryModeDto } from '@cts-shared';
+import type { ComputedRef, Ref } from 'vue';
+import type { Router } from 'vue-router';
+import type { ApiResponse, CreateScienceDto, MutationScienceDto, NanoIdDto, ScienceItemDto, ScienceListWithPagiDto, StrIdDto, switchQueryModeDto } from '@cts-shared';
 import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
 import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
+import { linkNotFoundPage } from '@ctsf-src/helper/customCtsRoute';
 
 export const sciencesQuery = ({
 	activePage,
@@ -23,6 +25,19 @@ export const sciencesQuery = ({
 	staleTime: STALE_TIME,
 });
 
+export const singleScienceQuery = (getpid: ComputedRef<NanoIdDto>, router: Router) => queryClient.getScienceDetail.useQuery<
+	vueQueryRes<ApiResponse<ScienceItemDto>>
+>(['getScienceDetail', getpid], () => ({
+	params: { id: getpid.value },
+}),	{
+	staleTime: STALE_TIME,
+	retry: false,
+	onError: (err) => {
+		if (err.status >= 400)
+			linkNotFoundPage(router);
+	},
+});
+
 export const scienceCreate = ({
 	title,
 	content,
@@ -35,6 +50,22 @@ export const scienceCreate = ({
 		image,
 		postCategoryNanoId,
 	},
+});
+
+export const scienceEdit = ({
+	title,
+	content,
+	image,
+	postCategoryNanoId,
+	postNanoId,
+}: MutationScienceDto) => queryClient.updateScienceDetail.mutation({
+	body: {
+		title,
+		content,
+		image,
+		postCategoryNanoId,
+	},
+	params: { id: postNanoId },
 });
 
 export const scienceDelete = (postId: NanoIdDto) => queryClient.deleteScienceDetail.mutation({

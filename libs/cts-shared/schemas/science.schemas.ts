@@ -57,6 +57,9 @@ export const scienceItemBaseDefaultData = {
 	postNanoId: '',
 };
 export const createScienceSchema = scienceItemFit.strict();
+export const mutationScienceSchema = scienceItemFit.extend({
+	postNanoId: nanoIdSchema,
+}).strict();
 export const defaultScienceQueryData = scienceQuerySchema.parse({});
 export const scienceQueryPartialSchema = scienceQuerySchema.partial();
 
