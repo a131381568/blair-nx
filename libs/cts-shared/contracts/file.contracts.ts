@@ -8,12 +8,13 @@ export const fileContract = c.router({
 	uploadFile: {
 		method: 'POST',
 		path: '/file/upload',
+		contentType: 'multipart/form-data',
 		responses: {
 			200: z.string(),
 			400: apiResponseSchema,
 			404: apiResponseSchema,
 		},
-		body: c.type<undefined>(),
+		body: c.type<FormData>(),
 		summary: 'upload file to aws s3',
 	},
 });
