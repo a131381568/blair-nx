@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import Big from 'big.js';
 import { paginationDefaultData, paginationSchema } from '../dto/pagi.dto';
+import { baseStringSchema, strArticleSchema } from '../dto/string.dto';
 import { nanoIdSchema } from '../dto/id.dto';
 
 const bigSchema = z
@@ -43,11 +44,13 @@ export const stargazingWithPagiDefaultData = {
 	meta: paginationDefaultData,
 };
 
+export const switchStargazingQueryMode = z.union([z.literal('map'), z.literal('list')]);
+
 export const stargazingQuerySchema = z.object({
 	nid: nanoIdSchema.optional(),
 	page: z.string().default('1'),
 	limit: z.string().default('10'),
-	mode: z.union([z.literal('map'), z.literal('list')]).default('map'),
+	mode: switchStargazingQueryMode.default('map'),
 }).strict();
 
 export const defaultStargazingQueryData = stargazingQuerySchema.parse({});
@@ -59,4 +62,17 @@ export const StargazingListWithPagiSchema = z.object({
 
 export const updateStargazingDetailSchema = stargazingItemDetail.omit({
 	stargazingNanoId: true,
+}).strict();
+
+export const createSinleStargazingSchema = z.object({
+	stargazingTitle: baseStringSchema,
+	stargazingAddress: strArticleSchema,
+	stargazingLatitude: baseStringSchema,
+	stargazingLongitude: baseStringSchema,
+	stargazingImage: strArticleSchema,
+	stargazingDescription: strArticleSchema,
+}).strict();
+
+export const mutationSinleStargazingSchema = createSinleStargazingSchema.extend({
+	stargazingNanoId: nanoIdSchema,
 }).strict();

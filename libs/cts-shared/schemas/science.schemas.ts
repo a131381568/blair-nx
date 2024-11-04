@@ -12,26 +12,22 @@ const positiveIntegerString = z.string().max(5).refine((val) => {
 
 const scienceItemFit = z.object({
 	title: baseStringSchema,
-	content: z.string(),
+	content: strArticleSchema,
 	image: strArticleSchema,
 	postCategoryNanoId: nanoIdSchema,
-});
-
-export const scienceItemBase = z.object({
-	title: baseStringSchema.nullable(),
-	updateTime: z.string().date().nullable(),
-	content: z.string().nullable(),
-	image: strArticleSchema.nullable(),
-	postCategoryId: strIdSchema.nullable(),
-	postCategoryName: baseStringSchema.nullable(),
-	postNanoId: nanoIdSchema.nullable(),
 });
 
 export const scienceItemListModeSchema = z.object({
 	title: baseStringSchema.nullable(),
 	updateTime: z.string().date().nullable(),
-	postCategoryName: strIdSchema.nullable(),
+	postCategoryName: baseStringSchema.nullable(),
 	postNanoId: nanoIdSchema.nullable(),
+});
+
+export const scienceItemBase = scienceItemListModeSchema.extend({
+	content: z.string().nullable(),
+	image: strArticleSchema.nullable(),
+	postCategoryId: strIdSchema.nullable(),
 });
 
 export const switchQueryModeSchema = z.union([z.literal('list'), z.literal('grid')]);
@@ -61,6 +57,9 @@ export const scienceItemBaseDefaultData = {
 	postNanoId: '',
 };
 export const createScienceSchema = scienceItemFit.strict();
+export const mutationScienceSchema = scienceItemFit.extend({
+	postNanoId: nanoIdSchema,
+}).strict();
 export const defaultScienceQueryData = scienceQuerySchema.parse({});
 export const scienceQueryPartialSchema = scienceQuerySchema.partial();
 

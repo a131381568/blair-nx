@@ -12,7 +12,7 @@
         "label": "Create terminals",
         "dependsOn": [
           "ctsf-local",
-          "ctsb_local"
+          "ctsb-local"
         ],
         // Mark as the default build task so cmd/ctrl+shift+b will create them
         "group": {
@@ -36,7 +36,7 @@
           }
       },
       {
-          "label": "ctsb_local",
+          "label": "ctsb-local",
           "type": "shell",
           "command": "pnpm exec nx serve cts-back-end",
           "problemMatcher": [],

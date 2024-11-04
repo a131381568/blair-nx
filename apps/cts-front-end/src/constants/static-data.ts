@@ -86,3 +86,5 @@ export const CLIENT_HOME_OFFLINE_DATA = {
 	subPageTitle: '往上看天上的星星而不是往下看你的腳，試圖理解你所看到的，思索宇宙為何存在，好奇一點。<p>&nbsp;</p>——史蒂芬・霍金',
 	pageRoute: 'Home',
 };
+
+export const DEFAULT_IMAGE = '/assets/bg/default-image-438x438.gif';

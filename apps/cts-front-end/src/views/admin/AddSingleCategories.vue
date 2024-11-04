@@ -36,11 +36,11 @@ const categoryInputInfo = ref({
 
 const setConfirmModal = async () => {
 	const UPDATE_MODEL_TITLE = '新增訊息';
-	const checkDel =	await showConfirm({
+	const checkResult =	await showConfirm({
 		title: UPDATE_MODEL_TITLE,
 		content: '確定新增該分類 ?',
 	});
-	if (!checkDel)
+	if (!checkResult)
 		return;
 
 	const updatePayload = {

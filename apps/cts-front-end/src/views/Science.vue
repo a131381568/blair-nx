@@ -127,7 +127,7 @@ const selectCatName = computed(() => {
 		>
 			<button
 				id="dropdownDefault"
-				class="relative inline-flex w-200px items-center border border-white/60 bg-white/0 p-3 pl-4 text-center text-xl font-medium tracking-wide-content text-main-color-light duration-1000 hover:border-white/0 hover:bg-white/18 hover:text-sub-color-light focus:border-white/0 focus:bg-white/18 focus:text-sub-color-light focus:outline-none"
+				class="relative inline-flex w-[200px] items-center border border-white/60 bg-white/0 p-3 pl-4 text-center text-xl font-medium tracking-wide-content text-main-color-light duration-1000 hover:border-white/0 hover:bg-white/18 hover:text-sub-color-light focus:border-white/0 focus:bg-white/18 focus:text-sub-color-light focus:outline-none"
 				type="button"
 				@click.prevent="toggleFilter()"
 			>
@@ -151,7 +151,7 @@ const selectCatName = computed(() => {
 			<div
 				v-show="toggleFilterVal"
 				id="dropdown"
-				class="absolute z-10 w-200px divide-y divide-gray-100 bg-main-color-light"
+				class="absolute z-10 w-[200px] divide-y divide-gray-100 bg-main-color-light"
 			>
 				<ul class="cursor-pointer py-1 text-sm text-main-color-black">
 					<li

@@ -107,12 +107,12 @@ watchEffect(() => {
 							</td>
 							<td data-title="編輯">
 								<router-link :to="`/board/article/edit/${val.postNanoId}`">
-									<EditIcon class="group inline-block h-auto w-28px fill-main-color-light" />
+									<EditIcon class="group inline-block h-auto w-[28px] fill-main-color-light" />
 								</router-link>
 							</td>
 							<td data-title="刪除">
 								<DeleteIcon
-									class="inline-block h-auto w-29px fill-main-color-light hover:fill-sub-color-dark"
+									class="inline-block h-auto w-[29px] fill-main-color-light hover:fill-sub-color-dark"
 									@click.prevent="deletePost(val.postNanoId || '')"
 								/>
 							</td>

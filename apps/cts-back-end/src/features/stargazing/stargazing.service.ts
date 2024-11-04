@@ -16,7 +16,7 @@ export class StargazingService {
 				published: true,
 				OR: data.nid ? [{ stargazingNanoId: data.nid }] : undefined,
 			},
-			orderBy: { stargazingOrderId: 'asc' },
+			orderBy: { stargazingOrderId: 'desc' },
 		}).withPages({
 			limit: Number(get(data, 'limit', defaultStargazingQueryData.limit)),
 			page: Number(get(data, 'page', defaultStargazingQueryData.page)),
@@ -47,7 +47,7 @@ export class StargazingService {
 			? {
 					...pick(res, ['stargazingTitle', 'stargazingImage', 'stargazingDescription', 'stargazingAddress', 'stargazingNanoId']),
 					stargazingLatitude: String(res.stargazingLatitude),
-					stargazingLongitude: String(res.stargazingLatitude),
+					stargazingLongitude: String(res.stargazingLongitude),
 				}
 			: defaultStargazingItemDetail;
 	}

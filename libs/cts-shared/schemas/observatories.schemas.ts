@@ -1,4 +1,6 @@
 import { z } from 'zod';
+import { nanoIdSchema } from '../dto/id.dto';
+import { baseStringSchema, strArticleSchema, strIdSchema } from '../dto/string.dto';
 
 export const observatoryItemBase = z.object({
 	observatoryCategoryName: z.string().nullable(),
@@ -6,8 +8,8 @@ export const observatoryItemBase = z.object({
 	observatoryPostContent: z.string().nullable(),
 });
 
-const observatoryItemWithNanoId = observatoryItemBase.extend({
-	observatoryNanoId: z.string(),
+export const observatoryItemWithNanoId = observatoryItemBase.extend({
+	observatoryNanoId: nanoIdSchema,
 });
 
 export const observatoryItemDefaultSchema = z.object({
@@ -16,6 +18,15 @@ export const observatoryItemDefaultSchema = z.object({
 	observatoryPostContent: z.string().nullable().default(''),
 });
 
-export const updateObservatoryItemSchema = observatoryItemBase.strict();
+export const updateObservatoryItemSchema = z.object({
+	observatoryCategoryName: baseStringSchema,
+	observatoryCategoryId: strIdSchema,
+	observatoryPostContent: strArticleSchema,
+}).strict();
+
+export const mutationObservatoryItemSchema = updateObservatoryItemSchema.extend({
+	observatoryNanoId: nanoIdSchema,
+}).strict();
+
 export const getObservatoriesListBaseSchema = z.array(observatoryItemWithNanoId);
 export const defaultObservatoryItemData = observatoryItemDefaultSchema.parse({});

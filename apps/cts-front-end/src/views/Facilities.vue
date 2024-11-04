@@ -5,9 +5,9 @@ import { storeToRefs } from 'pinia';
 import { useGlobalStore } from '@ctsf-src/stores/global';
 import { until, useIntersectionObserver } from '@vueuse/core';
 import { mapValues } from 'radash';
-import type { ApiResponse, GetFacilitiesListBaseDto, ObservatoriesListDto } from '@cts-shared';
-import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
-import { queryClient } from '@ctsf-src/services/utils/vue-query-client';
+import type { GetFacilitiesListBaseWithNanoIdDto, ObservatoriesListDto } from '@cts-shared';
+import { facilitiesQuery } from '@ctsf-src/services/apis/facilitiesApi';
+import { observatoriesQuery } from '@ctsf-src/services/apis/observatoriesApi';
 import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';
@@ -17,7 +17,7 @@ const globalStore = useGlobalStore();
 const { currentPageMeta } = storeToRefs(globalStore);
 const getFirstEnter = ref(false);
 
-const eduCategories = ref<GetFacilitiesListBaseDto>([]);
+const eduCategories = ref<GetFacilitiesListBaseWithNanoIdDto>([]);
 const observatoryCategories = ref<ObservatoriesListDto>([]);
 const selectCat = ref<string>('');
 
@@ -35,17 +35,9 @@ const { stop } = useIntersectionObserver(
 
 const facilitiesMeta = computed(() => currentPageMeta.value(String(route.name)));
 
-const { data: facilitiesListAPI, isLoading: facilitiesLoading } = queryClient.getFacilitiesList.useQuery<
-	vueQueryRes<ApiResponse<GetFacilitiesListBaseDto>>
->(['getFacilitiesList'], () => ({}),	{
-	staleTime: Infinity,
-});
+const { data: facilitiesListAPI, isLoading: facilitiesLoading } = facilitiesQuery();
 
-const { data: observatoriesListAPI, isLoading: observatoriesLoading } = queryClient.getObservatoriesList.useQuery<
-	vueQueryRes<ApiResponse<ObservatoriesListDto>>
->(['getObservatoriesList'], () => ({}),	{
-	staleTime: Infinity,
-});
+const { data: observatoriesListAPI, isLoading: observatoriesLoading } = observatoriesQuery();
 
 const handleEduCategoriesData = async () => {
 	await until(facilitiesLoading).toBe(false);

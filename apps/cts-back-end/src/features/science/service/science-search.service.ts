@@ -33,7 +33,7 @@ export class ScienceSearchService {
 						]
 					: undefined,
 			},
-			orderBy: { orderId: 'asc' },
+			orderBy: { orderId: 'desc' },
 			include: {
 				quoteCat: {
 					select: {

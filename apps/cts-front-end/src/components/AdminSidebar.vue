@@ -25,7 +25,7 @@ const logoutAction = () => {
 	>
 		<div class="sidebar-logo inline-block">
 			<router-link to="/board">
-				<LoginLogo class="admin-login-svg-obj svg-obj mb-3 h-auto w-29px laptop:w-64px" />
+				<LoginLogo class="admin-login-svg-obj svg-obj mb-3 h-auto w-[29px] laptop:w-64px" />
 			</router-link>
 		</div>
 		<ul
@@ -63,9 +63,9 @@ const logoutAction = () => {
 			:class="{ 'animate__fadeIn mobile:left-auto mobile:right-0 h-table:left-1/2 h-table:right-auto h-table:bg-main-color-light h-table:pr-2': toggleSideBar }"
 			@click="toggleSideBar = !toggleSideBar"
 		>
-			<div class="mb-[4px] h-[3px] w-29px rounded-[11px] bg-main-color-dark" />
-			<div class="mb-[4px] h-[3px] w-29px rounded-[11px] bg-main-color-dark" />
-			<div class="mb-[4px] h-[3px] w-29px rounded-[11px] bg-main-color-dark" />
+			<div class="mb-[4px] h-[3px] w-[29px] rounded-[11px] bg-main-color-dark" />
+			<div class="mb-[4px] h-[3px] w-[29px] rounded-[11px] bg-main-color-dark" />
+			<div class="mb-[4px] h-[3px] w-[29px] rounded-[11px] bg-main-color-dark" />
 		</button>
 	</div>
 </template>

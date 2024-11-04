@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const LIMIT_MIN_LENGTH = 1;
 export const COMMON_STR_MIN_LENGTH = 3;
 export const COMMON_ID_MAX_LENGTH = 20;
-export const ARTICLE_MAX_LENGTH = 300;
+export const ARTICLE_MAX_LENGTH = 2000;
 
 export const keyWordSchema = z.string()
 	.min(LIMIT_MIN_LENGTH, { message: `至少需要 ${LIMIT_MIN_LENGTH} 個字元` })

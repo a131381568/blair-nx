@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { initContract } from '@ts-rest/core';
-import { createFacilityItemSchema, facilityItemBase, getFacilitiesListBaseSchema, updateFacilityItemSchema } from '../schemas/facilities.schemas';
+import { createFacilityItemSchema, facilityItemBase, getFacilitiesListBaseWithNanoIdSchema, updateFacilityItemSchema } from '../schemas/facilities.schemas';
 import { nanoIdSchema } from '../dto/id.dto';
 import { apiResponseSchema } from '../dto/api-response.dto';
 
@@ -11,7 +11,7 @@ export const facilitiesContract = c.router({
 		method: 'GET',
 		path: '/facilities',
 		responses: {
-			200: getFacilitiesListBaseSchema,
+			200: getFacilitiesListBaseWithNanoIdSchema,
 			400: apiResponseSchema,
 		},
 		summary: 'get facilities list (post*3)',

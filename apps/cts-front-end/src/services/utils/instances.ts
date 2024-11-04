@@ -31,6 +31,7 @@ export const apiWithFormData = axios.create({
 	baseURL: url,
 	headers: {
 		'Content-Type': 'multipart/form-data',
+		'Accept': 'multipart/form-data',
 		'Authorization': `Bearer ${getToken('accessToken')}`,
 	},
 });
