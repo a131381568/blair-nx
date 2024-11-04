@@ -43,11 +43,13 @@ export const stargazingWithPagiDefaultData = {
 	meta: paginationDefaultData,
 };
 
+export const switchStargazingQueryMode = z.union([z.literal('map'), z.literal('list')]);
+
 export const stargazingQuerySchema = z.object({
 	nid: nanoIdSchema.optional(),
 	page: z.string().default('1'),
 	limit: z.string().default('10'),
-	mode: z.union([z.literal('map'), z.literal('list')]).default('map'),
+	mode: switchStargazingQueryMode.default('map'),
 }).strict();
 
 export const defaultStargazingQueryData = stargazingQuerySchema.parse({});

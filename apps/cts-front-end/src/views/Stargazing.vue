@@ -5,18 +5,17 @@ import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useGlobalStore } from '@ctsf-src/stores/global';
 import { until, useToggle } from '@vueuse/core';
-import type { ApiResponse, SingleStargazingDetailDto, StargazingListWithPagiDto } from '@cts-shared';
+import type { SingleStargazingDetailDto } from '@cts-shared';
 import { defaultStargazingItemDetail } from '@cts-shared';
-import type { vueQueryRes } from '@ctsf-src/services/utils/vue-query-client';
-import { STALE_TIME, queryClient } from '@ctsf-src/services/utils/vue-query-client';
 import useLeafletMap from '@ctsf-src/composables/useLeafletMap';
 import L from 'leaflet';
 import markSvg from '@ctsf-src/assets/img/mark-op.png';
 import actMarkSvg from '@ctsf-src/assets/img/mark-op-act.png';
-import Header from '../components/Header.vue';
-import TitleBox from '../components/TitleBox.vue';
-import Footer from '../components/Footer.vue';
-import ArrowDown from '../components/svg/ArrowDown.vue';
+import Header from '@ctsf-src/components/Header.vue';
+import TitleBox from '@ctsf-src/components/TitleBox.vue';
+import Footer from '@ctsf-src/components/Footer.vue';
+import ArrowDown from '@ctsf-src/components/svg/ArrowDown.vue';
+import { stargazingListQuery } from '@ctsf-src/services/apis/stargazingApi';
 
 const route = useRoute();
 const globalStore = useGlobalStore();
@@ -86,10 +85,9 @@ const clickSingleInfo = (singleData: SingleStargazingDetailDto) => {
 	togglePlaceVal.value && togglePlace();
 };
 
-const { data: stargazingListAPI, isLoading } = queryClient.getStargazingQuery.useQuery<
-	vueQueryRes<ApiResponse<StargazingListWithPagiDto>>
->(['getStargazingQuery'], () => ({}),	{
-	staleTime: STALE_TIME,
+const { data: stargazingListAPI, isLoading } = stargazingListQuery({
+	activePage: ref(1),
+	queryMode: 'map',
 });
 
 // DOM 已經掛載好才初始化地圖
