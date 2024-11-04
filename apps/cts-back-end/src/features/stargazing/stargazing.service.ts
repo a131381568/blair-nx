@@ -47,7 +47,7 @@ export class StargazingService {
 			? {
 					...pick(res, ['stargazingTitle', 'stargazingImage', 'stargazingDescription', 'stargazingAddress', 'stargazingNanoId']),
 					stargazingLatitude: String(res.stargazingLatitude),
-					stargazingLongitude: String(res.stargazingLatitude),
+					stargazingLongitude: String(res.stargazingLongitude),
 				}
 			: defaultStargazingItemDetail;
 	}
