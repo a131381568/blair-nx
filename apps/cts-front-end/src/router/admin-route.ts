@@ -1,6 +1,5 @@
 import Login from '@ctsf-src/views/admin/Login.vue';
 import Board from '@ctsf-src/views/admin/Board.vue';
-import UserList from '@ctsf-src/views/admin/UserList.vue';
 import Slogan from '@ctsf-src/views/admin/Slogan.vue';
 import Categories from '@ctsf-src/views/admin/Categories.vue';
 import EditSingleCategories from '@ctsf-src/views/admin/EditSingleCategories.vue';
@@ -11,17 +10,11 @@ import AddSingleArticle from '@ctsf-src/views/admin/AddSingleArticle.vue';
 import Organization from '@ctsf-src/views/admin/Organization.vue';
 import EditSingleOrganization from '@ctsf-src/views/admin/EditSingleOrganization.vue';
 import AddSingleOrganization from '@ctsf-src/views/admin/AddSingleOrganization.vue';
+import Observatories from '@ctsf-src/views/admin/Observatories.vue';
+import AddSingleObservatories from '@ctsf-src/views/admin/AddSingleObservatories.vue';
+import EditSingleObservatories from '@ctsf-src/views/admin/EditSingleObservatories.vue';
 
 export const adminRoute = [
-	{
-		path: '/users',
-		name: 'Users',
-		component: UserList,
-		meta: {
-			title: '管理者列表',
-			manage: true,
-		},
-	},
 	{
 		path: '/login',
 		name: 'Login',
@@ -127,6 +120,33 @@ export const adminRoute = [
 		component: AddSingleOrganization,
 		meta: {
 			title: '新增機構',
+			manage: true,
+		},
+	},
+	{
+		path: '/board/observatories',
+		name: 'Observatories',
+		component: Observatories,
+		meta: {
+			title: '天文台管理',
+			manage: true,
+		},
+	},
+	{
+		path: '/board/observatories/edit/:mid',
+		name: 'EditSingleObservatories',
+		component: EditSingleObservatories,
+		meta: {
+			title: '編輯天文台',
+			manage: true,
+		},
+	},
+	{
+		path: '/board/observatories/add',
+		name: 'AddSingleObservatories',
+		component: AddSingleObservatories,
+		meta: {
+			title: '新增天文台',
 			manage: true,
 		},
 	},
