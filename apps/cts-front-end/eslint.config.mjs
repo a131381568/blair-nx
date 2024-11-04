@@ -255,6 +255,7 @@ export default antfu(
 						'post-title-input',
 						'post-cat-input',
 						'post-cat-select',
+						'single-organ-title-box',
 					],
 				},
 			],

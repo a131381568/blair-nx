@@ -11,3 +11,5 @@ export const linkHome = (router: Router) => router.push('/');
 export const linkAdminCategories = (router: Router) => router.push('/board/categories');
 
 export const linkAdminArticle = (router: Router) => router.push('/board/article');
+
+export const linkAdminOrganization = (router: Router) => router.push('/board/organization');

@@ -33,12 +33,17 @@ export const updateFacilityItemSchema = facilityItemBase.partial().extend({
 }).strict();
 
 export const createFacilityItemSchema = z.object({
-	facilitiesTitle: z.string().nullable(),
-	facilitiesDescription: z.string().nullable(),
-	facilitiesImage: z.string().nullable(),
-	facilitiesLink: z.string().nullable(),
+	facilitiesTitle: baseStringSchema,
+	facilitiesDescription: strArticleSchema,
+	facilitiesImage: strArticleSchema,
+	facilitiesLink: strArticleSchema,
 }).strict();
 
 export const createFacilityItemFinishSchema = createFacilityItemSchema.extend({
+	facilitiesNanoId: nanoIdSchema,
 	facilitiesOrderId: z.number(),
 });
+
+export const mutationFacilityItemSchema = createFacilityItemSchema.extend({
+	facilitiesNanoId: nanoIdSchema,
+}).strict();
