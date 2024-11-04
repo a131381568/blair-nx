@@ -1,4 +1,14 @@
 import { z } from 'zod';
+import { nanoIdSchema } from '../dto/id.dto';
+import { baseStringSchema, strArticleSchema } from '../dto/string.dto';
+
+export const facilityItemWithNanoId = z.object({
+	facilitiesTitle: baseStringSchema.nullable().default(''),
+	facilitiesDescription: strArticleSchema.nullable().default(''),
+	facilitiesImage: strArticleSchema.nullable().default(''),
+	facilitiesLink: strArticleSchema.nullable().default(''),
+	facilitiesNanoId: nanoIdSchema.default(''),
+});
 
 export const facilityItemBase = z.object({
 	facilitiesTitle: z.string().nullable().default(''),
@@ -16,6 +26,7 @@ export const defaultFacilityItemBase = facilityItemBase.parse({});
 
 export const getFacilitiesListSchema = z.array(getFacilityItemFullSchema);
 export const getFacilitiesListBaseSchema = z.array(facilityItemBase);
+export const getFacilitiesListBaseWithNanoIdSchema = z.array(facilityItemWithNanoId);
 
 export const updateFacilityItemSchema = facilityItemBase.partial().extend({
 	facilitiesOrderId: z.number().optional(),

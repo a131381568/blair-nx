@@ -14,7 +14,7 @@ export class FacilitiesService {
 		const res = await this.prisma.facilitiesList.findMany({
 			orderBy: { facilitiesOrderId: 'asc' },
 			where: { published: true },
-			take: 3,
+			take: 10,
 		});
 
 		return res.map(item => pick(item, ['facilitiesTitle', 'facilitiesDescription', 'facilitiesImage', 'facilitiesLink', 'facilitiesNanoId']));

@@ -8,6 +8,9 @@ import AddSingleCategories from '@ctsf-src/views/admin/AddSingleCategories.vue';
 import Article from '@ctsf-src/views/admin/Article.vue';
 import EditSingleArticle from '@ctsf-src/views/admin/EditSingleArticle.vue';
 import AddSingleArticle from '@ctsf-src/views/admin/AddSingleArticle.vue';
+import Organization from '@ctsf-src/views/admin/Organization.vue';
+import EditSingleOrganization from '@ctsf-src/views/admin/EditSingleOrganization.vue';
+import AddSingleOrganization from '@ctsf-src/views/admin/AddSingleOrganization.vue';
 
 export const adminRoute = [
 	{
@@ -97,6 +100,33 @@ export const adminRoute = [
 		component: AddSingleArticle,
 		meta: {
 			title: '新增文章',
+			manage: true,
+		},
+	},
+	{
+		path: '/board/organization',
+		name: 'Organization',
+		component: Organization,
+		meta: {
+			title: '天文機構管理',
+			manage: true,
+		},
+	},
+	{
+		path: '/board/organization/edit/:oid',
+		name: 'EditSingleOrganization',
+		component: EditSingleOrganization,
+		meta: {
+			title: '編輯機構',
+			manage: true,
+		},
+	},
+	{
+		path: '/board/organization/add',
+		name: 'AddSingleOrganization',
+		component: AddSingleOrganization,
+		meta: {
+			title: '新增機構',
 			manage: true,
 		},
 	},
