@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import Big from 'big.js';
 import { paginationDefaultData, paginationSchema } from '../dto/pagi.dto';
+import { baseStringSchema, strArticleSchema } from '../dto/string.dto';
 import { nanoIdSchema } from '../dto/id.dto';
 
 const bigSchema = z
@@ -61,4 +62,17 @@ export const StargazingListWithPagiSchema = z.object({
 
 export const updateStargazingDetailSchema = stargazingItemDetail.omit({
 	stargazingNanoId: true,
+}).strict();
+
+export const createSinleStargazingSchema = z.object({
+	stargazingTitle: baseStringSchema,
+	stargazingAddress: strArticleSchema,
+	stargazingLatitude: baseStringSchema,
+	stargazingLongitude: baseStringSchema,
+	stargazingImage: strArticleSchema,
+	stargazingDescription: strArticleSchema,
+}).strict();
+
+export const mutationSinleStargazingSchema = createSinleStargazingSchema.extend({
+	stargazingNanoId: nanoIdSchema,
 }).strict();

@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
+import { get } from 'radash';
 import AdminSidebar from '@ctsf-src/components/AdminSidebar.vue';
 import Footer from '@ctsf-src/components/Footer.vue';
 import Pagination from '@ctsf-src/components/Pagination.vue';
 import EditIcon from '@ctsf-src/components/svg/EditIcon.vue';
 import DeleteIcon from '@ctsf-src/components/svg/DeleteIcon.vue';
+import type { NanoIdDto, StargazingItemBaseDto } from '@cts-shared';
 import { singleStargazingDelete, stargazingListQuery } from '@ctsf-src/services/apis/stargazingApi';
 import { useConfirmModal, useMessageModal } from '@blair-nx-ui';
 
-const stargazingList = ref<SingleStargazingDetailDto[]>([]);
+const stargazingList = ref<StargazingItemBaseDto[]>([]);
 const currentPage = ref(1);
 
 const { data: stargazingListAPI, refetch: stargazingListRefetch } = stargazingListQuery({
@@ -47,7 +49,7 @@ const deleteStargazer = async (id: NanoIdDto) => {
 
 watchEffect(() => {
 	if (stargazingListAPI.value?.status === 200)
-		stargazingList.value = stargazingListAPI.value.body.data.list;
+		stargazingList.value = stargazingListAPI.value.body.data.list as StargazingItemBaseDto[];
 });
 </script>
 
