@@ -1,19 +1,8 @@
-import Science from '@ctsf-src/views/Science.vue';
-import About from '@ctsf-src/views/About.vue';
-import Home from '@ctsf-src/views/Home.vue';
-import SingleScience from '@ctsf-src/views/SingleScience.vue';
-import Story from '@ctsf-src/views/Story.vue';
-import SingleStory from '@ctsf-src/views/SingleStory.vue';
-import Stargazing from '@ctsf-src/views/Stargazing.vue';
-import Facilities from '@ctsf-src/views/Facilities.vue';
-import Search from '@ctsf-src/views/Search.vue';
-import Archive from '@ctsf-src/views/Archive.vue';
-
 export const clientRoute = [
 	{
 		path: '/',
 		name: 'Home',
-		component: Home,
+		component: () => import('@ctsf-src/views/Home.vue'),
 		meta: {
 			title: '首頁',
 			manage: false,
@@ -26,7 +15,7 @@ export const clientRoute = [
 	{
 		path: '/about',
 		name: 'About',
-		component: About,
+		component: () => import('@ctsf-src/views/About.vue'),
 		meta: {
 			title: '關於我們',
 			manage: false,
@@ -35,7 +24,7 @@ export const clientRoute = [
 	{
 		path: '/science',
 		name: 'Science',
-		component: Science,
+		component: () => import('@ctsf-src/views/Science.vue'),
 		meta: {
 			title: '天文科普',
 			manage: false,
@@ -44,7 +33,7 @@ export const clientRoute = [
 	{
 		path: '/science/:sid',
 		name: 'SingleScience',
-		component: SingleScience,
+		component: () => import('@ctsf-src/views/SingleScience.vue'),
 		meta: {
 			title: '天文科普',
 			manage: false,
@@ -53,7 +42,7 @@ export const clientRoute = [
 	{
 		path: '/story',
 		name: 'Story',
-		component: Story,
+		component: () => import('@ctsf-src/views/Story.vue'),
 		meta: {
 			title: '星星物語',
 			manage: false,
@@ -62,7 +51,7 @@ export const clientRoute = [
 	{
 		path: '/story/:sid',
 		name: 'SingleStory',
-		component: SingleStory,
+		component: () => import('@ctsf-src/views/SingleStory.vue'),
 		meta: {
 			title: '星星物語',
 			manage: false,
@@ -71,7 +60,7 @@ export const clientRoute = [
 	{
 		path: '/stargazing',
 		name: 'Stargazing',
-		component: Stargazing,
+		component: () => import('@ctsf-src/views/Stargazing.vue'),
 		meta: {
 			title: '觀星地點',
 			manage: false,
@@ -80,7 +69,7 @@ export const clientRoute = [
 	{
 		path: '/facilities',
 		name: 'Facilities',
-		component: Facilities,
+		component: () => import('@ctsf-src/views/Facilities.vue'),
 		meta: {
 			title: '天文設施',
 			manage: false,
@@ -89,7 +78,7 @@ export const clientRoute = [
 	{
 		path: '/search',
 		name: 'Search',
-		component: Search,
+		component: () => import('@ctsf-src/views/Search.vue'),
 		meta: {
 			title: '搜尋頁面',
 			manage: false,
@@ -98,7 +87,7 @@ export const clientRoute = [
 	{
 		path: '/archive/:tagid',
 		name: 'Archive',
-		component: Archive,
+		component: () => import('@ctsf-src/views/Archive.vue'),
 		meta: {
 			title: '標籤',
 			manage: false,
