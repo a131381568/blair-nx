@@ -89,6 +89,9 @@ dependencies:
   express:
     specifier: ^4.21.1
     version: 4.21.1
+  klona:
+    specifier: ^2.0.6
+    version: 2.0.6
   leaflet:
     specifier: ^1.9.4
     version: 1.9.4
@@ -13326,7 +13329,6 @@ packages:
   /klona@2.0.6:
     resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
     engines: {node: '>= 8'}
-    dev: true
 
   /koa-compose@4.1.0:
     resolution: {integrity: sha512-8ODW8TrDuMYvXRwra/Kh7/rJo9BtOfPc6qO8eAfC80CnCvSjSl0bkRM24X6/XBBEyj0v1nRUQ1LyOy3dbqOWXw==}
