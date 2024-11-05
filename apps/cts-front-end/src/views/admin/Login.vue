@@ -128,5 +128,5 @@ const validateForm = useDebounceFn(async () => {
 			</form>
 		</div>
 	</div>
-	<Footer class="animate__animated animate__fadeIn" />
+	<Footer />
 </template>

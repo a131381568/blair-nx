@@ -235,7 +235,7 @@ const updateStargazerLongitudeVal = (event: Event) => {
 			</div>
 			<div class="w-full w-table:w-5/12">
 				<div
-					class="animate__animated h-52 w-full bg-cover bg-center bg-no-repeat "
+					class="h-52 w-full bg-cover bg-center bg-no-repeat "
 					:style="{ 'background-image': `url(${stargazerImageUrl})` }"
 				/>
 				<div class="upload-bar mb-1 mt-7 flex justify-between">

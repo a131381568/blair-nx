@@ -15,7 +15,6 @@ import Footer from '../components/Footer.vue';
 const route = useRoute();
 const globalStore = useGlobalStore();
 const { currentPageMeta } = storeToRefs(globalStore);
-const getFirstEnter = ref(false);
 
 const eduCategories = ref<GetFacilitiesListBaseWithNanoIdDto>([]);
 const observatoryCategories = ref<ObservatoriesListDto>([]);
@@ -72,10 +71,7 @@ handleObservatoriesData();
 			:page-sub-title="facilitiesMeta.subPageTitle"
 		/>
 		<div class="mb-14 mt-8 w-10/12">
-			<h2
-				class="animate__animated animate__fadeIn text-left text-main-color-light"
-				:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
-			>
+			<h2	class="text-left text-main-color-light">
 				推廣機構
 			</h2>
 		</div>
@@ -86,8 +82,7 @@ handleObservatoriesData();
 			<div
 				v-for="(val, key) in eduCategories"
 				:key="key"
-				class="facility-item animate__animated animate__fadeInUp group"
-				:class="{ 'animate__delay-4s': getFirstEnter }"
+				class="facility-item  group"
 			>
 				<img
 					class="h-[130px] w-full border border-b-0 border-white/0 object-cover delay-75 duration-1000 group-hover:border-white/60"
@@ -126,18 +121,12 @@ handleObservatoriesData();
 			ref="block_observatory_target"
 			class="mb-0 mt-28 w-10/12"
 		>
-			<h2
-				class="animate__animated animate__faster text-left text-main-color-light"
-				:class="{ animate__fadeIn: block_observatory_target_isVisible }"
-			>
+			<h2 class="text-left text-main-color-light">
 				天文台
 			</h2>
 		</div>
 		<!-- 篩選列 -->
-		<div
-			class="table-filter animate__animated animate__faster mb-8 mt-14 inline-flex w-10/12"
-			:class="{ animate__fadeIn: block_observatory_target_isVisible }"
-		>
+		<div class="table-filter mb-8 mt-14 inline-flex w-10/12">
 			<ul
 				v-if="observatoryCategories"
 				class="flex flex-wrap"
@@ -176,14 +165,12 @@ handleObservatoriesData();
 		<!-- 瀏覽 md 區塊 -->
 		<div
 			v-if="observatoryCategories"
-			class="md-container facilities-md-container animate__animated animate__delay-1s text-main-color-light h-table:w-10/12"
-			:class="{ animate__fadeIn: block_observatory_target_isVisible }"
+			class="md-container facilities-md-container text-main-color-light h-table:w-10/12"
 		>
 			<v-md-preview
 				v-for="(val, key) in observatoryCategories"
 				v-show="selectCat === val.observatoryCategoryId"
 				:key="key"
-				class="animate__animated animate__fadeIn animate__faster"
 				:text="val.observatoryPostContent"
 			/>
 		</div>

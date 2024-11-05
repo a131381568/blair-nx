@@ -120,7 +120,7 @@ const selectCategoryEvent = (val: PostCategoryDto) => {
 		<div class="table-container editer-container flex w-9/12 flex-wrap justify-between mobile:m-auto mobile:w-11/12">
 			<div class="mb-14 flex w-full content-center mobile:flex-wrap middle-pc:w-2/3 large-pc:mb-0 pro-pc:w-7/12">
 				<div
-					class="animate__animated size-[304px] shrink-0 rounded-full bg-cover bg-center bg-no-repeat mini-mobile:size-[200px]"
+					class="size-[304px] shrink-0 rounded-full bg-cover bg-center bg-no-repeat mini-mobile:size-[200px]"
 					:style="{ 'background-image': `url(${articleImageUrl})` }"
 				/>
 				<div class="upload-bar relative w-[calc(100%-304px)] shrink-0 self-center mobile:mt-7 mobile:w-full h-table:left-8">
@@ -169,7 +169,7 @@ const selectCategoryEvent = (val: PostCategoryDto) => {
 					<h4 class="mb-4 font-normal text-main-color-light">
 						文章分類
 					</h4>
-					<div class="post-cat-select dropdown-menu animate__animated animate__fadeIn relative z-40 mb-4 w-full">
+					<div class="post-cat-select dropdown-menu relative z-40 mb-4 w-full">
 						<button
 							id="dropdownDefault"
 							class="relative inline-flex w-full items-center border border-white/30 bg-white/0 p-3 pl-4 text-center text-lg tracking-wide-content text-main-color-light duration-1000 hover:border-white/0 hover:bg-white/18 hover:text-sub-color-light focus:border-white/0 focus:bg-white/18 focus:text-sub-color-light focus:outline-none"

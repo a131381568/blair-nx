@@ -117,11 +117,10 @@ const toggleModal = () => {
 	<div
 		v-if="modalShow"
 		id="modal"
-		class="modal-bg animate__animated animate__fadeInDown animate__faster fixed left-0 top-0 size-full overflow-auto bg-secondary"
+		class="modal-bg fixed left-0 top-0 size-full overflow-auto bg-secondary"
 		:class="[
 			{ 'opacity-100': modal === true },
 			{ 'z-9999': modal === true },
-			{ animate__slideOutUp: modal === false },
 			{ 'opacity-0': fastHide === true },
 		]"
 	>

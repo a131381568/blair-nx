@@ -29,8 +29,8 @@ const logoutAction = () => {
 			</router-link>
 		</div>
 		<ul
-			class="animate__faster animate__animated laptop:visible"
-			:class="[{ 'animate__fadeIn animate__delay-1s visible': toggleSideBar }, { invisible: !toggleSideBar }]"
+			class="laptop:visible"
+			:class="[{ visible: toggleSideBar }, { invisible: !toggleSideBar }]"
 		>
 			<li
 				v-for="(val, key) in adminMenuData"
@@ -59,8 +59,8 @@ const logoutAction = () => {
 			</li>
 		</ul>
 		<button
-			class="animate__animated animate__delay-2s fixed left-0 right-auto top-0 block h-full px-2 py-0 text-5xl shadow-2xl laptop:hidden laptop:px-4"
-			:class="{ 'animate__fadeIn mobile:left-auto mobile:right-0 h-table:left-1/2 h-table:right-auto h-table:bg-main-color-light h-table:pr-2': toggleSideBar }"
+			class="fixed left-0 right-auto top-0 block h-full px-2 py-0 text-5xl shadow-2xl laptop:hidden laptop:px-4"
+			:class="{ 'mobile:left-auto mobile:right-0 h-table:left-1/2 h-table:right-auto h-table:bg-main-color-light h-table:pr-2': toggleSideBar }"
 			@click="toggleSideBar = !toggleSideBar"
 		>
 			<div class="mb-[4px] h-[3px] w-[29px] rounded-[11px] bg-main-color-dark" />

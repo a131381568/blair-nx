@@ -19,7 +19,6 @@ const globalStore = useGlobalStore();
 const { currentPageMeta } = storeToRefs(globalStore);
 const [toggleFilterVal, toggleFilter] = useToggle();
 
-const getFirstEnter = ref(false);
 const changeGridState = ref(false);
 const postListRef = ref<ScienceListDto>([]);
 const currentPage = ref(1);
@@ -83,10 +82,7 @@ const selectCatName = computed(() => {
 			:page-title="scienceMeta.pageTitle"
 			:page-sub-title="scienceMeta.subPageTitle"
 		/>
-		<div
-			class="science-filter-bar animate__animated animate__fadeIn mb-16 mt-6 hidden w-10/12 laptop:inline-flex middle-pc:mb-20 middle-pc:mt-16"
-			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
-		>
+		<div class="science-filter-bar mb-16 mt-6 hidden w-10/12 laptop:inline-flex middle-pc:mb-20 middle-pc:mt-16">
 			<ul
 				v-if="postCategories.length && postCategories"
 				class="flex"
@@ -121,10 +117,7 @@ const selectCatName = computed(() => {
 			</ul>
 		</div>
 		<!-- 選單樣式 -->
-		<div
-			class="dropdown-menu animate__animated animate__fadeIn relative z-40 mb-8 h-table:w-10/12 laptop:hidden"
-			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
-		>
+		<div class="dropdown-menu relative z-40 mb-8 h-table:w-10/12 laptop:hidden">
 			<button
 				id="dropdownDefault"
 				class="relative inline-flex w-[200px] items-center border border-white/60 bg-white/0 p-3 pl-4 text-center text-xl font-medium tracking-wide-content text-main-color-light duration-1000 hover:border-white/0 hover:bg-white/18 hover:text-sub-color-light focus:border-white/0 focus:bg-white/18 focus:text-sub-color-light focus:outline-none"
@@ -168,8 +161,7 @@ const selectCatName = computed(() => {
 		<!-- post grid -->
 		<div
 			v-if="postListRef.length"
-			class="animate__animated animate__fadeInUp grid grid-cols-2 overflow-hidden mobile:grid-cols-1 mobile:gap-5 h-table:w-10/12 h-table:gap-12 laptop:grid-cols-3 pro-pc:gap-24"
-			:class="[{ 'animate__delay-4s': getFirstEnter }, { animate__fadeOut: changeGridState }]"
+			class="grid grid-cols-2 overflow-hidden mobile:grid-cols-1 mobile:gap-5 h-table:w-10/12 h-table:gap-12 laptop:grid-cols-3 pro-pc:gap-24"
 		>
 			<div
 				v-for="(val, key) in postListRef"
@@ -177,7 +169,7 @@ const selectCatName = computed(() => {
 			>
 				<!-- card -->
 				<div
-					class="animate__animated animate__fadeInUp grid-card h-96 border border-white/0 px-8 py-12 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0"
+					class="grid-card h-96 border border-white/0 px-8 py-12 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0"
 					:class="[
 						{ 'bg-opacity/18': (key + 1) % 3 === 0 },
 						{ 'bg-opacity/12': (key + 3) % 3 === 1 },

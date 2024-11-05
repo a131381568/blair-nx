@@ -49,7 +49,7 @@ const homeData = computed(() => pageInfoData.value.find(item => item.pageRoute =
 				<div class="infobox-grid flex flex-wrap justify-between middle-mobile:justify-center middle-mobile:text-center">
 					<div class="infobox mb-10 flex flex-wrap items-center middle-mobile:justify-center">
 						<router-link
-							to="/"
+							to="/board/article"
 							class="infobox-icon group mb-6 mr-6 middle-mobile:mr-0"
 						>
 							<PostManage class="size-20" />
@@ -77,7 +77,7 @@ const homeData = computed(() => pageInfoData.value.find(item => item.pageRoute =
 					</div>
 					<div class="infobox mb-10 flex flex-wrap items-center middle-mobile:justify-center">
 						<router-link
-							to="/"
+							to="/board/organization"
 							class="infobox-icon group mb-6 mr-6 middle-mobile:mr-0"
 						>
 							<FacilityManage class="size-20" />

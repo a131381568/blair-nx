@@ -11,7 +11,6 @@ import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';
 
-const getFirstEnter = ref(false);
 // 取得路由
 const route = useRoute();
 const router = useRouter();
@@ -54,8 +53,7 @@ watchEffect(() => {
 		<!-- 瀏覽 md 區塊 -->
 		<div
 			v-show="postData.content"
-			class="animate__animated animate__fadeIn md-container mt-8 bg-white/6 p-10 text-main-color-light mobile:p-8 h-table:w-10/12 laptop:p-20 middle-pc:mt-16"
-			:class="[{ 'animate__delay-5s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
+			class="md-container mt-8 bg-white/6 p-10 text-main-color-light mobile:p-8 h-table:w-10/12 laptop:p-20 middle-pc:mt-16"
 		>
 			<v-md-preview
 				class="markdown-body"

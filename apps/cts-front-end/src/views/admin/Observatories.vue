@@ -64,7 +64,6 @@ watchEffect(() => {
 				<table
 					v-if="observatoriesLit.length"
 					id="responsive-table"
-					class="animate__animated animate__fadeIn"
 				>
 					<thead class="hidden  w-table:table-header-group">
 						<tr>

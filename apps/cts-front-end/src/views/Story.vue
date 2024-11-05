@@ -15,7 +15,6 @@ import Footer from '../components/Footer.vue';
 const route = useRoute();
 const globalStore = useGlobalStore();
 const { currentPageMeta } = storeToRefs(globalStore);
-const getFirstEnter = ref(false);
 const masonryRef = ref(null);
 const { width } = useWindowSize();
 
@@ -62,8 +61,7 @@ watchEffect(() => {
 		<div
 			v-if="timeLineRef.length"
 			ref="masonryRef"
-			class="grid-col-2 animate__animated animate__fadeIn container relative mx-auto grid h-full grid-flow-col justify-items-center h-table:w-10/12"
-			:class="[{ 'animate__delay-5s': getFirstEnter === true }, { 'animate__delay-1s': getFirstEnter === false }]"
+			class="grid-col-2 container relative mx-auto grid h-full grid-flow-col justify-items-center h-table:w-10/12"
 		>
 			<masonry-wall
 				:items="timeLineRef"
@@ -78,7 +76,6 @@ watchEffect(() => {
 						:class="[
 							{ 'mt-20': index !== 0 },
 							{ 'mt-0 ': index === 0 },
-							{ 'animate__animated animate__fadeInUp': timeLineRef.length === 1 + index },
 						]"
 						class="single-timeline-grid group flex"
 						:style="{ width: `${gridWidth}px` }"

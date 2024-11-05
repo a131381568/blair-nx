@@ -13,7 +13,6 @@ import Footer from '../components/Footer.vue';
 
 const router = useRouter();
 const route = useRoute();
-const getFirstEnter = ref(false);
 const postListRef = ref<ScienceListDto>([]);
 const pagiMeta = ref<PaginationDto>(paginationDefaultData);
 const currentPage = ref(1);
@@ -61,24 +60,18 @@ watchEffect(() => {
 			:page-title="archiveMeta.pageTitle"
 			:page-sub-title="archiveMeta.subPageTitle"
 		/>
-		<div
-			class="animate__animated animate__flipInY mt-20 hidden h-full w-table:block w-table:w-5/12 middle-pc:w-4/12"
-			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
-		>
+		<div class="mt-20 hidden h-full w-table:block w-table:w-5/12 middle-pc:w-4/12">
 			<img
 				class="h-table:w-4/5 laptop:w-auto"
 				src="/img/bg-achive.png"
 			>
 		</div>
 		<!-- post grid -->
-		<div
-			class="search-items animate__animated animate__fadeInUp grid w-10/12 grid-cols-1 overflow-hidden mobile:w-full w-table:mt-36 w-table:w-5/12 middle-pc:w-6/12"
-			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
-		>
+		<div class="search-items grid w-10/12 grid-cols-1 overflow-hidden mobile:w-full w-table:mt-36 w-table:w-5/12 middle-pc:w-6/12">
 			<div
 				v-for="(val, key) in postListRef"
 				:key="key"
-				class="search-item animate__animated animate__fadeInUp"
+				class="search-item"
 			>
 				<router-link :to="`/science/${val.postNanoId}`">
 					<!-- card -->
