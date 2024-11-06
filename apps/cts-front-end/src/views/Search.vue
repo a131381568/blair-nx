@@ -155,7 +155,7 @@ watchDebounced(searchWord, () => {
 		<!-- 主視覺 -->
 		<div
 			v-show="postListRef.length"
-			class="mt-20 hidden h-full w-table:block w-table:w-5/12 middle-pc:w-4/12"
+			class="mt-20 hidden h-full animate-flipInY w-table:block w-table:w-5/12 middle-pc:w-4/12"
 		>
 			<img
 				class="w-auto"
@@ -167,7 +167,7 @@ watchDebounced(searchWord, () => {
 			<div
 				v-for="(val, key) in postListRef"
 				:key="key"
-				class="post-grid-item"
+				class="post-grid-item animate-fadeInUp"
 			>
 				<router-link
 					:to="{

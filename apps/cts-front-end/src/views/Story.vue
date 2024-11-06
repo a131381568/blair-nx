@@ -61,7 +61,7 @@ watchEffect(() => {
 		<div
 			v-if="timeLineRef.length"
 			ref="masonryRef"
-			class="grid-col-2 container relative mx-auto grid h-full grid-flow-col justify-items-center h-table:w-10/12"
+			class="grid-col-2 container relative mx-auto grid h-full animate-fadeInUp grid-flow-col justify-items-center h-table:w-10/12"
 		>
 			<masonry-wall
 				:items="timeLineRef"
@@ -76,6 +76,7 @@ watchEffect(() => {
 						:class="[
 							{ 'mt-20': index !== 0 },
 							{ 'mt-0 ': index === 0 },
+							{ 'animate-fadeInUp': (timeLineRef.length === (1 + index)) },
 						]"
 						class="single-timeline-grid group flex"
 						:style="{ width: `${gridWidth}px` }"

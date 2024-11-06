@@ -161,7 +161,7 @@ const selectCatName = computed(() => {
 		<!-- post grid -->
 		<div
 			v-if="postListRef.length"
-			class="grid grid-cols-2 overflow-hidden mobile:grid-cols-1 mobile:gap-5 h-table:w-10/12 h-table:gap-12 laptop:grid-cols-3 pro-pc:gap-24"
+			class="grid animate-fadeInUp grid-cols-2 overflow-hidden mobile:grid-cols-1 mobile:gap-5 h-table:w-10/12 h-table:gap-12 laptop:grid-cols-3 pro-pc:gap-24"
 		>
 			<div
 				v-for="(val, key) in postListRef"
@@ -169,7 +169,7 @@ const selectCatName = computed(() => {
 			>
 				<!-- card -->
 				<div
-					class="grid-card h-96 border border-white/0 px-8 py-12 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0"
+					class="grid-card h-96 animate-fadeInUp border border-white/0 px-8 py-12 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0"
 					:class="[
 						{ 'bg-opacity/18': (key + 1) % 3 === 0 },
 						{ 'bg-opacity/12': (key + 3) % 3 === 1 },

@@ -90,35 +90,42 @@ const { data: stargazingListAPI, isLoading } = stargazingListQuery({
 });
 
 // DOM 已經掛載好才初始化地圖
-nextTick(async () => {
-	if (!composableMap.value)
-		createMap({ mapRef: mapContainer.value });
+nextTick(() => {
+	requestAnimationFrame(async () => {
+		if (!mapContainer.value)
+			return;
 
-	await until(isLoading).toBe(false);
-	if (stargazingListAPI.value?.status === 200) {
-		// 資料綁定地圖
-		const newList = stargazingListAPI.value.body.data.list as SingleStargazingDetailDto[];
-		stargazingList.value = newList.map((item) => {
-			return mapValues(item, value => value || '');
-		});
+		if (!composableMap.value)
+			createMap({ mapRef: mapContainer.value });
 
-		stargazingList.value.forEach((item, index) => {
-			if (!index) {
-				// 將第一筆位置設定成地圖中心
-				composableMap.value?.whenReady(() => {
-					settingDefaultState({ coordinate: [Number(item.stargazingLatitude), Number(item.stargazingLongitude)] });
+		await until(isLoading).toBe(false);
+		if (stargazingListAPI.value?.status === 200) {
+			// 資料綁定地圖
+			const newList = stargazingListAPI.value.body.data.list as SingleStargazingDetailDto[];
+			stargazingList.value = newList.map((item) => {
+				return mapValues(item, value => value || '');
+			});
+
+			composableMap.value?.whenReady(() => {
+				stargazingList.value.forEach((item, index) => {
+					if (!index) {
+						// 將第一筆位置設定成地圖中心
+						composableMap.value?.whenReady(() => {
+							settingDefaultState({ coordinate: [Number(item.stargazingLatitude), Number(item.stargazingLongitude)] });
+						});
+					}
+					// 地圖插點相關事件
+					const marker = addMarker([Number(item.stargazingLatitude), Number(item.stargazingLongitude)], {
+						icon: generateIcon(normalMarkConfig),
+						zIndexOffset: 1,
+					});
+					marker.on('click', () => {
+						clickSingleInfo(item);
+					});
 				});
-			}
-			// 地圖插點相關事件
-			const marker = addMarker([Number(item.stargazingLatitude), Number(item.stargazingLongitude)], {
-				icon: generateIcon(normalMarkConfig),
-				zIndexOffset: 1,
 			});
-			marker.on('click', () => {
-				clickSingleInfo(item);
-			});
-		});
-	}
+		}
+	});
 });
 
 const stargazingMeta = computed(() => currentPageMeta.value(String(route.name)));
@@ -165,7 +172,7 @@ const stargazingMeta = computed(() => currentPageMeta.value(String(route.name)))
 		</div>
 	</div>
 	<!-- 桌機左側列表樣式 -->
-	<div class="stargazing-menu absolute z-[401] hidden h-[80vh] w-full overflow-x-hidden bg-white px-7 py-8 shadow-2xl h-table:block h-table:w-5/12 w-table:w-1/3 middle-pc:w-1/5">
+	<div class="stargazing-menu absolute z-[401] hidden h-[80vh] w-full animate-slideInLeft overflow-x-hidden bg-white px-7 py-8 shadow-2xl h-table:block h-table:w-5/12 w-table:w-1/3 middle-pc:w-1/5">
 		<h2 class="mb-9 font-normal">
 			地點列表
 		</h2>
@@ -188,9 +195,8 @@ const stargazingMeta = computed(() => currentPageMeta.value(String(route.name)))
 	</div>
 	<!-- 單一地點介紹 -->
 	<div
-		v-show="infoBoxState"
-		class="stargazing-info-card grid-flow-rows absolute z-[401] grid h-[80vh] w-full bg-white shadow-2xl h-table:w-1/2 w-table:w-5/12 middle-pc:w-1/3"
-		:class="{ '-z-9999': isReady }"
+		class="stargazing-info-card grid-flow-rows absolute z-[401] grid h-[80vh] w-full animate-slideInLeft bg-white	shadow-2xl h-table:w-1/2 w-table:w-5/12 middle-pc:w-1/3"
+		:class="{ '-z-9999': isReady, 'animate-slideOutLeft': !infoBoxState }"
 	>
 		<div class="row-span-1 flex w-full items-center justify-between p-4">
 			<h2 class="truncate font-normal tracking-normal mobile:text-xl h-table:text-xl middle-pc:text-4xl">

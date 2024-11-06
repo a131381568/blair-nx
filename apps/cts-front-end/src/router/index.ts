@@ -20,4 +20,10 @@ const router = createRouter({
 	],
 });
 
+router.beforeEach((to, from, next) => {
+	const bodyEl = document.querySelector('body');
+	bodyEl && (bodyEl.scrollTo(0, 0));
+	next();
+});
+
 export default router;

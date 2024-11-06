@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { get, listify } from 'radash';
-import AdminSidebar from '@ctsf-src/components/AdminSidebar.vue';
 import Footer from '@ctsf-src/components/Footer.vue';
 import OrganizeForm from '@ctsf-src/components/OrganizeForm.vue';
 import { FILE_CONFIG, createFacilityItemSchema } from '@cts-shared';
@@ -133,26 +132,23 @@ const setConfirmModal = async () => {
 </script>
 
 <template>
-	<div class="flex items-stretch">
-		<AdminSidebar />
-		<OrganizeForm
-			:organization-title="currentRouteInfo.organizationTitle"
-			:organization-save-btn="currentRouteInfo.organizationSaveBtn"
-			:facilities-title-val="organizationInputInfo.facilitiesTitle.val"
-			:facilities-title-error="organizationInputInfo.facilitiesTitle.error"
-			:facilities-link-val="organizationInputInfo.facilitiesLink.val"
-			:facilities-link-error="organizationInputInfo.facilitiesLink.error"
-			:facilities-description-val="organizationInputInfo.facilitiesDescription.val"
-			:facilities-description-error="organizationInputInfo.facilitiesDescription.error"
-			:facilities-image-val="organizationInputInfo.facilitiesImage.val"
-			:facilities-image-error="organizationInputInfo.facilitiesImage.error"
-			:confirm-event="setConfirmModal"
-			@update-facilities-title-val="updateOrganizationVal($event, 'title')"
-			@update-facilities-link-val="updateOrganizationVal($event, 'link')"
-			@update-facilities-description-val="updateOrganizationVal($event, 'des')"
-			@upload-file-event="updateFileAct"
-		>
-			<Footer />
-		</OrganizeForm>
-	</div>
+	<OrganizeForm
+		:organization-title="currentRouteInfo.organizationTitle"
+		:organization-save-btn="currentRouteInfo.organizationSaveBtn"
+		:facilities-title-val="organizationInputInfo.facilitiesTitle.val"
+		:facilities-title-error="organizationInputInfo.facilitiesTitle.error"
+		:facilities-link-val="organizationInputInfo.facilitiesLink.val"
+		:facilities-link-error="organizationInputInfo.facilitiesLink.error"
+		:facilities-description-val="organizationInputInfo.facilitiesDescription.val"
+		:facilities-description-error="organizationInputInfo.facilitiesDescription.error"
+		:facilities-image-val="organizationInputInfo.facilitiesImage.val"
+		:facilities-image-error="organizationInputInfo.facilitiesImage.error"
+		:confirm-event="setConfirmModal"
+		@update-facilities-title-val="updateOrganizationVal($event, 'title')"
+		@update-facilities-link-val="updateOrganizationVal($event, 'link')"
+		@update-facilities-description-val="updateOrganizationVal($event, 'des')"
+		@upload-file-event="updateFileAct"
+	>
+		<Footer />
+	</OrganizeForm>
 </template>

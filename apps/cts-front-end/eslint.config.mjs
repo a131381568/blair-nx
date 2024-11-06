@@ -128,7 +128,6 @@ export default antfu(
 						'filter-bg-opacity-50',
 						'enter-svg-obj',
 						'svg-obj',
-						'stop-star-wrapper',
 						'stop-star-subtitle',
 						'header-logo',
 						'header-svg-obj',

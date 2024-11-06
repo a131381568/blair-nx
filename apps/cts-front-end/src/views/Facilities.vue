@@ -82,7 +82,7 @@ handleObservatoriesData();
 			<div
 				v-for="(val, key) in eduCategories"
 				:key="key"
-				class="facility-item  group"
+				class="facility-item group animate-fadeInUp"
 			>
 				<img
 					class="h-[130px] w-full border border-b-0 border-white/0 object-cover delay-75 duration-1000 group-hover:border-white/60"
@@ -171,6 +171,7 @@ handleObservatoriesData();
 				v-for="(val, key) in observatoryCategories"
 				v-show="selectCat === val.observatoryCategoryId"
 				:key="key"
+				class="animate-fadeIn"
 				:text="val.observatoryPostContent"
 			/>
 		</div>

@@ -24,6 +24,10 @@ const props = defineProps({
 		type: [Object, Array, String],
 		default: undefined,
 	},
+	innerClass: {
+		type: [String, Object],
+		default: 'm-auto flex flex-col items-center overflow-auto rounded-lg bg-white py-8 text-center text-lg leading-normal',
+	},
 });
 
 const emit = defineEmits(['beforeClose', 'emitOpened', 'emitClosed']);
@@ -69,8 +73,7 @@ watch(
 			@click.self="handleBackgroundClick"
 		>
 			<div
-				class="m-auto flex flex-col items-center overflow-auto rounded-lg bg-white py-8 text-center text-lg leading-normal"
-				:class="{ 'lg: h-full rounded-none': fullscreen }"
+				:class="[{ 'lg: h-full rounded-none': fullscreen }, innerClass]"
 				:style="{ width: !fullscreen ? widthStyle : '100%' }"
 			>
 				<slot name="header" />

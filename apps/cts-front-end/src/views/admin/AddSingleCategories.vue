@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { get, listify } from 'radash';
 import AdminCategoryForm from '@ctsf-src/components/AdminCategoryForm.vue';
-import AdminSidebar from '@ctsf-src/components/AdminSidebar.vue';
 import Footer from '@ctsf-src/components/Footer.vue';
 import { linkAdminCategories } from '@ctsf-src/helper/customCtsRoute';
 import { categoriesQuery, categoryAdd } from '@ctsf-src/services/apis/categoriesApi';
@@ -88,23 +87,20 @@ const syncCategoryIdVal = (val: string) => (categoryInputInfo.value.postCategory
 </script>
 
 <template>
-	<div class="flex items-stretch">
-		<AdminSidebar />
-		<AdminCategoryForm
-			:is-add-mode="currentRouteInfo.isAddMode"
-			:categories-title="currentRouteInfo.categoriesTitle"
-			:categories-save-btn="currentRouteInfo.categoriesSaveBtn"
-			:post-category-name-title="categoryInputInfo.postCategoryName.title"
-			:post-category-name-val="categoryInputInfo.postCategoryName.val"
-			:post-category-name-error="categoryInputInfo.postCategoryName.error"
-			:post-category-id-title="categoryInputInfo.postCategoryId.title"
-			:post-category-id-val="categoryInputInfo.postCategoryId.val"
-			:post-category-id-error="categoryInputInfo.postCategoryId.error"
-			:confirm-event="setConfirmModal"
-			@update-post-category-name-val="syncCategoryNameVal"
-			@update-post-category-id-val="syncCategoryIdVal"
-		>
-			<Footer class="absolute bottom-0 mobile:left-0" />
-		</AdminCategoryForm>
-	</div>
+	<AdminCategoryForm
+		:is-add-mode="currentRouteInfo.isAddMode"
+		:categories-title="currentRouteInfo.categoriesTitle"
+		:categories-save-btn="currentRouteInfo.categoriesSaveBtn"
+		:post-category-name-title="categoryInputInfo.postCategoryName.title"
+		:post-category-name-val="categoryInputInfo.postCategoryName.val"
+		:post-category-name-error="categoryInputInfo.postCategoryName.error"
+		:post-category-id-title="categoryInputInfo.postCategoryId.title"
+		:post-category-id-val="categoryInputInfo.postCategoryId.val"
+		:post-category-id-error="categoryInputInfo.postCategoryId.error"
+		:confirm-event="setConfirmModal"
+		@update-post-category-name-val="syncCategoryNameVal"
+		@update-post-category-id-val="syncCategoryIdVal"
+	>
+		<Footer class="absolute bottom-0 mobile:left-0" />
+	</AdminCategoryForm>
 </template>

@@ -67,26 +67,6 @@
 		--animate-delay: 0.8s;
 		--twinkle-duration: 4s;
 	}
-	.stop-star-wrapper {
-		animation: bgEnterAnim 5s ease-in-out;
-	}
-	@keyframes bgEnterAnim {
-		0% {
-			background: #16161d;
-			opacity: 1;
-		}
-		50% {
-			background: #1f1f3a;
-		}
-		80% {
-			background: #3b2f4a;
-			opacity: 1;
-		}
-		100% {
-			background: linear-gradient(#16161d, #1f1f3a, #3b2f4a);
-			opacity: 0;
-		}
-	}
 	.stars-wrapper {
 		background: linear-gradient(#16161d, #1f1f3a, #3b2f4a);
 	}
@@ -475,10 +455,6 @@
 		animation: drawLight 1s linear forwards;
 	}
 
-	.enter-svg-obj.active path {
-		animation: drawDark 0.5s linear forwards;
-	}
-
 	@keyframes drawLight {
 		30% {
 			stroke-dashoffset: 430;
@@ -511,6 +487,10 @@
 			fill-opacity: 3;
 			@apply fill-main-color-black stroke-main-color-black;
 		}
+	}
+
+	.fill-mode-both {
+		animation-fill-mode: both;
 	}
 }
 

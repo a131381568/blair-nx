@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { get, listify } from 'radash';
-import AdminSidebar from '@ctsf-src/components/AdminSidebar.vue';
 import Footer from '@ctsf-src/components/Footer.vue';
 import AminStargazerFrom from '@ctsf-src/components/AminStargazerFrom.vue';
 import AdminStargazerModal from '@ctsf-src/components/AdminStargazerModal.vue';
@@ -169,37 +168,34 @@ const updateCoordinateEvent = ([lat, lng]: string[]) => {
 </script>
 
 <template>
-	<div class="flex items-stretch">
-		<AdminSidebar />
-		<AminStargazerFrom
-			:stargazer-title="currentRouteInfo.stargazerTitle"
-			:stargazer-save-btn="currentRouteInfo.stargazerSaveBtn"
-			:stargazer-name-val="stargazerInputInfo.stargazingTitle.val"
-			:stargazer-name-error="stargazerInputInfo.stargazingTitle.error"
-			:stargazer-description-val="stargazerInputInfo.stargazingAddress.val"
-			:stargazer-description-error="stargazerInputInfo.stargazingAddress.error"
-			:stargazer-introduction-val="stargazerInputInfo.stargazingDescription.val"
-			:stargazer-introduction-error="stargazerInputInfo.stargazingDescription.error"
-			:stargazer-latitude-val="stargazerInputInfo.stargazingLatitude.val"
-			:stargazer-latitude-error="stargazerInputInfo.stargazingLatitude.error"
-			:stargazer-longitude-val="stargazerInputInfo.stargazingLongitude.val"
-			:stargazer-longitude-error="stargazerInputInfo.stargazingLongitude.error"
-			:stargazer-image-url="stargazerInputInfo.stargazingImage.val"
-			:stargazer-image-error="stargazerInputInfo.stargazingImage.error"
-			:confirm-event="setConfirmModal"
-			:open-map-modal-event="openStargazingModal"
-			@update-stargazer-name-val="updateStargazerVal($event, 'title')"
-			@update-stargazer-description-val="updateStargazerVal($event, 'address')"
-			@update-stargazer-introduction-val="updateStargazerVal($event, 'des')"
-			@update-stargazer-latitude-val="updateStargazerVal($event, 'lati')"
-			@update-stargazer-longitude-val="updateStargazerVal($event, 'long')"
-			@upload-file-event="updateFileAct"
-		>
-			<Footer class="absolute bottom-0 mobile:left-0" />
-		</AminStargazerFrom>
-	</div>
-	<AdminStargazerModal
-		ref="stargazerModalRef"
-		@update-coordinate="updateCoordinateEvent"
-	/>
+	<AminStargazerFrom
+		:stargazer-title="currentRouteInfo.stargazerTitle"
+		:stargazer-save-btn="currentRouteInfo.stargazerSaveBtn"
+		:stargazer-name-val="stargazerInputInfo.stargazingTitle.val"
+		:stargazer-name-error="stargazerInputInfo.stargazingTitle.error"
+		:stargazer-description-val="stargazerInputInfo.stargazingAddress.val"
+		:stargazer-description-error="stargazerInputInfo.stargazingAddress.error"
+		:stargazer-introduction-val="stargazerInputInfo.stargazingDescription.val"
+		:stargazer-introduction-error="stargazerInputInfo.stargazingDescription.error"
+		:stargazer-latitude-val="stargazerInputInfo.stargazingLatitude.val"
+		:stargazer-latitude-error="stargazerInputInfo.stargazingLatitude.error"
+		:stargazer-longitude-val="stargazerInputInfo.stargazingLongitude.val"
+		:stargazer-longitude-error="stargazerInputInfo.stargazingLongitude.error"
+		:stargazer-image-url="stargazerInputInfo.stargazingImage.val"
+		:stargazer-image-error="stargazerInputInfo.stargazingImage.error"
+		:confirm-event="setConfirmModal"
+		:open-map-modal-event="openStargazingModal"
+		@update-stargazer-name-val="updateStargazerVal($event, 'title')"
+		@update-stargazer-description-val="updateStargazerVal($event, 'address')"
+		@update-stargazer-introduction-val="updateStargazerVal($event, 'des')"
+		@update-stargazer-latitude-val="updateStargazerVal($event, 'lati')"
+		@update-stargazer-longitude-val="updateStargazerVal($event, 'long')"
+		@upload-file-event="updateFileAct"
+	>
+		<Footer class="absolute bottom-0 mobile:left-0" />
+		<AdminStargazerModal
+			ref="stargazerModalRef"
+			@update-coordinate="updateCoordinateEvent"
+		/>
+	</AminStargazerFrom>
 </template>

@@ -2,7 +2,6 @@
 import { computed, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { get, listify } from 'radash';
-import AdminSidebar from '@ctsf-src/components/AdminSidebar.vue';
 import Footer from '@ctsf-src/components/Footer.vue';
 import AdminArticleForm from '@ctsf-src/components/AdminArticleForm.vue';
 import type { PostCategoriesDto, PostCategoryDto } from '@cts-shared';
@@ -155,28 +154,25 @@ watchEffect(() => {
 </script>
 
 <template>
-	<div class="flex items-stretch">
-		<AdminSidebar />
-		<AdminArticleForm
-			:article-title="currentRouteInfo.articleTitle"
-			:article-save-btn="currentRouteInfo.articleSaveBtn"
-			:article-image-url="articleInputInfo.image.val"
-			:article-image-error="articleInputInfo.image.error"
-			:article-title-val="articleInputInfo.title.val"
-			:article-title-error="articleInputInfo.title.error"
-			:article-cat-id="activeCatId"
-			:article-cat-nano-id-error="articleInputInfo.postCategoryNanoId.error"
-			:article-content-val="articleInputInfo.content.val"
-			:article-content-error="articleInputInfo.content.error"
-			:post-categories="postCategories"
-			:confirm-event="setConfirmModal"
-			:delete-event="() => false"
-			@update-article-title-val="updateArticleVal($event, 'title')"
-			@update-article-content-val="updateArticleVal($event, 'content')"
-			@upload-file-event="updateFileAct"
-			@select-category-event="selectDropCat"
-		>
-			<Footer class="absolute bottom-0 mobile:left-0" />
-		</AdminArticleForm>
-	</div>
+	<AdminArticleForm
+		:article-title="currentRouteInfo.articleTitle"
+		:article-save-btn="currentRouteInfo.articleSaveBtn"
+		:article-image-url="articleInputInfo.image.val"
+		:article-image-error="articleInputInfo.image.error"
+		:article-title-val="articleInputInfo.title.val"
+		:article-title-error="articleInputInfo.title.error"
+		:article-cat-id="activeCatId"
+		:article-cat-nano-id-error="articleInputInfo.postCategoryNanoId.error"
+		:article-content-val="articleInputInfo.content.val"
+		:article-content-error="articleInputInfo.content.error"
+		:post-categories="postCategories"
+		:confirm-event="setConfirmModal"
+		:delete-event="() => false"
+		@update-article-title-val="updateArticleVal($event, 'title')"
+		@update-article-content-val="updateArticleVal($event, 'content')"
+		@upload-file-event="updateFileAct"
+		@select-category-event="selectDropCat"
+	>
+		<Footer class="absolute bottom-0 mobile:left-0" />
+	</AdminArticleForm>
 </template>

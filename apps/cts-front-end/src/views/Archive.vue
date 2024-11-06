@@ -60,7 +60,7 @@ watchEffect(() => {
 			:page-title="archiveMeta.pageTitle"
 			:page-sub-title="archiveMeta.subPageTitle"
 		/>
-		<div class="mt-20 hidden h-full w-table:block w-table:w-5/12 middle-pc:w-4/12">
+		<div class="mt-20 hidden h-full animate-flipInY w-table:block w-table:w-5/12 middle-pc:w-4/12">
 			<img
 				class="h-table:w-4/5 laptop:w-auto"
 				src="/img/bg-achive.png"
@@ -71,7 +71,7 @@ watchEffect(() => {
 			<div
 				v-for="(val, key) in postListRef"
 				:key="key"
-				class="search-item"
+				class="search-item animate-fadeInUp"
 			>
 				<router-link :to="`/science/${val.postNanoId}`">
 					<!-- card -->
