@@ -1,6 +1,6 @@
 # BlairNx
 
-# 環境
+## 環境
 
 - node 版本 v20.17
 - 使用 [pnpm](https://pnpm.io/installation) 管理依賴，安裝後在根目錄執行：
@@ -14,36 +14,31 @@
   + vue 3.4.38
   + react 18.3.1
 
-# 本地開發
+## 本地開發
 
 ```shell
 pnpm exec nx serve boilerplate
 ```
 
-# 測試
+## 測試
 
-## 單元測試
+### 單元測試
 
 使用 vitest 來撰寫單元測試
 
-### 針對檔案
+#### 針對檔案
 ```shell
-pnpm exec nx test boilerplate App.spec.ts
+pnpm exec nx test boilerplate Home.spec.ts
 ```
 
-### 針對專案
+#### 針對專案
 ```shell
 pnpm exec nx test boilerplate
 ```
 
-### 所有專案
-```shell
-pnpm exec nx run-many -t test
-```
+### E2E 測試
 
-## E2E 測試
-
-### cypress 介面
+#### cypress 介面
 ```shell
 # 本地起 web server
 pnpm exec nx serve boilerplate
@@ -51,7 +46,7 @@ pnpm exec nx serve boilerplate
 pnpm exec nx cy:op boilerplate
 ```
 
-### headless 模式
+#### headless 模式
 ```shell
 # 本地起 web server
 pnpm exec nx serve boilerplate
@@ -59,7 +54,7 @@ pnpm exec nx serve boilerplate
 pnpm exec nx cy:headless boilerplate
 ```
 
-# 程式碼檢查
+## 程式碼檢查
 
 解決方案為 [@antfu/eslint-config](https://github.com/antfu/eslint-config)
 
@@ -70,7 +65,7 @@ pnpm exec nx lint boilerplate
 pnpm exec nx run-many -t lint --skip-nx-cache
 ```
 
-# 打包
+## 打包
 
 ```shell
 # 針對單獨專案
@@ -81,7 +76,7 @@ pnpm exec nx run-many -t build -p tag:publish:true -c production
 pnpm exec nx run-many -t build -p tag:type:front_app -c production
 ```
 
-# 其他指令
+## 其他指令
 
 ```shell
 # 建立 app
