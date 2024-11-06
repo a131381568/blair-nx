@@ -1,5 +1,4 @@
 import './assets/index.postcss';
-import 'animate.css';
 import 'vue-final-modal/style.css';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
