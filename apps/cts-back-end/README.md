@@ -73,7 +73,7 @@ sequenceDiagram
 ![bruno_about](https://i.imgur.com/RTA3ikG.png)
 
 ### C-4 專案間的依賴關係
-![專案間的依賴關係](https://i.imgur.com/rt5D6w4.png)
+- [專案依賴](#)
 - [查看前端專案](#)
 - [查看共享專案](#)
 
@@ -83,6 +83,7 @@ sequenceDiagram
 1. 啟動資料庫與 pgAdmin
 ```shell
 pnpm exec nx docker:d cts-back-end
+
 ```
 
 2. 起本地 NestJS Server
