@@ -3,6 +3,33 @@ export interface AdminMenuItemDto {
 	path: string;
 }
 
+export const CLIENT_MENU_INFO = {
+	about: {
+		path: '/about',
+		img: '/assets/bg/menu-bg-01.jpg',
+	},
+	science: {
+		path: '/science',
+		img: '/assets/bg/menu-bg-02.jpg',
+	},
+	story: {
+		path: '/story',
+		img: '/assets/bg/menu-bg-03.jpg',
+	},
+	facilities: {
+		path: '/facilities',
+		img: '/assets/bg/menu-bg-04.jpg',
+	},
+	stargazing: {
+		path: '/stargazing',
+		img: '/assets/bg/menu-bg-05.jpg',
+	},
+	search: {
+		path: '/search',
+		img: '/assets/bg/menu-bg-06.jpg',
+	},
+};
+
 export const ADMIN_MENU: AdminMenuItemDto[] = [
 	{
 		title: '標語管理',

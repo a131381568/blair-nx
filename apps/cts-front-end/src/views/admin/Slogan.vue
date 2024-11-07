@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watchEffect } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { get, pick } from 'radash';
 import { storeToRefs } from 'pinia';
 import { useGlobalStore } from '@ctsf-src/stores/global';
 import { aboutMutation, aboutQuery } from '@ctsf-src/services/apis/aboutApi';
 import { pageMutation, pageQuery } from '@ctsf-src/services/apis/pageApi';
-import AdminSidebar from '@ctsf-src/components/AdminSidebar.vue';
 import Footer from '@ctsf-src/components/Footer.vue';
 import { useDebounceFn, watchTriggerable } from '@vueuse/core';
 import type { GetAboutInfoBaseDto } from '@cts-shared';
@@ -14,7 +13,6 @@ import { ARTICLE_MAX_LENGTH, COMMON_ID_MAX_LENGTH, defaultAboutInfoData, mutatio
 import { useMessageModal } from '@blair-nx-ui';
 
 const route = useRoute();
-const router = useRouter();
 const globalStore = useGlobalStore();
 const { updatePageInfo } = globalStore;
 const { pageInfo: pageInfoStoreData } = storeToRefs(globalStore);
@@ -178,10 +176,8 @@ const setConfirmModal = useDebounceFn((formName: string) => {
 
 // watch
 const { trigger: watchAboutQuery } = watchTriggerable(() => route.query.edit === 'about', (isAbout) => {
-	if (isAbout) {
+	if (isAbout)
 		aboutSloganColRef.value?.scrollIntoView();
-		router.replace({ query: undefined });
-	}
 });
 
 nextTick(() => {
@@ -195,259 +191,256 @@ watchEffect(() => {
 </script>
 
 <template>
-	<div class="flex items-stretch">
-		<AdminSidebar />
-		<div class="relative left-7 w-full flex-wrap content-start items-start justify-center px-8 pb-52 mobile:left-11 mobile:w-admin-m-content mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 laptop:left-0 laptop:w-4/5 middle-pc:px-20 middle-pc:pt-36">
-			<!-- 標題區塊 -->
-			<div class="mb-20 flex w-full flex-wrap justify-between mobile:mx-auto mobile:mb-9 mobile:block h-table:w-9/12">
-				<h1 class="admin-title relative mb-5 w-full text-white mobile:w-full mobile:text-5xl w-table:m-0 w-table:w-3/4">
-					標語管理
-				</h1>
-			</div>
-			<!-- 編輯區塊 -->
-			<div class="editer-container w-full h-table:w-9/12">
-				<div class="home-slogan mb-14 w-full">
-					<div class="mb-8 flex flex-wrap justify-between mobile:mb-4">
-						<h2 class="text-main-color-light mobile:mb-4 mobile:w-full mobile:text-3xl">
-							首頁—主視覺文字
-						</h2>
-						<button
-							v-if="sloganInputInfo.pageTitle.editMode"
-							class="admin-edit-sbtn"
-							@click.prevent="setConfirmModal('homeSloganForm')"
-						>
-							儲存標語
-						</button>
-						<button
-							v-else
-							class="admin-sbtn"
-							@click.prevent="setEditMode('homeSloganForm')"
-						>
-							編輯標語
-						</button>
-					</div>
-					<div
+	<div class="relative left-7 w-full flex-wrap content-start items-start justify-center px-8 pb-52 mobile:left-11 mobile:w-admin-m-content mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 laptop:left-0 laptop:w-4/5 middle-pc:px-20 middle-pc:pt-36">
+		<!-- 標題區塊 -->
+		<div class="mb-20 flex w-full flex-wrap justify-between mobile:mx-auto mobile:mb-9 mobile:block h-table:w-9/12">
+			<h1 class="admin-title relative mb-5 w-full text-white mobile:w-full mobile:text-5xl w-table:m-0 w-table:w-3/4">
+				標語管理
+			</h1>
+		</div>
+		<!-- 編輯區塊 -->
+		<div class="editer-container w-full h-table:w-9/12">
+			<div class="home-slogan mb-14 w-full">
+				<div class="mb-8 flex flex-wrap justify-between mobile:mb-4">
+					<h2 class="text-main-color-light mobile:mb-4 mobile:w-full mobile:text-3xl">
+						首頁—主視覺文字
+					</h2>
+					<button
 						v-if="sloganInputInfo.pageTitle.editMode"
-						class="editer-inner edit-mode mb-8 grid gap-4"
+						class="admin-edit-sbtn"
+						@click.prevent="setConfirmModal('homeSloganForm')"
 					>
-						<div>
-							<input
-								v-model="editPageTitle"
-								type="text"
-								autocomplete="off"
-								class="home-title-input bottom-line-input-gray"
-								:maxlength="COMMON_ID_MAX_LENGTH"
-								:placeholder="sloganInputInfo.pageTitle.placeholder"
-							>
-							<span
-								v-show="sloganInputInfo.pageTitle.error"
-								class="mt-2 block h-5 text-xs text-sp-color-dark"
-							>
-								{{ sloganInputInfo.pageTitle.error }}
-							</span>
-						</div>
-						<div>
-							<input
-								v-model="editPageSubTitle"
-								type="text"
-								autocomplete="off"
-								class="home-slogan bottom-line-input-gray"
-								:maxlength="ARTICLE_MAX_LENGTH"
-								:placeholder="sloganInputInfo.subPageTitle.placeholder"
-							>
-							<span
-								v-show="sloganInputInfo.subPageTitle.error"
-								class="mt-2 block h-5 text-xs text-sp-color-dark"
-							>
-								{{ sloganInputInfo.subPageTitle.error }}
-							</span>
-						</div>
-					</div>
-					<div
+						儲存標語
+					</button>
+					<button
 						v-else
-						class="editer-inner view-mode"
+						class="admin-sbtn"
+						@click.prevent="setEditMode('homeSloganForm')"
 					>
-						<h4 class="home-title home-content-title">
-							{{ homeData?.pageTitle }}
-						</h4>
-						<p>{{ homeData?.subPageTitle }}</p>
+						編輯標語
+					</button>
+				</div>
+				<div
+					v-if="sloganInputInfo.pageTitle.editMode"
+					class="editer-inner edit-mode mb-8 grid gap-4"
+				>
+					<div>
+						<input
+							v-model="editPageTitle"
+							type="text"
+							autocomplete="off"
+							class="home-title-input bottom-line-input-gray"
+							:maxlength="COMMON_ID_MAX_LENGTH"
+							:placeholder="sloganInputInfo.pageTitle.placeholder"
+						>
+						<span
+							v-show="sloganInputInfo.pageTitle.error"
+							class="mt-2 block h-5 text-xs text-sp-color-dark"
+						>
+							{{ sloganInputInfo.pageTitle.error }}
+						</span>
+					</div>
+					<div>
+						<input
+							v-model="editPageSubTitle"
+							type="text"
+							autocomplete="off"
+							class="home-slogan bottom-line-input-gray"
+							:maxlength="ARTICLE_MAX_LENGTH"
+							:placeholder="sloganInputInfo.subPageTitle.placeholder"
+						>
+						<span
+							v-show="sloganInputInfo.subPageTitle.error"
+							class="mt-2 block h-5 text-xs text-sp-color-dark"
+						>
+							{{ sloganInputInfo.subPageTitle.error }}
+						</span>
 					</div>
 				</div>
 				<div
-					id="aboutSloganColRef"
-					class="about-slogan mb-14 w-full"
+					v-else
+					class="editer-inner view-mode"
 				>
-					<div class="mb-8 flex flex-wrap justify-between mobile:mb-4">
-						<h2
-							ref="aboutSloganColRef"
-							class="text-main-color-light mobile:mb-4 mobile:w-full mobile:text-3xl"
-						>
-							關於我們—理念
-						</h2>
-						<button
-							v-if="sloganInputInfo.slogan.editMode"
-							class="admin-edit-sbtn"
-							@click.prevent="setConfirmModal('aboutSloganForm')"
-						>
-							儲存標語
-						</button>
-						<button
-							v-else
-							class="admin-sbtn"
-							@click.prevent="setEditMode('aboutSloganForm')"
-						>
-							編輯標語
-						</button>
-					</div>
-					<div
-						v-if="!sloganInputInfo.slogan.editMode"
-						class="editer-inner view-mode mb-14"
-					>
-						<h4 class="about-content-title text-xl">
-							{{ aboutData?.slogan }}
-						</h4>
-						<hr class="my-8 border-main-color-middle">
-						<v-md-preview
-							class="markdown-body"
-							:text="aboutData?.philosophy"
-							height="400px"
-						/>
-					</div>
-					<div
-						v-if="sloganInputInfo.slogan.editMode"
-						class="editer-inner edit-mode md-container grid gap-4 bg-white px-10 pb-10 pt-6"
-					>
-						<span>
-							<input
-								v-model="sloganRef"
-								name="sloganRule"
-								class="bottom-line-input-gray"
-								:placeholder="sloganInputInfo.slogan.placeholder"
-								autocomplete="off"
-								:maxlength="ARTICLE_MAX_LENGTH"
-							>
-							<span
-								v-show="sloganInputInfo.slogan.error"
-								class="mt-2 block h-5 text-xs text-sp-color-dark"
-							>
-								{{ sloganInputInfo.slogan.error }}
-							</span>
-						</span>
-						<span>
-							<v-md-editor
-								v-model="philosophyRef"
-								class="markdown-body"
-								height="400px"
-								:placeholder="sloganInputInfo.philosophy.placeholder"
-							/>
-							<span
-								v-show="sloganInputInfo.philosophy.error"
-								class="mt-2 block h-5 text-xs text-sp-color-dark"
-							>
-								{{ sloganInputInfo.philosophy.error }}
-							</span>
-						</span>
-					</div>
-				</div>
-				<div class="about-quote mb-14 w-full">
-					<div class="mb-8 flex flex-wrap justify-between mobile:mb-4">
-						<h2 class="text-main-color-light mobile:mb-4 mobile:w-full mobile:text-3xl">
-							關於我們—引言
-						</h2>
-						<button
-							v-if="sloganInputInfo.quote.editMode"
-							class="admin-edit-sbtn"
-							@click.prevent="setConfirmModal('aboutQuoteForm')"
-						>
-							儲存標語
-						</button>
-
-						<button
-							v-else
-							class="admin-sbtn"
-							@click.prevent="setEditMode('aboutQuoteForm')"
-						>
-							編輯標語
-						</button>
-					</div>
-					<div
-						v-if="sloganInputInfo.quote.editMode"
-						class="editer-inner edit-mode md-container bg-white p-10"
-					>
-						<v-md-editor
-							v-model="quoteRef"
-							class="markdown-body"
-							height="400px"
-							:placeholder="sloganInputInfo.quote.placeholder"
-						/>
-						<span
-							v-show="sloganInputInfo.quote.error"
-							class="mt-2 block h-5 text-xs text-sp-color-dark"
-						>
-							{{ sloganInputInfo.quote.error }}
-						</span>
-					</div>
-					<div
-						v-else
-						class="editer-inner view-mode mb-14"
-					>
-						<v-md-preview
-							class="markdown-body"
-							:text="aboutData?.quote"
-							height="400px"
-						/>
-					</div>
-				</div>
-				<div class="about-epilogue mb-14 w-full">
-					<div class="mb-8 flex flex-wrap justify-between mobile:mb-4">
-						<h2 class="text-main-color-light mobile:mb-4 mobile:w-full mobile:text-3xl">
-							關於我們—結語
-						</h2>
-						<button
-							v-if="sloganInputInfo.epilogue.editMode"
-							class="admin-edit-sbtn"
-							@click.prevent="setConfirmModal('aboutEpilogueForm')"
-						>
-							儲存標語
-						</button>
-						<button
-							v-else
-							class="admin-sbtn"
-							@click.prevent="setEditMode('aboutEpilogueForm')"
-						>
-							編輯標語
-						</button>
-					</div>
-					<div
-						v-if="sloganInputInfo.epilogue.editMode"
-						class="editer-inner edit-mode md-container bg-white p-10"
-					>
-						<v-md-editor
-							v-model="epilogueRef"
-							class="markdown-body"
-							height="400px"
-							:placeholder="sloganInputInfo.epilogue.placeholder"
-						/>
-						<span
-							v-show="sloganInputInfo.epilogue.error"
-							class="mt-2 block h-5 text-xs text-sp-color-dark"
-						>
-							{{ sloganInputInfo.epilogue.error }}
-						</span>
-					</div>
-					<div
-						v-else
-						class="editer-inner view-mode mb-14"
-					>
-						<v-md-preview
-							class="markdown-body"
-							:text="aboutData?.epilogue"
-							height="400px"
-						/>
-					</div>
+					<h4 class="home-title home-content-title">
+						{{ homeData?.pageTitle }}
+					</h4>
+					<p>{{ homeData?.subPageTitle }}</p>
 				</div>
 			</div>
-			<Footer class="absolute bottom-0 mobile:left-0" />
+			<div
+				id="aboutSloganColRef"
+				class="about-slogan mb-14 w-full"
+			>
+				<div class="mb-8 flex flex-wrap justify-between mobile:mb-4">
+					<h2
+						ref="aboutSloganColRef"
+						class="text-main-color-light mobile:mb-4 mobile:w-full mobile:text-3xl"
+					>
+						關於我們—理念
+					</h2>
+					<button
+						v-if="sloganInputInfo.slogan.editMode"
+						class="admin-edit-sbtn"
+						@click.prevent="setConfirmModal('aboutSloganForm')"
+					>
+						儲存標語
+					</button>
+					<button
+						v-else
+						class="admin-sbtn"
+						@click.prevent="setEditMode('aboutSloganForm')"
+					>
+						編輯標語
+					</button>
+				</div>
+				<div
+					v-if="!sloganInputInfo.slogan.editMode"
+					class="editer-inner view-mode mb-14"
+				>
+					<h4 class="about-content-title text-xl">
+						{{ aboutData?.slogan }}
+					</h4>
+					<hr class="my-8 border-main-color-middle">
+					<v-md-preview
+						class="markdown-body"
+						:text="aboutData?.philosophy"
+						height="400px"
+					/>
+				</div>
+				<div
+					v-if="sloganInputInfo.slogan.editMode"
+					class="editer-inner edit-mode md-container grid gap-4 bg-white px-10 pb-10 pt-6"
+				>
+					<span>
+						<input
+							v-model="sloganRef"
+							name="sloganRule"
+							class="bottom-line-input-gray"
+							:placeholder="sloganInputInfo.slogan.placeholder"
+							autocomplete="off"
+							:maxlength="ARTICLE_MAX_LENGTH"
+						>
+						<span
+							v-show="sloganInputInfo.slogan.error"
+							class="mt-2 block h-5 text-xs text-sp-color-dark"
+						>
+							{{ sloganInputInfo.slogan.error }}
+						</span>
+					</span>
+					<span>
+						<v-md-editor
+							v-model="philosophyRef"
+							class="markdown-body"
+							height="400px"
+							:placeholder="sloganInputInfo.philosophy.placeholder"
+						/>
+						<span
+							v-show="sloganInputInfo.philosophy.error"
+							class="mt-2 block h-5 text-xs text-sp-color-dark"
+						>
+							{{ sloganInputInfo.philosophy.error }}
+						</span>
+					</span>
+				</div>
+			</div>
+			<div class="about-quote mb-14 w-full">
+				<div class="mb-8 flex flex-wrap justify-between mobile:mb-4">
+					<h2 class="text-main-color-light mobile:mb-4 mobile:w-full mobile:text-3xl">
+						關於我們—引言
+					</h2>
+					<button
+						v-if="sloganInputInfo.quote.editMode"
+						class="admin-edit-sbtn"
+						@click.prevent="setConfirmModal('aboutQuoteForm')"
+					>
+						儲存標語
+					</button>
+
+					<button
+						v-else
+						class="admin-sbtn"
+						@click.prevent="setEditMode('aboutQuoteForm')"
+					>
+						編輯標語
+					</button>
+				</div>
+				<div
+					v-if="sloganInputInfo.quote.editMode"
+					class="editer-inner edit-mode md-container bg-white p-10"
+				>
+					<v-md-editor
+						v-model="quoteRef"
+						class="markdown-body"
+						height="400px"
+						:placeholder="sloganInputInfo.quote.placeholder"
+					/>
+					<span
+						v-show="sloganInputInfo.quote.error"
+						class="mt-2 block h-5 text-xs text-sp-color-dark"
+					>
+						{{ sloganInputInfo.quote.error }}
+					</span>
+				</div>
+				<div
+					v-else
+					class="editer-inner view-mode mb-14"
+				>
+					<v-md-preview
+						class="markdown-body"
+						:text="aboutData?.quote"
+						height="400px"
+					/>
+				</div>
+			</div>
+			<div class="about-epilogue mb-14 w-full">
+				<div class="mb-8 flex flex-wrap justify-between mobile:mb-4">
+					<h2 class="text-main-color-light mobile:mb-4 mobile:w-full mobile:text-3xl">
+						關於我們—結語
+					</h2>
+					<button
+						v-if="sloganInputInfo.epilogue.editMode"
+						class="admin-edit-sbtn"
+						@click.prevent="setConfirmModal('aboutEpilogueForm')"
+					>
+						儲存標語
+					</button>
+					<button
+						v-else
+						class="admin-sbtn"
+						@click.prevent="setEditMode('aboutEpilogueForm')"
+					>
+						編輯標語
+					</button>
+				</div>
+				<div
+					v-if="sloganInputInfo.epilogue.editMode"
+					class="editer-inner edit-mode md-container bg-white p-10"
+				>
+					<v-md-editor
+						v-model="epilogueRef"
+						class="markdown-body"
+						height="400px"
+						:placeholder="sloganInputInfo.epilogue.placeholder"
+					/>
+					<span
+						v-show="sloganInputInfo.epilogue.error"
+						class="mt-2 block h-5 text-xs text-sp-color-dark"
+					>
+						{{ sloganInputInfo.epilogue.error }}
+					</span>
+				</div>
+				<div
+					v-else
+					class="editer-inner view-mode mb-14"
+				>
+					<v-md-preview
+						class="markdown-body"
+						:text="aboutData?.epilogue"
+						height="400px"
+					/>
+				</div>
+			</div>
 		</div>
+		<Footer class="absolute bottom-0 mobile:left-0" />
 	</div>
 </template>

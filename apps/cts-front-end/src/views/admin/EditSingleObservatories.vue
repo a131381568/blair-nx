@@ -2,7 +2,6 @@
 import { computed, ref, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { get, listify } from 'radash';
-import AdminSidebar from '@ctsf-src/components/AdminSidebar.vue';
 import Footer from '@ctsf-src/components/Footer.vue';
 import AdminObservatoriesForm from '@ctsf-src/components/AdminObservatoriesForm.vue';
 import { mutationObservatoryItemSchema } from '@cts-shared';
@@ -140,24 +139,21 @@ watchEffect(() => {
 </script>
 
 <template>
-	<div class="flex items-stretch">
-		<AdminSidebar />
-		<AdminObservatoriesForm
-			:observatories-title="currentRouteInfo.observatoryTitle"
-			:observatories-save-btn="currentRouteInfo.observatorySaveBtn"
-			:observatory-category-name-val="observatoryInputInfo.observatoryCategoryName.val"
-			:observatory-category-name-error="observatoryInputInfo.observatoryCategoryName.error"
-			:observatory-category-id-val="observatoryInputInfo.observatoryCategoryId.val"
-			:observatory-category-id-error="observatoryInputInfo.observatoryCategoryId.error"
-			:observatory-post-content-val="observatoryInputInfo.observatoryPostContent.val"
-			:observatory-post-content-error="observatoryInputInfo.observatoryPostContent.error"
-			:confirm-event="setConfirmModal"
-			:delete-event="setDelConfirmModal"
-			@update-observatory-category-name-val="updateObservatoryVal($event, 'name')"
-			@update-observatory-category-id-val="updateObservatoryVal($event, 'id')"
-			@update-observatory-post-content-val="updateObservatoryVal($event, 'content')"
-		>
-			<Footer />
-		</AdminObservatoriesForm>
-	</div>
+	<AdminObservatoriesForm
+		:observatories-title="currentRouteInfo.observatoryTitle"
+		:observatories-save-btn="currentRouteInfo.observatorySaveBtn"
+		:observatory-category-name-val="observatoryInputInfo.observatoryCategoryName.val"
+		:observatory-category-name-error="observatoryInputInfo.observatoryCategoryName.error"
+		:observatory-category-id-val="observatoryInputInfo.observatoryCategoryId.val"
+		:observatory-category-id-error="observatoryInputInfo.observatoryCategoryId.error"
+		:observatory-post-content-val="observatoryInputInfo.observatoryPostContent.val"
+		:observatory-post-content-error="observatoryInputInfo.observatoryPostContent.error"
+		:confirm-event="setConfirmModal"
+		:delete-event="setDelConfirmModal"
+		@update-observatory-category-name-val="updateObservatoryVal($event, 'name')"
+		@update-observatory-category-id-val="updateObservatoryVal($event, 'id')"
+		@update-observatory-post-content-val="updateObservatoryVal($event, 'content')"
+	>
+		<Footer />
+	</AdminObservatoriesForm>
 </template>

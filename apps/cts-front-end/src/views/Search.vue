@@ -19,7 +19,6 @@ const globalStore = useGlobalStore();
 const { currentPageMeta } = storeToRefs(globalStore);
 
 const searchWord = ref('');
-const getFirstEnter = ref(false);
 const postListRef = ref<ScienceListDto>([]);
 const pagiMeta = ref<PaginationDto>(paginationDefaultData);
 const currentPage = ref(1);
@@ -116,18 +115,9 @@ watchDebounced(searchWord, () => {
 			:page-sub-title="searchMeta.subPageTitle"
 		/>
 		<!-- 搜尋框 -->
-		<div
-			class="animate__animated animate__fadeInUp mt-1 w-full mobile:-mt-8 h-table:w-10/12"
-			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
-		>
+		<div class="mt-1 w-full mobile:-mt-8 h-table:w-10/12">
 			<div class="relative bg-transparent text-lg text-gray-800">
-				<div
-					class="animate__animated animate__fadeIn flex items-center border-b border-white/25 py-2 duration-500 focus-within:border-white/60"
-					:class="[
-						{ 'animate__delay-4s': getFirstEnter },
-						{ 'animate__delay-1s': !getFirstEnter },
-					]"
-				>
+				<div class="flex items-center border-b border-white/25 py-2 duration-500 focus-within:border-white/60">
 					<input
 						v-model="searchWord"
 						class="mr-3 w-full border-none border-transparent bg-transparent px-2 text-xl text-main-color-middle focus:border-transparent focus:text-main-color-light focus:outline-0 focus:ring-0 h-table:text-3xl"
@@ -152,7 +142,7 @@ watchDebounced(searchWord, () => {
 			<!-- 搜尋無結果 -->
 			<div
 				v-show="!pagiMeta.totalCount && !postListRef.length && searchWord"
-				class="search-nothing-tip animate__animated animate__fadeIn animate__delay-1s"
+				class="search-nothing-tip"
 			>
 				<p class="text-xl font-normal text-white h-table:text-3xl">
 					查無結果
@@ -165,8 +155,7 @@ watchDebounced(searchWord, () => {
 		<!-- 主視覺 -->
 		<div
 			v-show="postListRef.length"
-			class="animate__animated animate__flipInY mt-20 hidden h-full w-table:block w-table:w-5/12 middle-pc:w-4/12"
-			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
+			class="mt-20 hidden h-full animate-flipInY w-table:block w-table:w-5/12 middle-pc:w-4/12"
 		>
 			<img
 				class="w-auto"
@@ -174,14 +163,11 @@ watchDebounced(searchWord, () => {
 			>
 		</div>
 		<!-- post grid -->
-		<div
-			class="post-grid-items animate__animated animate__fadeInUp mt-14 grid w-10/12 grid-cols-1 overflow-hidden mobile:w-full w-table:mt-36 w-table:w-5/12 middle-pc:w-6/12"
-			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
-		>
+		<div class="post-grid-items mt-14 grid w-10/12 grid-cols-1 overflow-hidden mobile:w-full w-table:mt-36 w-table:w-5/12 middle-pc:w-6/12">
 			<div
 				v-for="(val, key) in postListRef"
 				:key="key"
-				class="post-grid-item animate__animated animate__fadeInUp"
+				class="post-grid-item animate-fadeInUp"
 			>
 				<router-link
 					:to="{

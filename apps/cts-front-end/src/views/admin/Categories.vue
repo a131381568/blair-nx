@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue';
 import { get } from 'radash';
-import AdminSidebar from '@ctsf-src/components/AdminSidebar.vue';
 import Footer from '@ctsf-src/components/Footer.vue';
 import EditIcon from '@ctsf-src/components/svg/EditIcon.vue';
 import DeleteIcon from '@ctsf-src/components/svg/DeleteIcon.vue';
@@ -43,71 +42,67 @@ watchEffect(() => {
 </script>
 
 <template>
-	<div class="flex items-stretch">
-		<AdminSidebar />
+	<div
+		class="relative left-7 w-full flex-wrap content-start items-start justify-center px-8 pb-52 mobile:left-11 mobile:w-admin-m-content mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 laptop:left-0 laptop:w-4/5 middle-pc:px-20 middle-pc:pt-36"
+	>
 		<div
-			class="relative left-7 w-full flex-wrap content-start items-start justify-center px-8 pb-52 mobile:left-11 mobile:w-admin-m-content mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 laptop:left-0 laptop:w-4/5 middle-pc:px-20 middle-pc:pt-36"
+			class="categories-title-box mb-20 flex w-9/12 justify-between mobile:mx-auto mobile:mb-9 mobile:block mobile:w-11/12"
 		>
-			<div
-				class="categories-title-box mb-20 flex w-9/12 justify-between mobile:mx-auto mobile:mb-9 mobile:block mobile:w-11/12"
+			<h1 class="relative -left-2 -top-2 w-3/4 text-white mobile:w-full mobile:text-5xl">
+				文章分類管理
+			</h1>
+			<router-link
+				to="/board/categories/add"
+				class="btn draw meet btn flex h-12 w-2/12 items-center justify-center p-0 text-center text-lg mobile:mt-6 mobile:w-full"
 			>
-				<h1 class="relative -left-2 -top-2 w-3/4 text-white mobile:w-full mobile:text-5xl">
-					文章分類管理
-				</h1>
-				<router-link
-					to="/board/categories/add"
-					class="btn draw meet btn flex h-12 w-2/12 items-center justify-center p-0 text-center text-lg mobile:mt-6 mobile:w-full"
-				>
-					新增
-				</router-link>
-			</div>
-			<div class="table-container w-9/12 mobile:m-auto mobile:w-11/12">
-				<table
-					v-if="postCategories.length"
-					id="responsive-table"
-					class="animate__animated animate__fadeIn"
-				>
-					<thead class="hidden  w-table:table-header-group">
-						<tr>
-							<th>分類名稱</th>
-							<th>分類 ID</th>
-							<th class="w-20 text-right">
-								編輯
-							</th>
-							<th class="w-20 text-right">
-								刪除
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr
-							v-for="(val, key) in postCategories"
-							:key="key"
-						>
-							<td data-title="名稱">
-								{{
-									val.postCategoryName
-								}}
-							</td>
-							<td data-title="ID">
-								{{ val.postCategoryId }}
-							</td>
-							<td data-title="編輯">
-								<router-link :to="`/board/categories/edit/${val.postCategoryNanoId}`">
-									<EditIcon class="group inline-block h-auto w-[28px] fill-main-color-light" />
-								</router-link>
-							</td>
-							<td data-title="刪除">
-								<DeleteIcon
-									class="inline-block h-auto w-[29px] fill-main-color-light hover:fill-sub-color-dark"
-									@click.prevent="setConfirmModal(val.postCategoryNanoId || '')"
-								/>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<Footer class="absolute bottom-0 mobile:left-0" />
+				新增
+			</router-link>
 		</div>
+		<div class="table-container w-9/12 mobile:m-auto mobile:w-11/12">
+			<table
+				v-if="postCategories.length"
+				id="responsive-table"
+			>
+				<thead class="hidden  w-table:table-header-group">
+					<tr>
+						<th>分類名稱</th>
+						<th>分類 ID</th>
+						<th class="w-20 text-right">
+							編輯
+						</th>
+						<th class="w-20 text-right">
+							刪除
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						v-for="(val, key) in postCategories"
+						:key="key"
+					>
+						<td data-title="名稱">
+							{{
+								val.postCategoryName
+							}}
+						</td>
+						<td data-title="ID">
+							{{ val.postCategoryId }}
+						</td>
+						<td data-title="編輯">
+							<router-link :to="`/board/categories/edit/${val.postCategoryNanoId}`">
+								<EditIcon class="group inline-block h-auto w-[28px] fill-main-color-light" />
+							</router-link>
+						</td>
+						<td data-title="刪除">
+							<DeleteIcon
+								class="inline-block h-auto w-[29px] fill-main-color-light hover:fill-sub-color-dark"
+								@click.prevent="setConfirmModal(val.postCategoryNanoId || '')"
+							/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<Footer class="absolute bottom-0 mobile:left-0" />
 	</div>
 </template>

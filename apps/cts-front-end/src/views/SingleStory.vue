@@ -12,8 +12,6 @@ import Header from '../components/Header.vue';
 import TitleBox from '../components/TitleBox.vue';
 import Footer from '../components/Footer.vue';
 
-const getFirstEnter = ref(false);
-
 const imgSizeRef = ref(null);
 const imgSizeObj = reactive(useElementSize(imgSizeRef));
 const imgSizeWidth = computed(() => {
@@ -63,8 +61,7 @@ watchEffect(() => {
 		/>
 		<div
 			ref="imgSizeRef"
-			class="animate__animated animate__fadeInLeftBig mt-10 shrink mobile:w-6/12 h-table:w-5/12 laptop:w-4/12"
-			:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
+			class="mt-10 shrink mobile:w-6/12 h-table:w-5/12 laptop:w-4/12"
 		>
 			<div
 				:style="[
@@ -75,10 +72,7 @@ watchEffect(() => {
 				class="mx-auto rounded-full bg-cover laptop:ml-0"
 			/>
 		</div>
-		<div
-			class="md-container animate__animated animate__fadeIn mt-12 w-full text-main-color-light h-table:w-10/12 laptop:w-6/12"
-			:class="[{ 'animate__delay-5s': getFirstEnter }, { 'animate__delay-2s': !getFirstEnter }]"
-		>
+		<div class="md-container mt-12 w-full text-main-color-light h-table:w-10/12 laptop:w-6/12">
 			<div class="mb-14 text-4xl">
 				故事內容
 			</div>

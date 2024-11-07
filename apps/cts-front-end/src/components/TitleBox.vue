@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
 defineProps({
 	pageTitle: {
 		type: String,
@@ -11,15 +9,10 @@ defineProps({
 		default: '',
 	},
 });
-
-const getFirstEnter = ref(true);
 </script>
 
 <template>
-	<div
-		class="animate__animated animate__fadeIn mb-16 mt-3 w-10/12"
-		:class="[{ 'animate__delay-4s': getFirstEnter }, { 'animate__delay-1s': !getFirstEnter }]"
-	>
+	<div class="mb-16 mt-3 w-10/12">
 		<h4 class="title-box-tag mb-4 uppercase text-main-color-light">
 			{{ pageSubTitle }}
 		</h4>

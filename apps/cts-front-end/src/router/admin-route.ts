@@ -5,7 +5,6 @@ export const adminRoute = [
 		component: () => import('@ctsf-src/views/admin/Login.vue'),
 		meta: {
 			title: '後台系統登入',
-			manage: true,
 		},
 	},
 	{

@@ -1,3 +1,5 @@
+import plugin from 'tailwindcss/plugin';
+
 const { join } = require('node:path');
 const { createGlobPatternsForDependencies } = require('@nx/vue/tailwind');
 const sharedTailwindConfig = require('../../libs/blairConfig/tailwindConfig');
@@ -145,6 +147,210 @@ module.exports = {
 			rotate: {
 				225: '225deg',
 			},
+			animation: {
+				bgEnterAnim: 'bgEnterAnim 3.5s ease-in-out',
+				rubberBand: 'rubberBand 1s ease',
+				fadeIn: 'fadeIn 1s ease-out 0ms 1 normal both',
+				fadeInRightBig: 'fadeInRightBig 1s ease-out 0ms 1 normal both',
+				fadeInLeft: 'fadeInLeft 1s ease-out 0ms 1 normal both',
+				fadeInUp: 'fadeInUp 1s ease-out 0ms 1 normal both',
+				fadeInDown: 'fadeInDown 0.5s ease-out 0ms 1 normal both',
+				flipInX: 'flipInX 1s ease-out 0ms 1 normal both',
+				flipInY: 'flipInY 1s ease-out 0ms 1 normal both',
+				slideInLeft: 'slideInLeft 0.5s ease-out 0ms 1 normal both',
+				slideOutLeft: 'slideOutLeft 0.5s ease-out 0ms 1 normal both',
+				slideOutUp: 'slideOutUp 0.5s ease-out 0ms 1 normal both',
+			},
+			keyframes: {
+				bgEnterAnim: {
+					'0%': {
+						background: '#16161d',
+						opacity: '1',
+					},
+					'50%': {
+						background: '#1f1f3a',
+					},
+					'80%': {
+						background: '#3b2f4a',
+						opacity: '1',
+					},
+					'100%': {
+						background: 'linear-gradient(#16161d, #1f1f3a, #3b2f4a)',
+						opacity: '0',
+					},
+				},
+				rubberBand: {
+					'0%, 100%': { transform: 'scale3d(1, 1, 1)' },
+					'30%': { transform: 'scale3d(1.25, 0.75, 1)' },
+					'40%': { transform: 'scale3d(0.75, 1.25, 1)' },
+					'50%': { transform: 'scale3d(1.15, 0.85, 1)' },
+					'65%': { transform: 'scale3d(0.95, 1.05, 1)' },
+					'75%': { transform: 'scale3d(1.05, 0.95, 1)' },
+				},
+				bounceOnce: {
+					'0%, 20%, 53%, 100%': {
+						'animation-timing-function': 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+						'transform': 'translate3d(0, 0, 0)',
+					},
+					'40%, 43%': {
+						'animation-timing-function': 'cubic-bezier(0.755, 0.05, 0.855, 0.06)',
+						'transform': 'translate3d(0, -30px, 0) scaleY(1.1)',
+					},
+					'70%': {
+						'animation-timing-function': 'cubic-bezier(0.755, 0.05, 0.855, 0.06)',
+						'transform': 'translate3d(0, -15px, 0) scaleY(1.05)',
+					},
+					'80%': {
+						'animation-timing-function': 'cubic-bezier(0.215, 0.61, 0.355, 1)',
+						'transform': 'translate3d(0, 0, 0) scaleY(0.95)',
+					},
+					'90%': {
+						transform: 'translate3d(0, -4px, 0) scaleY(1.02)',
+					},
+				},
+				fadeIn: {
+					'0%': {
+						opacity: '0',
+					},
+					'100%': {
+						opacity: '1',
+					},
+				},
+				fadeInRightBig: {
+					'0%': {
+						opacity: '0',
+						transform: 'translate3d(2000px, 0, 0)',
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translate3d(0, 0, 0)',
+					},
+				},
+				fadeInLeft: {
+					'0%': {
+						opacity: '0',
+						transform: 'translate3d(-100%, 0, 0)',
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translate3d(0, 0, 0)',
+					},
+				},
+				fadeInUp: {
+					'0%': {
+						opacity: '0',
+						transform: 'translate3d(0, 100%, 0)',
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translate3d(0, 0, 0)',
+					},
+				},
+				fadeInDown: {
+					'0%': {
+						opacity: '0',
+						transform: 'translate3d(0, -100%, 0)',
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translate3d(0, 0, 0)',
+					},
+				},
+				slideInLeft: {
+					'0%': {
+						transform: 'translate3d(-100%, 0, 0)',
+						visibility: 'visible',
+					},
+					'100%': {
+						transform: 'translate3d(0, 0, 0)',
+					},
+				},
+				slideOutLeft: {
+					'0%': {
+						transform: 'translate3d(0, 0, 0)',
+					},
+					'100%': {
+						visibility: 'hidden',
+						transform: 'translate3d(-100%, 0, 0)',
+					},
+				},
+				slideOutUp: {
+					'0%': {
+						transform: 'translate3d(0, 0, 0)',
+					},
+					'100%': {
+						visibility: 'hidden',
+						transform: 'translate3d(0, -100%, 0)',
+					},
+				},
+				flipInX: {
+					'0%': {
+						transform: 'perspective(400px) rotate3d(1, 0, 0, 90deg)',
+						opacity: '0',
+					},
+					'40%': {
+						transform: 'perspective(400px) rotate3d(1, 0, 0, -20deg)',
+						opacity: '0',
+					},
+					'60%': {
+						transform: 'perspective(400px) rotate3d(1, 0, 0, 10deg)',
+						opacity: '1',
+					},
+					'80%': {
+						transform: 'perspective(400px) rotate3d(1, 0, 0, -5deg)',
+					},
+					'100%': {
+						transform: 'perspective(400px)',
+					},
+				},
+				flipInY: {
+					'0%': {
+						transform: 'perspective(400px) rotate3d(0, 1, 0, 90deg)',
+						opacity: '0',
+					},
+					'40%': {
+						transform: 'perspective(400px) rotate3d(0, 1, 0, -20deg)',
+						opacity: '0',
+					},
+					'60%': {
+						transform: 'perspective(400px) rotate3d(0, 1, 0, 10deg)',
+						opacity: '1',
+					},
+					'80%': {
+						transform: 'perspective(400px) rotate3d(0, 1, 0, -5deg)',
+					},
+					'100%': {
+						transform: 'perspective(400px)',
+					},
+				},
+			},
 		},
 	},
+	plugins: [
+		plugin(
+			function ({ matchUtilities, theme }) {
+				matchUtilities(
+					{ 'animation-delay': value => ({ 'animation-delay': `${value}ms` }) },
+					{ values: theme('animationDelay') },
+				);
+			},
+			{
+				theme: {
+					animationDelay: {
+						500: '500',
+						600: '600',
+						700: '700',
+						800: '800',
+						900: '900',
+						1000: '1000',
+						1500: '1500',
+						2000: '2000',
+						3000: '3000',
+						4000: '4000',
+						5000: '5000',
+					},
+				},
+			},
+		),
+	],
 };

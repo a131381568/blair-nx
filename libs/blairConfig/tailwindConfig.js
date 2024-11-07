@@ -44,6 +44,21 @@ module.exports = {
 				'secondary': '#c5c5ca',
 				'danger': '#80b884',
 			}),
+			animation: {
+				firstEnter: "circleFadeLoader 1s ease-in infinite",
+			},
+			keyframes: {
+				circleFadeLoader: {
+					"0%": {
+						transform: "scale(0)",
+						opacity: "1",
+					},
+					"100%": {
+						transform: "scale(1)",
+						opacity: "0",
+					},
+				},
+			},
 		}
 	},
 };

@@ -15,18 +15,16 @@ const globalStore = useGlobalStore();
 const { currentPageMeta } = storeToRefs(globalStore);
 const { data: aboutAPI } = aboutQuery();
 
-const getFirstEnter = ref(true);
 const photo = ref(null);
 const { tilt, roll } = useParallax(photo);
-const block_black_target = ref(null);
-const block_black_isVisible = ref(false);
+const quoteInfoTarget = ref(null);
+const quoteInfoIsVisible = ref(false);
 const { stop } = useIntersectionObserver(
-	block_black_target,
+	quoteInfoTarget,
 	([{ isIntersecting }]) => {
-		block_black_isVisible.value = isIntersecting;
-		if (isIntersecting) {
+		quoteInfoIsVisible.value = isIntersecting;
+		if (isIntersecting)
 			stop();
-		}
 	},
 );
 
@@ -48,10 +46,7 @@ const aboutMeta = computed(() => currentPageMeta.value(String(route.name)));
 			:page-title="aboutMeta.pageTitle"
 			:page-sub-title="aboutMeta.subPageTitle"
 		/>
-		<div
-			class="animate__animated animate__fadeInLeftBig relative h-full overflow-hidden h-table:w-10/12 laptop:w-5/12"
-			:class="[{ 'animate__delay-3s': getFirstEnter }]"
-		>
+		<div class="relative h-full overflow-hidden h-table:w-10/12 laptop:w-5/12">
 			<img
 				class="absolute z-30 w-auto object-center transition-all ease-out"
 				src="/img/kenny-logo.png"
@@ -74,8 +69,7 @@ const aboutMeta = computed(() => currentPageMeta.value(String(route.name)));
 		<div class="mt-10 h-table:w-10/12 laptop:mt-0 laptop:w-5/12 laptop:pl-10 middle-pc:pl-24">
 			<div
 				v-show="aboutData.slogan"
-				class="animate__animated animate__flipInX callout-box relative mb-8 border-l-callout-box-boder border-sub-color-dark bg-main-color-light py-10 pl-10 pr-14 mobile:py-4 mobile:pl-4"
-				:class="[{ 'animate__delay-4s': getFirstEnter === true }, { 'animate__delay-1s': getFirstEnter === false }]"
+				class="callout-box relative mb-8 border-l-callout-box-boder border-sub-color-dark bg-main-color-light py-10 pl-10 pr-14 mobile:py-4 mobile:pl-4"
 			>
 				<div
 					class="about-slogan font-bold text-main-color-black"
@@ -87,10 +81,7 @@ const aboutMeta = computed(() => currentPageMeta.value(String(route.name)));
 			</div>
 			<div
 				v-show="aboutData.philosophy"
-				class="animate__animated animate__fadeIn text-main-color-light"
-				:class="[
-					{ 'animate__delay-5s': getFirstEnter === true }, { 'animate__delay-2s': getFirstEnter === false },
-				]"
+				class="text-main-color-light"
 			>
 				<v-md-preview
 					class="markdown-body about-philosophy"
@@ -104,9 +95,9 @@ const aboutMeta = computed(() => currentPageMeta.value(String(route.name)));
 		class="flex-wrap items-start justify-center bg-main-color-black px-4 py-24 text-main-color-light mobile:px-8 h-table:flex"
 	>
 		<div
-			ref="block_black_target"
-			class="animate__animated animate__delay-1s grid text-center opacity-0 h-table:w-10/12 h-table:grid-cols-3 laptop:grid-cols-none"
-			:class="{ animate__fadeIn: block_black_isVisible }"
+			ref="quoteInfoTarget"
+			class="grid text-center opacity-0 h-table:w-10/12 h-table:grid-cols-3 laptop:grid-cols-none"
+			:class="{ 'animate-fadeIn animation-delay-800': quoteInfoIsVisible }"
 		>
 			<img
 				class="mx-auto mb-10"
@@ -123,8 +114,8 @@ const aboutMeta = computed(() => currentPageMeta.value(String(route.name)));
 		class="flex-wrap items-start justify-center bg-white bg-about-writing bg-right-bottom bg-no-repeat px-4 pb-52 pt-32 mobile:bg-contain mobile:px-8 h-table:flex h-table:bg-auto-500 h-table:px-6 middle-pc:bg-contain middle-pc:px-20"
 	>
 		<div
-			class="animate__animated animate__delay-2s pb-320px text-left text-main-color-black h-table:w-10/12 laptop:w-5/12 laptop:pb-0 middle-pc:w-7/12"
-			:class="{ animate__fadeIn: block_black_isVisible }"
+			class="pb-320px text-left text-main-color-black opacity-0 h-table:w-10/12 laptop:w-5/12 laptop:pb-0 middle-pc:w-7/12"
+			:class="{ 'animate-fadeIn animation-delay-1500': quoteInfoIsVisible }"
 		>
 			<v-md-preview
 				class="markdown-body about-epilogue"
