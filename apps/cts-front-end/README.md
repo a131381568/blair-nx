@@ -114,9 +114,8 @@ ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
 
 ### C-3 專案間的依賴關係
 ![專案間的依賴關係](https://i.imgur.com/rt5D6w4.png)
-
-### C-4 後端資訊
-[查看後端專案](#)
+- [查看後端專案](#)
+- [查看共享專案](#)
 
 
 ## D. 本機開發
