@@ -180,11 +180,12 @@ module.exports = {
 					},
 				},
 				rubberBand: {
-					'0%': { transform: 'scale(1)' },
-					'30%': { transform: 'scale(1.3) rotate(-8deg)' },
-					'50%': { transform: 'scale(1) rotate(8deg)' },
-					'70%': { transform: 'scale(1.3) rotate(-4deg)' },
-					'100%': { transform: 'scale(1) rotate(0deg)' },
+					'0%, 100%': { transform: 'scale3d(1, 1, 1)' },
+					'30%': { transform: 'scale3d(1.25, 0.75, 1)' },
+					'40%': { transform: 'scale3d(0.75, 1.25, 1)' },
+					'50%': { transform: 'scale3d(1.15, 0.85, 1)' },
+					'65%': { transform: 'scale3d(0.95, 1.05, 1)' },
+					'75%': { transform: 'scale3d(1.05, 0.95, 1)' },
 				},
 				bounceOnce: {
 					'0%, 20%, 53%, 100%': {
