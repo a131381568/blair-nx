@@ -60,5 +60,3 @@ Thumbs.db
 # storybook
 storybook-static
 
-# prisma
-**/prisma/migrations

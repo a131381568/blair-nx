@@ -71,9 +71,6 @@ dependencies:
   '@yeger/vue-masonry-wall':
     specifier: ^5.0.16
     version: 5.0.16(vue@3.4.38)
-  animate.css:
-    specifier: ^4.1.1
-    version: 4.1.1
   axios:
     specifier: ^1.6.0
     version: 1.7.7
@@ -7818,10 +7815,6 @@ packages:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
       uri-js: 4.4.1
-    dev: false
-
-  /animate.css@4.1.1:
-    resolution: {integrity: sha512-+mRmCTv6SbCmtYJCN4faJMNFVNN5EuCTTprDTAo7YzIGji2KADmakjVA3+8mVDkZ2Bf09vayB35lSQIex2+QaQ==}
     dev: false
 
   /ansi-colors@4.1.3:
