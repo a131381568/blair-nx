@@ -103,3 +103,15 @@ pnpm exec nx lint cts-back-end
 pnpm exec nx prisma:m cts-back-end
 pnpm exec nx prisma:g cts-back-end
 ```
+
+## D. 打包
+
+1. 將前後端檔案打包至`dist/cts`
+```shell
+ pnpm exec nx deploy cts-back-end
+```
+
+2. 將 `dist/cts` 內的檔案搬移到要部署的地方後, 在根目錄建立容器
+```shell
+docker-compose up -d
+```

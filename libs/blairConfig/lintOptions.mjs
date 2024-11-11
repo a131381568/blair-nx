@@ -27,12 +27,13 @@ export default [
 			'**/.eslintrc-auto-import.json',
 			'**/README.md',
 			'**/components.d.ts',
-			'**/prisma/migrations',
-			'**/prisma/schema.prisma',
+			'**/prisma',
 			'**/.DS_Store',
 			'**/*.bru',
 			'**/.env.*',
 			'**/.env',
+			'**/.dockerignore',
+			'**/deployment'
 		],
 	},
 	{

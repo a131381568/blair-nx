@@ -22,7 +22,7 @@
 					"buildTarget": "cts-back-end:build:production"
 				}
 			},
-			"dependsOn": ["copy-env", "build"]
+			"dependsOn": ["lint", "copy-env", "build"]
 		},
 		"lint": {
 			"executor": "nx:run-commands",
@@ -86,7 +86,17 @@
 				"cwd": "apps/cts-back-end/deployment",
 				"command": "docker-compose up -d"
 			}
+		},
+		"deploy": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/cts-back-end",
+				"command": "pnpm exec nx run-many -t build -p tag:class:cts-build -c production",
+				"parallel": false,
+				"args": ["--parallel=1"]
+			},
+			"dependsOn": ["lint", "copy-env"]
 		}
 	},
-	"tags": ["type:back_app", "publish:false", "class:cts"]
+	"tags": ["type:back_app", "publish:false", "class:cts", "class:cts-build"]
 }
