@@ -115,3 +115,7 @@ pnpm exec nx prisma:g cts-back-end
 ```shell
 docker-compose up -d
 ```
+
+## E. 部署
+
+https://railway.app/
