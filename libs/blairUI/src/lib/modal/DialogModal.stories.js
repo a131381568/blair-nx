@@ -1,4 +1,4 @@
-import CloseVector from '@bigfun-ui-src/components/icons/CloseVector.vue';
+import CloseVector from '../../svg/CloseVector.vue';
 import DialogModal from './DialogModal.vue';
 
 /**
@@ -59,21 +59,21 @@ export const Base = {
 			<div>
 				<button @click="toggleModal">Open Dialog Modal</button>
 				<DialogModal 
-					class="tw-z-[1001] [&>div>div>div]:tw-relative [&>div>div>div]:tw-inset-0"
+					class="z-[1001] [&>div>div>div]:relative [&>div>div>div]:inset-0"
 					:isVisable="customVisable"
 					v-bind="args"
 				>
 					<template #header>
-						<div class="tw-relative tw-flex tw-w-full tw-border-b tw-border-solid tw-border-gray-7 tw-px-7 tw-py-[1.375rem] tw-justify-between">
+						<div class="relative flex w-full border-b border-solid border-gray-7 px-7 py-[1.375rem] justify-between">
 							<span>Info</span>	
 							<CloseVector 
-								class="tw-cursor-pointer"
+								class="cursor-pointer"
 								@click="closeModal"
 							/>
 						</div>
 					</template>
 					<template #body>
-						<div class="tw-w-full tw-px-7 tw-py-5 tw-justify-start">
+						<div class="w-full px-7 py-5 justify-start">
 							<h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In venenatis, metus vel accumsan congue, ipsum eros mollis magna, a viverra nisi nisl vitae magna</h4>
 						</div>
 					</template>
@@ -108,26 +108,26 @@ export const fillPayload = {
 			<div>
 				<button @click="toggleModal">Open Dialog Modal</button>
 				<DialogModal 
-					class="tw-z-[1001] [&>div>div>div]:tw-relative [&>div>div>div]:tw-inset-0"
+					class="z-[1001] [&>div>div>div]:relative [&>div>div>div]:inset-0"
 					:isVisable="customVisable"
 					v-bind="args"
 				>
 					<template #header>
-						<div class="tw-relative tw-flex tw-w-full tw-border-b tw-border-solid tw-border-gray-7 tw-px-7 tw-py-[1.375rem] tw-justify-between">
+						<div class="relative flex w-full border-b border-solid border-gray-7 px-7 py-[1.375rem] justify-between">
 							<CloseVector 
-								class="tw-cursor-pointer"
+								class="cursor-pointer"
 								@click="closeModal"
 							/>
 							<span>header 插槽區</span>
 						</div>
 					</template>
 					<template #body>
-						<div class="tw-w-full tw-px-7 tw-py-5 xl:tw-h-[calc(100%-3.3125rem-4.375rem)] xl:tw-overflow-auto xl:tw-px-5">
+						<div class="w-full px-7 py-5 xl:h-[calc(100%-3.3125rem-4.375rem)] xl:overflow-auto xl:px-5">
 							body 插槽區
 						</div>
 					</template>
 					<template #footer>
-						<div class="tw-mt-0 tw-flex tw-h-[4.6875rem] tw-w-full tw-items-center tw-justify-center tw-gap-x-5 tw-bg-gray-4 xl:tw-h-[4.375rem]">
+						<div class="mt-0 flex h-[4.6875rem] w-full items-center justify-center gap-x-5 bg-gray-4 xl:h-[4.375rem]">
 							footer 插槽區
 						</div>
 					</template>
@@ -140,16 +140,16 @@ export const fillPayload = {
 		fullscreen: false,
 		widthStyle: '518px',
 		modalContentAnimation: {
-			'enter-active-class': 'tw-transition tw-duration-300 tw-ease-in-out-1 tw-transform',
-			'enter-from-class': '-tw-translate-y-8 tw-opacity-0',
-			'enter-to-class': 'tw-translate-y-0 tw-opacity-100',
-			'leave-active-class': 'tw-transition tw-duration-300 tw-ease-in-out-1 tw-transform',
-			'leave-to-class': '-tw-translate-y-8 tw-opacity-0',
-			'leave-from-class': 'tw-translate-y-0 tw-opacity-100',
+			'enter-active-class': 'transition duration-300 ease-in-out-1 transform',
+			'enter-from-class': '-translate-y-8 opacity-0',
+			'enter-to-class': 'translate-y-0 opacity-100',
+			'leave-active-class': 'transition duration-300 ease-in-out-1 transform',
+			'leave-to-class': '-translate-y-8 opacity-0',
+			'leave-from-class': 'translate-y-0 opacity-100',
 		},
 		clickToClose: false,
 		teleportTo: 'body',
-		overlayClass: 'tw-bg-blueGreenOpacity1',
+		overlayClass: 'bg-blueGreenOpacity1',
 	},
 };
 
@@ -172,26 +172,26 @@ export const mobileFull = {
 			<div>
 				<button @click="toggleModal">Open Dialog Modal</button>
 				<DialogModal 
-					class="tw-z-[1001] [&>div>div>div]:tw-relative [&>div>div>div]:tw-inset-0"
+					class="z-[1001] [&>div>div>div]:relative [&>div>div>div]:inset-0"
 					:isVisable="customVisable"
 					v-bind="args"
 				>
 					<template #header>
-						<div class="tw-relative tw-flex tw-w-full tw-border-b tw-border-solid tw-border-gray-7 tw-px-7 tw-py-[1.375rem] tw-justify-between">
+						<div class="relative flex w-full border-b border-solid border-gray-7 px-7 py-[1.375rem] justify-between">
 							<CloseVector 
-								class="tw-cursor-pointer"
+								class="cursor-pointer"
 								@click="closeModal"
 							/>
 							<span>Duis fringilla</span>
 						</div>
 					</template>
 					<template #body>
-						<div class="tw-w-full tw-px-7 tw-py-5 tw-h-[calc(100%-3.3125rem-4.375rem)] tw-overflow-auto">
+						<div class="w-full px-7 py-5 h-[calc(100%-3.3125rem-4.375rem)] overflow-auto">
 							Praesent finibus consectetur posuere. Morbi efficitur venenatis dignissim
 						</div>
 					</template>
 					<template #footer>
-						<div class="tw-mt-0 tw-px-6 tw-flex tw-h-[4.6875rem] tw-w-full tw-items-center tw-justify-between tw-gap-x-5 tw-bg-gray-4">
+						<div class="mt-0 px-6 flex h-[4.6875rem] w-full items-center justify-between gap-x-5 bg-gray-4">
 							<button>cancle</button>
 							<button>next</button>
 						</div>
