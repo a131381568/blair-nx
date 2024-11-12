@@ -1,9 +1,11 @@
+import type { DOMWrapper, VueWrapper } from '@vue/test-utils';
 import { mount } from '@vue/test-utils';
+import { nextTick } from 'vue';
 import BlairPopover from './BlairPopover.vue';
 
 describe('blairPopover', () => {
-	let wrapper = null;
-	let btnDom = null;
+	let wrapper: VueWrapper<InstanceType<typeof BlairPopover>>;
+	let btnDom: DOMWrapper<HTMLElement>;
 	const CONTENT_TEXT = 'This is text';
 	const TIP_CLASS = 'testTipName';
 	const BTN_CLASS = 'testBtnName';

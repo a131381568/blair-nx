@@ -1,14 +1,15 @@
+import type { VueWrapper } from '@vue/test-utils';
 import { mount } from '@vue/test-utils';
 import BlariVirtualPopover from './BlariVirtualPopover.vue';
 
-const waitMs = (ms) => {
+const waitMs = (ms: number) => {
 	return new Promise((resolve) => {
-		setTimeout(() => resolve(null, ms));
+		setTimeout(() => resolve(null), ms);
 	});
 };
 
 describe('blariVirtualPopover', () => {
-	let wrapper = null;
+	let wrapper: VueWrapper<InstanceType<typeof BlariVirtualPopover>>;
 	const SLOT_CONTENT = '我是內容';
 	const getTipDom = () => wrapper.find(`[data-name="BlariVirtualPopover__tip"]`);
 
@@ -60,8 +61,8 @@ describe('blariVirtualPopover', () => {
 		// 在 vitest 裡面沒有瀏覽器的環境，所以一定要用手動等待
 		await waitMs(100);
 
-		const parseStyleString = (style) => {
-			return style.split(';').reduce((acc, property) => {
+		const parseStyleString = (style: string) => {
+			return style.split(';').reduce<Record<string, string>>((acc, property) => {
 				if (property.trim()) {
 					const [key, value] = property.split(':');
 					acc[key.trim()] = value.trim();
@@ -70,7 +71,7 @@ describe('blariVirtualPopover', () => {
 			}, {});
 		};
 
-		const extractPxValues = (str) => {
+		const extractPxValues = (str: string) => {
 			const regex = /translate\((\d+)px, (\d+)px\)/;
 			const match = str.match(regex);
 			if (match) {
@@ -86,7 +87,13 @@ describe('blariVirtualPopover', () => {
 		const transformVal = parseStyleString(inlineStyleString).transform;
 		const pxValues = extractPxValues(transformVal);
 		// 從 dom 上面挖到的 transform 就會是經計算過的定位
-		expect(pxValues.x !== 0).toBe(true);
-		expect(pxValues.y !== 0).toBe(true);
+		if (pxValues) {
+			expect(pxValues.x !== 0).toBe(true);
+			expect(pxValues.y !== 0).toBe(true);
+		}
+		else {
+			// 處理 null 的情況（可選）
+			expect(true).toBe(false); // 或攥入錯誤處理邏輯
+		}
 	});
 });
