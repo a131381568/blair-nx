@@ -1,0 +1,64 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches: [production]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.17.0'
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+          
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build project
+        run: pnpm exec nx deploy cts-back-end
+        
+      - name: Setup Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Create deployment directory
+        run: |
+          # 創建臨時部署目錄
+          mkdir -p railway-deploy
+          
+          # 複製必要檔案到部署目錄
+          cp -r dist/cts/* railway-deploy/
+          cp docker-compose.yml railway-deploy/
+          cp .env.production railway-deploy/
+          
+          # 確保所有必要的目錄結構都存在
+          mkdir -p railway-deploy/backend/tmp
+          
+          # 如果有其他需要的設定檔案也複製過去
+          if [ -f "apps/cts-back-end/deployment/backend/Dockerfile" ]; then
+            cp apps/cts-back-end/deployment/backend/Dockerfile railway-deploy/backend/
+          fi
+          
+          if [ -f "apps/cts-back-end/deployment/nginx/nginx.conf" ]; then
+            cp apps/cts-back-end/deployment/nginx/nginx.conf railway-deploy/nginx/
+          fi
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          cd railway-deploy
+          # 連結到您的 Railway 專案
+          railway link ${{ RAILWAY_PROJECT_ID }}
+          # 部署應用
+          railway up --detach
