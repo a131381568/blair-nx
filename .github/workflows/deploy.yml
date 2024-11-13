@@ -18,18 +18,25 @@ jobs:
           node-version: '20.17.0'
           
       - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
+        run: npm install -g pnpm@8.15.3
           
       - name: Install dependencies
         run: pnpm install
+
+      - name: apk netcat-openbsd
+        run: apk add --no-cache netcat-openbsd
+
+      - name: apk postgresql-client
+        run: apk add --no-cache postgresql-client
+
+      - name: prisma g
+        run: pnpm dlx prisma generate
 
       - name: Build project
         run: pnpm exec nx deploy cts-back-end
         
       - name: Setup Railway CLI
-        run: npm install -g @railway/cli
+        run: pnpm install -g @railway/cli
 
       - name: Create deployment directory
         run: |
