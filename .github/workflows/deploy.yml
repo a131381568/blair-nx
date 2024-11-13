@@ -26,9 +26,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: prisma g
-        run: pnpm dlx prisma generate
-
       - name: Build project
         run: pnpm exec nx deploy cts-back-end
         
