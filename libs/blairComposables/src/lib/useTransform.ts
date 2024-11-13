@@ -16,7 +16,7 @@ export const convertFullToHalfNumber = (str: string) => {
 	return tmp;
 };
 
-export const numberToCurrency = (number: string) => {
+export const numberToCurrency = (number: number | string) => {
 	const n = Number(number);
 	if (Number.isNaN(n)) {
 		return '';

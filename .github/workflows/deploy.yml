@@ -19,15 +19,12 @@ jobs:
           
       - name: Install pnpm
         run: npm install -g pnpm@8.15.3
-          
+
+      - name: Install tslib
+        run: pnpm add tslib
+
       - name: Install dependencies
         run: pnpm install
-
-      - name: apk netcat-openbsd
-        run: apk add --no-cache netcat-openbsd
-
-      - name: apk postgresql-client
-        run: apk add --no-cache postgresql-client
 
       - name: prisma g
         run: pnpm dlx prisma generate

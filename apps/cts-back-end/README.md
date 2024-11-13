@@ -119,3 +119,5 @@ docker-compose up -d
 ## E. 部署
 
 https://railway.app/
+
+- ts: ...
