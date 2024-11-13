@@ -65,9 +65,6 @@ jobs:
           if [ -f "apps/cts-back-end/deployment/nginx/nginx.conf" ]; then
             cp apps/cts-back-end/deployment/nginx/nginx.conf railway-deploy/nginx/
           fi
-
-          - name: Authenticate with Railway
-          run: echo "$RAILWAY_TOKEN" | railway login --token
   
       - name: Deploy to Railway
         env:
