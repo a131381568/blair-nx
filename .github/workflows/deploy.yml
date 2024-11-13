@@ -69,10 +69,9 @@ jobs:
       - name: Deploy to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
         run: |
           cd railway-deploy
           # 初始化 Railway 專案並連結
-          railway init --project "${{ secrets.RAILWAY_PROJECT_ID }}"
+          railway init --project "1afbc0b7-f0f1-4067-a841-21709cf628cf"
           # 部署應用
           railway up --detach
