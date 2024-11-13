@@ -69,9 +69,12 @@ jobs:
       - name: Deploy to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
         run: |
+          echo "RAILWAY_TOKEN is set to ${RAILWAY_TOKEN:0:3}***"
+          echo "RAILWAY_PROJECT_ID is set to ${RAILWAY_PROJECT_ID:0:3}***"
           cd railway-deploy
-          # 連結到您的 Railway 專案
-          railway link ${{ secrets.RAILWAY_PROJECT_ID }}
+          # 初始化 Railway 專案並連結
+          railway link $RAILWAY_PROJECT_ID
           # 部署應用
           railway up --detach
