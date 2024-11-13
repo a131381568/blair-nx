@@ -20,11 +20,21 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm@8.15.3
 
-      - name: Install tslib
-        run: pnpm add tslib
-
       - name: Install dependencies
         run: pnpm install
+
+      - name: Check Node, pnpm, Prisma, and TypeScript versions
+        run: |
+          node -v
+          pnpm -v
+          pnpm prisma -v
+          pnpm tsc -v
+
+      - name: Set up environment variables
+        run: echo "${{ secrets.ENV_PRODUCTION }}" > .env.production
+
+      - name: ctsb Generate Prisma Client
+        run: pnpm exec nx prisma:g cts-back-end
 
       - name: Build project
         run: pnpm exec nx deploy cts-back-end
