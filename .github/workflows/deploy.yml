@@ -44,35 +44,22 @@ jobs:
       - name: Setup Railway CLI
         run: pnpm install -g @railway/cli
 
-      - name: Create deployment directory
+      - name: cp dist cts content
         run: |
-          # 創建臨時部署目錄
-          mkdir -p railway-deploy
-          
-          # 複製必要檔案到部署目錄
-          cp -r dist/cts/* railway-deploy/
-          cp docker-compose.yml railway-deploy/
-          cp .env.production railway-deploy/
-          
-          # 確保所有必要的目錄結構都存在
-          mkdir -p railway-deploy/backend/tmp
-          
-          # 如果有其他需要的設定檔案也複製過去
-          if [ -f "apps/cts-back-end/deployment/backend/Dockerfile" ]; then
-            cp apps/cts-back-end/deployment/backend/Dockerfile railway-deploy/backend/
-          fi
-          
-          if [ -f "apps/cts-back-end/deployment/nginx/nginx.conf" ]; then
-            cp apps/cts-back-end/deployment/nginx/nginx.conf railway-deploy/nginx/
-          fi
+          ls
+          cp docker-compose.yml dist/cts/
+          cp .env.production dist/cts/
+          cp apps/cts-back-end/deployment/backend/Dockerfile dist/cts/backend/
+          mkdir dist/cts/nginx/
+          cp apps/cts-back-end/deployment/nginx/nginx.conf dist/cts/nginx/
   
       - name: Deploy to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
         run: |
-            cd railway-deploy
-            railway link --project "1afbc0b7-f0f1-4067-a841-21709cf628cf"
+            cd dist/cts
+            railway link -p "1afbc0b7-f0f1-4067-a841-21709cf628cf"
             railway up --detach
 
 
