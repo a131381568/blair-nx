@@ -72,6 +72,6 @@ jobs:
         run: |
           cd railway-deploy
           # 初始化 Railway 專案並連結
-          railway init --project "1afbc0b7-f0f1-4067-a841-21709cf628cf"
+          railway link "1afbc0b7-f0f1-4067-a841-21709cf628cf"
           # 部署應用
           railway up --detach
