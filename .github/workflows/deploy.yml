@@ -18,7 +18,9 @@ jobs:
           node-version: '20.17.0'
           
       - name: Install pnpm
-        run: npm install -g pnpm@8.15.3
+        uses: pnpm/action-setup@v4
+        with:
+          version: '8.15.3'
 
       - name: Install dependencies
         run: pnpm install
