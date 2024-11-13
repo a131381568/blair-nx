@@ -67,8 +67,7 @@
 				"production": {
 					"envFiles": [".env", ".env.production"]
 				}
-			},
-			"dependsOn": ["lint"]
+			}
 		},
 		"lint": {
 			"executor": "nx:run-commands",
