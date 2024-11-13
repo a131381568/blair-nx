@@ -71,10 +71,10 @@ jobs:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
           RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
         run: |
-          echo "RAILWAY_TOKEN is set to ${RAILWAY_TOKEN:0:3}***"
-          echo "RAILWAY_PROJECT_ID is set to ${RAILWAY_PROJECT_ID:0:3}***"
+          echo "RAILWAY_PROJECT_ID is set to ${{ secrets.RAILWAY_PROJECT_ID }}"
           cd railway-deploy
+          echo "Linking Railway project with ID: $RAILWAY_PROJECT_ID"
           # 初始化 Railway 專案並連結
-          railway link $RAILWAY_PROJECT_ID
+          railway link "${{ secrets.RAILWAY_PROJECT_ID }}"
           # 部署應用
           railway up --detach
