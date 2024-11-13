@@ -66,20 +66,16 @@ jobs:
             cp apps/cts-back-end/deployment/nginx/nginx.conf railway-deploy/nginx/
           fi
 
-      - name: Link Railway project
-        env:
-          RAILWAY_PROJECT_ID: "1afbc0b7-f0f1-4067-a841-21709cf628cf"
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: |
-            cd railway-deploy
-            railway status
-            railway link --project "beneficial-integrity"
-            railway status
+          - name: Authenticate with Railway
+          run: echo "$RAILWAY_TOKEN" | railway login --token
   
-      - name: Deploy application 
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}   
+      - name: Deploy to Railway
         run: |
             cd railway-deploy
+            railway link --project "1afbc0b7-f0f1-4067-a841-21709cf628cf"
             railway up --detach
+        env:
+            RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+            RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+            PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
        
