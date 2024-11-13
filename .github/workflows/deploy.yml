@@ -7,6 +7,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    container: ghcr.io/railwayapp/cli:latest
     
     steps:
       - name: Checkout repository
@@ -66,12 +67,20 @@ jobs:
             cp apps/cts-back-end/deployment/nginx/nginx.conf railway-deploy/nginx/
           fi
 
-      - name: Deploy to Railway
+      - name: Link Railway project
         env:
+          RAILWAY_PROJECT_ID: "1afbc0b7-f0f1-4067-a841-21709cf628cf"
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
-          cd railway-deploy
-          # 初始化 Railway 專案並連結
-          railway link "1afbc0b7-f0f1-4067-a841-21709cf628cf"
-          # 部署應用
-          railway up --detach
+            cd railway-deploy
+            railway status
+            railway link --project "beneficial-integrity"
+            railway status
+  
+      - name: Deploy application 
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}   
+        run: |
+            cd railway-deploy
+            railway up --detach
+       
