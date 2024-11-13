@@ -23,7 +23,7 @@ jobs:
           version: '8.15.3'
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Check Node, pnpm, Prisma, and TypeScript versions
         run: |
