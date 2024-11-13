@@ -70,12 +70,13 @@ jobs:
           run: echo "$RAILWAY_TOKEN" | railway login --token
   
       - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
         run: |
             cd railway-deploy
             railway link --project "1afbc0b7-f0f1-4067-a841-21709cf628cf"
             railway up --detach
-        env:
-            RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-            RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-            PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+
+
        
