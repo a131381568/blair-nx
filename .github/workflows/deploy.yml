@@ -35,8 +35,8 @@ jobs:
       - name: Set up environment variables
         run: echo "${{ secrets.ENV_PRODUCTION }}" > .env
 
-      # - name: ctsb Generate Prisma Client
-      #   run: pnpm exec nx prisma:g cts-back-end
+      - name: ctsb Generate Prisma Client
+        run: pnpm exec nx prisma:g cts-back-end
 
       - name: Build project
         run: pnpm exec nx build cts-back-end
