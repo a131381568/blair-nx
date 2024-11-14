@@ -33,34 +33,26 @@ jobs:
           pnpm tsc -v
 
       - name: Set up environment variables
-        run: echo "${{ secrets.ENV_PRODUCTION }}" > .env.production
+        run: echo "${{ secrets.ENV_PRODUCTION }}" > .env
 
-      - name: ctsb Generate Prisma Client
-        run: pnpm exec nx prisma:g cts-back-end
+      # - name: ctsb Generate Prisma Client
+      #   run: pnpm exec nx prisma:g cts-back-end
 
       - name: Build project
-        run: pnpm exec nx deploy cts-back-end
+        run: pnpm exec nx build cts-back-end
         
+      - name: cp dist content
+        run: |
+          ls
+          cp .env dist/ctsb/
+
       - name: Setup Railway CLI
         run: pnpm install -g @railway/cli
 
-      - name: cp dist cts content
-        run: |
-          ls
-          cp docker-compose.yml dist/cts/
-          cp .env.production dist/cts/
-          cp apps/cts-back-end/deployment/backend/Dockerfile dist/cts/backend/
-          mkdir dist/cts/nginx/
-          cp apps/cts-back-end/deployment/nginx/nginx.conf dist/cts/nginx/
-  
       - name: Deploy to Railway
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
         run: |
-            cd dist/cts
-            railway link -p "1afbc0b7-f0f1-4067-a841-21709cf628cf"
-            railway up --detach
+            cd dist/ctsb
+            RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_ID }}
 
 
        

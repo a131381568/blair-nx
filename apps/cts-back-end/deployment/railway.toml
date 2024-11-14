@@ -1,0 +1,13 @@
+[project]
+name = "ctsb_railway"
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "node main.js"
+
+[mount]
+source = "."
+destination = "/app"

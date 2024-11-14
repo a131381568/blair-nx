@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	output: {
-		path: join(__dirname, '../../dist/cts/backend'),
+		path: join(__dirname, '../../dist/ctsb'),
 	},
 	plugins: [
 		new NxAppWebpackPlugin({
@@ -19,7 +19,7 @@ module.exports = {
 		new CopyWebpackPlugin({
 			patterns: [
 				{ from: join(__dirname, 'prisma'), to: 'prisma', toType: 'dir' },
-				{ from: join(__dirname, 'deployment'), to: '../../cts', toType: 'dir' },
+				{ from: join(__dirname, 'deployment'), to: '../ctsb', toType: 'dir' },
 			],
 		}),
 	],

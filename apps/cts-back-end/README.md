@@ -10,7 +10,7 @@
 
 ## B. 使用技術
 
-- 資料庫: PostgreSQL
+- 資料庫: PostgreSQL(16.4)
 - 資料庫溝通: Prisma
 - 後端框架: NestJs 
 - 身份驗證: Passport, JWT
