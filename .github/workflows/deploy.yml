@@ -33,7 +33,9 @@ jobs:
           pnpm tsc -v
 
       - name: Set up environment variables
-        run: echo "${{ secrets.ENV_PRODUCTION }}" > .env
+        run: | 
+          echo "${{ secrets.ENV_PRODUCTION }}" > .env
+          cat .env
 
       - name: ctsb Generate Prisma Client
         run: pnpm exec nx prisma:g cts-back-end
