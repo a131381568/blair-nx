@@ -65,7 +65,7 @@ jobs:
         run: |
           echo "Installing Railway CLI..."
           pnpm install -g @railway/cli
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway run
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}
 
           echo "Verifying Railway CLI configuration..."
           if ! railway whoami; then
@@ -79,7 +79,7 @@ jobs:
         working-directory: dist/ctsb
         run: |
           echo "Linking backend to Railway project..."
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway run
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}
 
           if ! railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production; then
             echo "Failed to link backend project"
@@ -98,7 +98,7 @@ jobs:
         working-directory: dist/ctsf
         run: |
           echo "Linking frontend to Railway project..."
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway run
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}
 
           if ! railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production; then
             echo "Failed to link frontend project"
