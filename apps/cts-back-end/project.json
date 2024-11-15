@@ -31,6 +31,9 @@
 			},
 			"dependsOn": ["copy-env", "build"]
 		},
+		"build": {
+			"dependsOn": ["copy-env"]
+		},
 		"lint": {
 			"executor": "nx:run-commands",
 			"options": {
