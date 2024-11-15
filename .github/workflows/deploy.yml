@@ -63,10 +63,10 @@ jobs:
 
       - name: Install and Configure Railway CLI
         run: |
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway run
           echo "Installing Railway CLI..."
           pnpm install -g @railway/cli
-          
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway run
+
           echo "Verifying Railway CLI configuration..."
           if ! railway whoami; then
             echo "Railway authentication failed"
@@ -78,8 +78,9 @@ jobs:
         if: success()
         working-directory: dist/ctsb
         run: |
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway run
           echo "Linking backend to Railway project..."
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway run
+
           if ! railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production; then
             echo "Failed to link backend project"
             exit 1
@@ -96,8 +97,9 @@ jobs:
         if: success()
         working-directory: dist/ctsf
         run: |
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway run
           echo "Linking frontend to Railway project..."
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway run
+
           if ! railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production; then
             echo "Failed to link frontend project"
             exit 1
@@ -112,7 +114,6 @@ jobs:
       - name: Check deployment status # 確保即使前面步驟失敗也會執行
         if: always()
         run: |
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway run
           if [ "${{ steps.deploy-backend.outcome }}" == "failure" ]; then
             echo "Backend deployment failed"
             railway logs --service ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}
@@ -163,7 +164,6 @@ jobs:
       - name: Final deployment verification
         if: success()
         run: |
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway run
           echo "Checking final deployment status..."
           railway status
           echo "Deployment complete!"
