@@ -48,14 +48,9 @@ jobs:
 
       - name: Deploy to Railway
         run: |
-          echo "Deploying backend..."
-          cd dist/ctsb
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSB_ID }} &
+          (cd dist/ctsb && RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}) &
           BACKEND_PID=$!
-          
-          echo "Deploying frontend..."
-          cd ../dist/ctsf
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSF_ID }} &
+          (cd dist/ctsf && RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}) &
           FRONTEND_PID=$!
           
           wait $BACKEND_PID
