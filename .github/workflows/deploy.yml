@@ -42,11 +42,14 @@ jobs:
       - name: Setup Railway CLI
         run: pnpm install -g @railway/cli
 
-      - name: Deploy to Railway
+      - name: Deploy to Railway (Backend)
         run: |
           cd dist/ctsb
           RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}
-          cd ../ctsf
+
+      - name: Deploy to Railway (Frontend)
+        run: |
+          cd dist/ctsf
           RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}
 
 
