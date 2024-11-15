@@ -2,6 +2,7 @@
 
 - 專案名稱：cts-back-end
 - 本機端網址：http://localhost:3000
+- 線上網址：https://star-api.puraliena.com/api
 
 此為 [catching-the-star-master](https://github.com/a131381568/ctsm-sql) 的後端重構專案
 
