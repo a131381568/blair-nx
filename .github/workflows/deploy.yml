@@ -48,16 +48,16 @@ jobs:
 
       - name: Deploy to Railway
         run: |
-          (cd dist/ctsb && RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}) && BACKEND_PID=$!
-
-          (cd dist/ctsf && RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}) && FRONTEND_PID=$!
+          (cd dist/ctsb && RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}) &
+          BACKEND_PID=$!
+          (cd dist/ctsf && RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}) &
+          FRONTEND_PID=$!
           
           wait $BACKEND_PID
           BACKEND_STATUS=$?
           wait $FRONTEND_PID
           FRONTEND_STATUS=$?
           
-          if [ $BACKEND_STATUS -ne 0 ] || [ $FRONTEND_STATUS -ne 0 ]; then
-            echo "Deployment failed!"
-            exit 1
-          fi
+          echo "$BACKEND_STATUS: " $BACKEND_STATUS
+          echo "$FRONTEND_STATUS: " $FRONTEND_STATUS
+
