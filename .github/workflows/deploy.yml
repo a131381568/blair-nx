@@ -1,13 +1,16 @@
 name: Deploy to Railway
 
+# 添加並發控制
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [production]
 
 env:
   RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-  NODE_VERSION: '20.17.0'
-  PNPM_VERSION: '8.15.3'
 
 jobs:
   deploy:
@@ -35,8 +38,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile  # 改用 --frozen-lockfile 確保依賴版本一致
+      # 驗證 lockfile
+      - name: Verify pnpm lockfile
+        run: |
+          echo "Verifying lockfile..."
+          if ! pnpm install --frozen-lockfile; then
+            echo "Error: pnpm-lock.yaml is out of sync with package.json"
+            echo "Please run 'pnpm install' locally and commit the updated pnpm-lock.yaml"
+            exit 1
+          fi
 
       - name: Set up environment variables
         run: |
@@ -132,6 +142,7 @@ jobs:
 
       - name: Verify deployments
         if: success()
+        timeout-minutes: 5  # 添加超時限制
         run: |
           function check_health {
             local url=$1
