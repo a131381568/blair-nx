@@ -22,35 +22,80 @@ jobs:
         with:
           version: '8.15.3'
 
+      # 添加緩存以加速構建
+      - name: Cache pnpm modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
       - name: Set up environment variables
         run: echo "${{ secrets.ENV_PRODUCTION }}" > .env
           
-      - name: ctsb Generate Prisma Client
-        run: pnpm exec nx prisma:g cts-back-end
+      - name: Generate Prisma Client & Build Projects
+        run: |
+          pnpm exec nx prisma:g cts-back-end
+          pnpm exec nx deploy cts-back-end
 
-      - name: Build ctsb & ctsf project
-        run: pnpm exec nx deploy cts-back-end
-
-      - name: cp dist content
+      - name: Prepare deployment files
         run: |
           cp .env dist/ctsb/          
           cp apps/cts-front-end/deployment/* dist/ctsf/
 
-      - name: Setup Railway CLI
-        run: pnpm install -g @railway/cli
+      - name: Install and configure Railway CLI
+        run: |
+          pnpm install -g @railway/cli
+          # 驗證 Railway Token
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway whoami
 
-      - name: Deploy to Railway (Backend)
+      - name: Deploy Backend
+        id: deploy-backend
+        continue-on-error: true
         run: |
           cd dist/ctsb
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}
-
-      - name: Deploy to Railway (Frontend)
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up \
+            --service ${{ secrets.RAILWAY_SERVICE_CTSB_ID }} \
+            --detach
+  
+      - name: Deploy Frontend
+        id: deploy-frontend
+        continue-on-error: true
         run: |
           cd dist/ctsf
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up \
+            --service ${{ secrets.RAILWAY_SERVICE_CTSF_ID }} \
+            --detach
 
+      # 檢查部署結果
+      - name: Check deployment status
+        if: steps.deploy-backend.outcome == 'failure' || steps.deploy-frontend.outcome == 'failure'
+        run: |
+          if [ "${{ steps.deploy-backend.outcome }}" == "failure" ]; then
+            echo "Backend deployment failed"
+          fi
+          if [ "${{ steps.deploy-frontend.outcome }}" == "failure" ]; then
+            echo "Frontend deployment failed"
+          fi
+          exit 1
 
-       
+      # 等待部署完成
+      - name: Wait for deployments
+        run: |
+          echo "Waiting for deployments to complete..."
+          sleep 30  # 給 Railway 一些時間來處理部署
+
+      # 驗證服務健康狀況
+      - name: Verify deployments
+        run: |
+          echo "Verifying backend deployment..."
+          curl --fail -s https://star-api.puraliena.com/api/health || exit 1
+          echo "Backend is healthy"
+          
+          echo "Verifying frontend deployment..."
+          curl --fail -s https://star.puraliena.com || exit 1
+          echo "Frontend is healthy"
