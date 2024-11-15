@@ -65,10 +65,9 @@ jobs:
         run: |
           echo "Installing Railway CLI..."
           pnpm install -g @railway/cli
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}
 
           echo "Verifying Railway CLI configuration..."
-          if ! railway whoami; then
+          if ! RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway whoami; then
             echo "Railway authentication failed"
             exit 1
           fi
