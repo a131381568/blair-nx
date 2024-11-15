@@ -58,22 +58,22 @@ jobs:
           cp .env dist/ctsb/          
           cp apps/cts-front-end/deployment/* dist/ctsf/
 
-          - name: Setup Railway CLI
-          run: |
-            echo "Installing Railway CLI..."
-            npm install -g @railway/cli
-            
-            # 創建臨時配置文件
-            mkdir -p $HOME/.railway
-            echo "${{ secrets.RAILWAY_TOKEN }}" > $HOME/.railway/token
-            chmod 600 $HOME/.railway/token
-            
-            # 測試配置
-            if ! railway whoami; then
-              echo "Railway authentication failed"
-              rm -f $HOME/.railway/token
-              exit 1
-            fi
+      - name: Setup Railway CLI
+        run: |
+          echo "Installing Railway CLI..."
+          npm install -g @railway/cli
+          
+          # 創建臨時配置文件
+          mkdir -p $HOME/.railway
+          echo "${{ secrets.RAILWAY_TOKEN }}" > $HOME/.railway/token
+          chmod 600 $HOME/.railway/token
+          
+          # 測試配置
+          if ! railway whoami; then
+            echo "Railway authentication failed"
+            rm -f $HOME/.railway/token
+            exit 1
+          fi
 
       - name: Deploy Backend
         id: deploy-backend
