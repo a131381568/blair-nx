@@ -41,7 +41,7 @@ jobs:
           pnpm exec nx prisma:g cts-back-end
           pnpm exec nx build cts-back-end
           cp .env dist/ctsb/
-          
+
       - name: Deploy Backend
         run: |
           cd dist/ctsb

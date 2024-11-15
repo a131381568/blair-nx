@@ -8,6 +8,7 @@ RUN mkdir -p /usr/share/nginx/html \
 
 COPY ./frontend /usr/share/nginx/html/
 COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./Procfile ./Procfile
 
 # 確保文件權限正確
 RUN chown -R nginx:nginx /usr/share/nginx/html \
