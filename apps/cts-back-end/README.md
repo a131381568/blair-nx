@@ -118,6 +118,11 @@ docker-compose up -d
 
 ## E. 部署
 
+使用第三方的 railway
+
 https://railway.app/
 
-- ts: ...
+- libs/cts-shared/.env.example: 有幾乎全部的環境變數
+- 前端跟後端分開部署成兩個服務，現在是只要這個倉庫的 production 分支有更新，就會立即部署到 railway 的前後端兩個服務
+- Postgres 由 railway 託管，只要輸入環境變數，就能使用；會公開對外的資料庫連線方式，所以就能夠拿來倒資料、備份資料了
+- 很多時候使用`railwayapp/cli`來開發溝通比較有效率
