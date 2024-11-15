@@ -7,8 +7,6 @@ concurrency:
 on:
   push:
     branches: [production]
-    paths:
-      - 'apps/cts-front-end/**'
 
 jobs:
   deploy:
@@ -37,6 +35,7 @@ jobs:
       - name: cp dist content
         run: |     
           cp apps/cts-front-end/deployment/* dist/ctsf/
+          cp .env dist/ctsf/
 
       - name: Deploy Frontend
         run: |

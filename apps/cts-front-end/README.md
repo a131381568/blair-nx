@@ -147,7 +147,7 @@ ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
 
 - libs/cts-shared/.env.example: 有幾乎全部的環境變數
 - 前端藉由客製化容器 Nginx 的 Dockerfile 來裝打包出來的 Vue
-- 有特別為 ctsf 寫自動化打包的流程: .github/workflows/deploy-frontend.yml
+- 有特別為 ctsf 寫自動化打包的流程: .github/workflows/deploy-frontend.yml (後續還要改進)
 
 ## E. 聲明
 - 僅作為學術研究用途，無商業行為。

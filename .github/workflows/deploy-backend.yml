@@ -7,8 +7,6 @@ concurrency:
 on:
   push:
     branches: [production]
-    paths:
-      - 'apps/cts-back-end/**'
 
 jobs:
   deploy:
