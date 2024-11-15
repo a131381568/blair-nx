@@ -5,7 +5,7 @@ run ls
 workdir /workspace
 
 # copy package.json pnpm-lock.yaml prisma init.sql ./
-copy ./ctsb/* ./
+copy . .
 
 run npm install -g pnpm@8.15.3
 run pnpm add tslib

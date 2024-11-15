@@ -44,8 +44,10 @@ jobs:
 
       - name: Deploy to Railway
         run: |
-          cd dist
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_ID }}
+          cd dist/ctsb
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}
+          cd ../ctsf
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}
 
 
        
