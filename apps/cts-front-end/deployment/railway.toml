@@ -1,0 +1,13 @@
+[project]
+name = "ctsf_railway"
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "nginx -g 'daemon off;'"
+
+[mount]
+source = "."
+destination = "/app"
