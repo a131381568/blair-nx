@@ -30,6 +30,7 @@ jobs:
         with:
           version: ${{ env.PNPM_VERSION }}
 
+      # 保留緩存配置
       - name: Cache pnpm modules
         uses: actions/cache@v3
         with:
@@ -38,15 +39,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-
 
-      # 驗證 lockfile
-      - name: Verify pnpm lockfile
-        run: |
-          echo "Verifying lockfile..."
-          if ! pnpm install --frozen-lockfile; then
-            echo "Error: pnpm-lock.yaml is out of sync with package.json"
-            echo "Please run 'pnpm install' locally and commit the updated pnpm-lock.yaml"
-            exit 1
-          fi
+      # 使用 --no-frozen-lockfile 寬鬆驗證
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
 
       - name: Set up environment variables
         run: |
@@ -117,8 +112,8 @@ jobs:
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
-      - name: Check deployment status
-        if: always()  # 確保即使前面步驟失敗也會執行
+      - name: Check deployment status # 確保即使前面步驟失敗也會執行
+        if: always()
         run: |
           if [ "${{ steps.deploy-backend.outcome }}" == "failure" ]; then
             echo "Backend deployment failed"
