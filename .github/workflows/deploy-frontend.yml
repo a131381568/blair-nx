@@ -28,6 +28,9 @@ jobs:
           pnpm install --no-frozen-lockfile
           pnpm install -g @railway/cli
 
+      - name: Set up environment variables
+        run: echo "${{ secrets.ENV_PRODUCTION }}" > .env
+
       - name: Build Frontend
         run: pnpm exec nx build cts-front-end
 
