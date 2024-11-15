@@ -48,30 +48,21 @@ jobs:
 
       - name: Deploy to Railway
         run: |
-          # 設定 Railway token
-          export RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}
-          
-          # 部署後端
           echo "Deploying backend..."
           cd dist/ctsb
-          railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production
-          railway up -s ${{ secrets.RAILWAY_SERVICE_CTSB_ID }} &
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSB_ID }} &
           BACKEND_PID=$!
           
-          # 部署前端
           echo "Deploying frontend..."
           cd ../dist/ctsf
-          railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production
-          railway up -s ${{ secrets.RAILWAY_SERVICE_CTSF_ID }} &
+          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up -s ${{ secrets.RAILWAY_SERVICE_CTSF_ID }} &
           FRONTEND_PID=$!
           
-          # 等待兩個部署完成
           wait $BACKEND_PID
           BACKEND_STATUS=$?
           wait $FRONTEND_PID
           FRONTEND_STATUS=$?
           
-          # 檢查部署結果
           if [ $BACKEND_STATUS -ne 0 ] || [ $FRONTEND_STATUS -ne 0 ]; then
             echo "Deployment failed!"
             exit 1
