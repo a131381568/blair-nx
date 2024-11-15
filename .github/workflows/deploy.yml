@@ -49,37 +49,54 @@ jobs:
 
       # Railway CLI 設定
       - name: Install Railway CLI
-        run: npm install -g @railway/cli
+        run: |
+          echo "Installing Railway CLI..."
+          npm install -g @railway/cli
+          echo "Railway CLI installed successfully"
 
       - name: Verify Railway Authentication
         run: |
-          echo "Verifying Railway CLI installation..."
-          railway version
           echo "Authenticating with Railway..."
-          echo "$RAILWAY_TOKEN" | railway login
-          railway whoami
+          echo "$RAILWAY_TOKEN" | railway login --browserless
+          
+          echo "Verifying authentication..."
+          if ! railway whoami; then
+            echo "Railway authentication failed"
+            exit 1
+          fi
+          echo "Railway authentication successful"
 
       # 後端部署
       - name: Deploy Backend
         id: deploy-backend
+        if: success()
         working-directory: dist/ctsb
         run: |
-          echo "Deploying backend service..."
+          echo "Linking to Railway project..."
           railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production
-          railway up --service ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          
+          echo "Deploying backend service..."
+          if ! railway up --service ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}; then
+            echo "Backend deployment failed"
+            exit 1
+          fi
+          echo "Backend deployment completed"
 
-     # 前端部署
+      # 前端部署
       - name: Deploy Frontend
         id: deploy-frontend
+        if: success()
         working-directory: dist/ctsf
         run: |
-          echo "Deploying frontend service..."
+          echo "Linking to Railway project..."
           railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production
-          railway up --service ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          
+          echo "Deploying frontend service..."
+          if ! railway up --service ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}; then
+            echo "Frontend deployment failed"
+            exit 1
+          fi
+          echo "Frontend deployment completed"
 
       # 部署狀態檢查
       - name: Check deployment status
