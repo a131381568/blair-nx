@@ -4,6 +4,11 @@ on:
   push:
     branches: [production]
 
+env:
+  RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+  NODE_VERSION: '20.17.0'
+  PNPM_VERSION: '8.15.3'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -15,14 +20,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.17.0'
+          node-version: ${{ env.NODE_VERSION }}
           
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: '8.15.3'
+          version: ${{ env.PNPM_VERSION }}
 
-      # 添加緩存以加速構建
       - name: Cache pnpm modules
         uses: actions/cache@v3
         with:
@@ -32,75 +36,79 @@ jobs:
             ${{ runner.os }}-pnpm-
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile  # 改用 --frozen-lockfile 確保依賴版本一致
 
       - name: Set up environment variables
-        run: echo "${{ secrets.ENV_PRODUCTION }}" > .env
+        run: |
+          echo "Setting up environment variables..."
+          echo "${{ secrets.ENV_PRODUCTION }}" > .env
           
       - name: Generate Prisma Client & Build Projects
         run: |
+          echo "Generating Prisma Client..."
           pnpm exec nx prisma:g cts-back-end
+          echo "Building projects..."
           pnpm exec nx deploy cts-back-end
 
       - name: Prepare deployment files
         run: |
+          echo "Preparing deployment files..."
           cp .env dist/ctsb/          
           cp apps/cts-front-end/deployment/* dist/ctsf/
 
-      # Railway CLI 設定
-      - name: Install Railway CLI
+      - name: Install and Configure Railway CLI
         run: |
           echo "Installing Railway CLI..."
           npm install -g @railway/cli
-          echo "Railway CLI installed successfully"
-
-      - name: Verify Railway Authentication
-        run: |
-          echo "Authenticating with Railway..."
-          echo "$RAILWAY_TOKEN" | railway login --browserless
           
-          echo "Verifying authentication..."
+          echo "Verifying Railway CLI configuration..."
           if ! railway whoami; then
             echo "Railway authentication failed"
             exit 1
           fi
-          echo "Railway authentication successful"
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
-      # 後端部署
       - name: Deploy Backend
         id: deploy-backend
         if: success()
         working-directory: dist/ctsb
         run: |
-          echo "Linking to Railway project..."
-          railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production
+          echo "Linking backend to Railway project..."
+          if ! railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production; then
+            echo "Failed to link backend project"
+            exit 1
+          fi
           
           echo "Deploying backend service..."
           if ! railway up --service ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}; then
             echo "Backend deployment failed"
             exit 1
           fi
-          echo "Backend deployment completed"
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
-      # 前端部署
       - name: Deploy Frontend
         id: deploy-frontend
         if: success()
         working-directory: dist/ctsf
         run: |
-          echo "Linking to Railway project..."
-          railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production
+          echo "Linking frontend to Railway project..."
+          if ! railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production; then
+            echo "Failed to link frontend project"
+            exit 1
+          fi
           
           echo "Deploying frontend service..."
           if ! railway up --service ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}; then
             echo "Frontend deployment failed"
             exit 1
           fi
-          echo "Frontend deployment completed"
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
-      # 部署狀態檢查
       - name: Check deployment status
-        if: steps.deploy-backend.outcome == 'failure' || steps.deploy-frontend.outcome == 'failure'
+        if: always()  # 確保即使前面步驟失敗也會執行
         run: |
           if [ "${{ steps.deploy-backend.outcome }}" == "failure" ]; then
             echo "Backend deployment failed"
@@ -110,48 +118,51 @@ jobs:
             echo "Frontend deployment failed"
             railway logs --service ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}
           fi
-          exit 1
+          if [ "${{ steps.deploy-backend.outcome }}" == "failure" ] || [ "${{ steps.deploy-frontend.outcome }}" == "failure" ]; then
+            exit 1
+          fi
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
-      # 等待部署生效
       - name: Wait for deployments
+        if: success()
         run: |
           echo "Waiting for deployments to stabilize..."
-          sleep 45  # 增加等待時間以確保服務完全啟動
+          sleep 45
 
-      # 健康狀態檢查
       - name: Verify deployments
+        if: success()
         run: |
+          function check_health {
+            local url=$1
+            local service=$2
+            local RETRY_COUNT=0
+            local MAX_RETRIES=3
+
+            until curl --output /dev/null --silent --fail "$url"; do
+              if [ ${RETRY_COUNT} -eq ${MAX_RETRIES} ]; then
+                echo "$service health check failed after ${MAX_RETRIES} attempts"
+                return 1
+              fi
+              RETRY_COUNT=$((RETRY_COUNT+1))
+              echo "Retrying $service health check (${RETRY_COUNT}/${MAX_RETRIES})..."
+              sleep 10
+            done
+            echo "$service is healthy"
+            return 0
+          }
+
           echo "Verifying backend deployment..."
-          RETRY_COUNT=0
-          MAX_RETRIES=3
-          
-          until $(curl --output /dev/null --silent --fail https://star-api.puraliena.com/api/health); do
-            if [ ${RETRY_COUNT} -eq ${MAX_RETRIES} ]; then
-              echo "Backend health check failed after ${MAX_RETRIES} attempts"
-              exit 1
-            fi
-            RETRY_COUNT=$((RETRY_COUNT+1))
-            echo "Retrying backend health check (${RETRY_COUNT}/${MAX_RETRIES})..."
-            sleep 10
-          done
-          echo "Backend is healthy"
-          
+          check_health "https://star-api.puraliena.com/api/health" "Backend"
+
           echo "Verifying frontend deployment..."
-          RETRY_COUNT=0
-          until $(curl --output /dev/null --silent --fail https://star.puraliena.com); do
-            if [ ${RETRY_COUNT} -eq ${MAX_RETRIES} ]; then
-              echo "Frontend health check failed after ${MAX_RETRIES} attempts"
-              exit 1
-            fi
-            RETRY_COUNT=$((RETRY_COUNT+1))
-            echo "Retrying frontend health check (${RETRY_COUNT}/${MAX_RETRIES})..."
-            sleep 10
-          done
-          echo "Frontend is healthy"
-          
-      # 最終狀態確認
+          check_health "https://star.puraliena.com" "Frontend"
+
       - name: Final deployment verification
+        if: success()
         run: |
           echo "Checking final deployment status..."
           railway status
           echo "Deployment complete!"
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
