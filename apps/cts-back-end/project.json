@@ -4,6 +4,13 @@
 	"sourceRoot": "apps/cts-back-end/src",
 	"projectType": "application",
 	"targets": {
+		"start": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "./",
+				"command": "node main.js"
+			}
+		},
 		"serve": {
 			"executor": "@nx/js:node",
 			"defaultConfiguration": "local",

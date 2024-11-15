@@ -18,4 +18,4 @@ run apk add --no-cache postgresql-client
 
 run  pnpm dlx prisma generate
 
-# CMD ["node", "main.js"]
+CMD ["node", "main.js"]

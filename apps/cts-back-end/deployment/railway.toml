@@ -11,3 +11,11 @@ startCommand = "node main.js"
 [mount]
 source = "."
 destination = "/app"
+
+[[services]]
+name = "api"
+internal_port = "3000"
+auto_deploy = true
+
+[nixpacks]
+start = "node main.js"

@@ -3,7 +3,13 @@ builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "sh -c 'nginx -g \"daemon off;\"'"
 restartPolicyType = "ON_FAILURE"
 healthcheckPath = "/"
 healthcheckTimeout = 10
+deploymentType = "image"
+startCommand = "nginx -g 'daemon off;'"
+
+[[services]]
+name = "web"
+internal_port = "80"
+auto_deploy = true
