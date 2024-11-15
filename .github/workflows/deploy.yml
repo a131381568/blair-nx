@@ -9,9 +9,6 @@ on:
   push:
     branches: [production]
 
-env:
-  RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -61,31 +58,34 @@ jobs:
           cp .env dist/ctsb/          
           cp apps/cts-front-end/deployment/* dist/ctsf/
 
-      - name: Install and Configure Railway CLI
-        run: |
-          echo "Installing Railway CLI..."
-          pnpm install -g @railway/cli
-
-          echo "Verifying Railway CLI configuration..."
-          if ! RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway whoami; then
-            echo "Railway authentication failed"
-            exit 1
-          fi
+          - name: Setup Railway CLI
+          run: |
+            echo "Installing Railway CLI..."
+            npm install -g @railway/cli
+            
+            # 創建臨時配置文件
+            mkdir -p $HOME/.railway
+            echo "${{ secrets.RAILWAY_TOKEN }}" > $HOME/.railway/token
+            chmod 600 $HOME/.railway/token
+            
+            # 測試配置
+            if ! railway whoami; then
+              echo "Railway authentication failed"
+              rm -f $HOME/.railway/token
+              exit 1
+            fi
 
       - name: Deploy Backend
         id: deploy-backend
         if: success()
         working-directory: dist/ctsb
         run: |
-          echo "Linking backend to Railway project..."
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}
-
+          echo "Deploying backend service..."
           if ! railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production; then
             echo "Failed to link backend project"
             exit 1
           fi
           
-          echo "Deploying backend service..."
           if ! railway up --service ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}; then
             echo "Backend deployment failed"
             exit 1
@@ -96,34 +96,37 @@ jobs:
         if: success()
         working-directory: dist/ctsf
         run: |
-          echo "Linking frontend to Railway project..."
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}
-
+          echo "Deploying frontend service..."
           if ! railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production; then
             echo "Failed to link frontend project"
             exit 1
           fi
           
-          echo "Deploying frontend service..."
           if ! railway up --service ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}; then
             echo "Frontend deployment failed"
             exit 1
           fi
 
-      - name: Check deployment status # 確保即使前面步驟失敗也會執行
+          - name: Check deployment status
+          if: always()
+          run: |
+            if [ "${{ steps.deploy-backend.outcome }}" == "failure" ]; then
+              echo "Backend deployment failed"
+              railway logs --service ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}
+            fi
+            
+            if [ "${{ steps.deploy-frontend.outcome }}" == "failure" ]; then
+              echo "Frontend deployment failed"
+              railway logs --service ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}
+            fi
+            
+            if [ "${{ steps.deploy-backend.outcome }}" == "failure" ] || [ "${{ steps.deploy-frontend.outcome }}" == "failure" ]; then
+              exit 1
+            fi
+
+      - name: Cleanup Railway configuration
         if: always()
-        run: |
-          if [ "${{ steps.deploy-backend.outcome }}" == "failure" ]; then
-            echo "Backend deployment failed"
-            railway logs --service ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}
-          fi
-          if [ "${{ steps.deploy-frontend.outcome }}" == "failure" ]; then
-            echo "Frontend deployment failed"
-            railway logs --service ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}
-          fi
-          if [ "${{ steps.deploy-backend.outcome }}" == "failure" ] || [ "${{ steps.deploy-frontend.outcome }}" == "failure" ]; then
-            exit 1
-          fi
+        run: rm -f $HOME/.railway/token
 
       - name: Wait for deployments
         if: success()
