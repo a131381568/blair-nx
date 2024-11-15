@@ -11,8 +11,13 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: production
+
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -26,15 +31,15 @@ jobs:
           pnpm install --no-frozen-lockfile
           pnpm install -g @railway/cli
 
-      - name: Set up environment variables
-        run: echo "${{ secrets.ENV_PRODUCTION }}" > .env
-
       - name: Build Frontend
-        run: pnpm exec nx build cts-front-end
+        run: |
+          rm -rf dist/ctsf
+          mkdir -p dist/ctsf
+          
+          echo "${{ secrets.ENV_PRODUCTION }}" > .env
 
-      - name: cp dist content
-        run: |     
-          cp apps/cts-front-end/deployment/* dist/ctsf/
+          pnpm exec nx build cts-front-end
+          cp apps/cts-front-end/deployment/* dist/ctsf/    
           cp .env dist/ctsf/
 
       - name: Deploy Frontend
