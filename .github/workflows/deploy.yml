@@ -47,55 +47,94 @@ jobs:
           cp .env dist/ctsb/          
           cp apps/cts-front-end/deployment/* dist/ctsf/
 
-      - name: Install and configure Railway CLI
-        run: |
-          pnpm install -g @railway/cli
-          # 驗證 Railway Token
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway whoami
+      # Railway CLI 設定
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
 
+      - name: Verify Railway Authentication
+        run: |
+          echo "Verifying Railway CLI installation..."
+          railway version
+          echo "Authenticating with Railway..."
+          echo "$RAILWAY_TOKEN" | railway login
+          railway whoami
+
+      # 後端部署
       - name: Deploy Backend
         id: deploy-backend
-        continue-on-error: true
+        working-directory: dist/ctsb
         run: |
-          cd dist/ctsb
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up \
-            --service ${{ secrets.RAILWAY_SERVICE_CTSB_ID }} \
-            --detach
-  
+          echo "Deploying backend service..."
+          railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production
+          railway up --service ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+     # 前端部署
       - name: Deploy Frontend
         id: deploy-frontend
-        continue-on-error: true
+        working-directory: dist/ctsf
         run: |
-          cd dist/ctsf
-          RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }} railway up \
-            --service ${{ secrets.RAILWAY_SERVICE_CTSF_ID }} \
-            --detach
+          echo "Deploying frontend service..."
+          railway link ${{ secrets.RAILWAY_PROJECT_ID }} --environment production
+          railway up --service ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
-      # 檢查部署結果
+      # 部署狀態檢查
       - name: Check deployment status
         if: steps.deploy-backend.outcome == 'failure' || steps.deploy-frontend.outcome == 'failure'
         run: |
           if [ "${{ steps.deploy-backend.outcome }}" == "failure" ]; then
             echo "Backend deployment failed"
+            railway logs --service ${{ secrets.RAILWAY_SERVICE_CTSB_ID }}
           fi
           if [ "${{ steps.deploy-frontend.outcome }}" == "failure" ]; then
             echo "Frontend deployment failed"
+            railway logs --service ${{ secrets.RAILWAY_SERVICE_CTSF_ID }}
           fi
           exit 1
 
-      # 等待部署完成
+      # 等待部署生效
       - name: Wait for deployments
         run: |
-          echo "Waiting for deployments to complete..."
-          sleep 30  # 給 Railway 一些時間來處理部署
+          echo "Waiting for deployments to stabilize..."
+          sleep 45  # 增加等待時間以確保服務完全啟動
 
-      # 驗證服務健康狀況
+      # 健康狀態檢查
       - name: Verify deployments
         run: |
           echo "Verifying backend deployment..."
-          curl --fail -s https://star-api.puraliena.com/api/health || exit 1
+          RETRY_COUNT=0
+          MAX_RETRIES=3
+          
+          until $(curl --output /dev/null --silent --fail https://star-api.puraliena.com/api/health); do
+            if [ ${RETRY_COUNT} -eq ${MAX_RETRIES} ]; then
+              echo "Backend health check failed after ${MAX_RETRIES} attempts"
+              exit 1
+            fi
+            RETRY_COUNT=$((RETRY_COUNT+1))
+            echo "Retrying backend health check (${RETRY_COUNT}/${MAX_RETRIES})..."
+            sleep 10
+          done
           echo "Backend is healthy"
           
           echo "Verifying frontend deployment..."
-          curl --fail -s https://star.puraliena.com || exit 1
+          RETRY_COUNT=0
+          until $(curl --output /dev/null --silent --fail https://star.puraliena.com); do
+            if [ ${RETRY_COUNT} -eq ${MAX_RETRIES} ]; then
+              echo "Frontend health check failed after ${MAX_RETRIES} attempts"
+              exit 1
+            fi
+            RETRY_COUNT=$((RETRY_COUNT+1))
+            echo "Retrying frontend health check (${RETRY_COUNT}/${MAX_RETRIES})..."
+            sleep 10
+          done
           echo "Frontend is healthy"
+          
+      # 最終狀態確認
+      - name: Final deployment verification
+        run: |
+          echo "Checking final deployment status..."
+          railway status
+          echo "Deployment complete!"
