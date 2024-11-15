@@ -1,13 +1,9 @@
-[project]
-name = "ctsf_railway"
-
 [build]
 builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "nginx -g 'daemon off;'"
-
-[mount]
-source = "."
-destination = "/app"
+startCommand = "sh -c 'nginx -g \"daemon off;\"'"
+restartPolicyType = "ON_FAILURE"
+healthcheckPath = "/"
+healthcheckTimeout = 10
