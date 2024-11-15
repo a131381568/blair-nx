@@ -1,14 +1,17 @@
 from node:20.17.0-alpine
 
+run ls
+
 workdir /workspace
 
-copy package.json pnpm-lock.yaml prisma init.sql ./
+# copy package.json pnpm-lock.yaml prisma init.sql ./
+copy ./ctsb/* ./
 
 run npm install -g pnpm@8.15.3
 run pnpm add tslib
 run pnpm install
 
-copy . .
+# copy . .
 
 run apk add --no-cache netcat-openbsd
 run apk add --no-cache postgresql-client

@@ -41,7 +41,7 @@
 			"executor": "@nx/vite:build",
 			"defaultConfiguration": "production",
 			"options": {
-				"outputPath": "dist/cts/frontend",
+				"outputPath": "dist/ctsf/frontend",
 				"reportCompressedSize": false,
 				"commonjsOptions": {
 					"transformMixedEsModules": true,
