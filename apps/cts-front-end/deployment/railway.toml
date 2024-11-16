@@ -12,7 +12,14 @@ healthcheckTimeout = 10
 deploymentType = "image"
 startCommand = "nginx -g 'daemon off;'"
 
+[nixpacks]
+setup = ["nginx"]
+start = "nginx -g 'daemon off;'"
+
+[phases.setup]
+nixPkgs = ["nginx"]
+
 [[services]]
-name = "web"
-internal_port = "80"
+internal_port = 80
+protocol = "http"
 auto_deploy = true

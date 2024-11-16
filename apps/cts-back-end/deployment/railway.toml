@@ -1,21 +1,29 @@
-[project]
-name = "ctsb_railway"
-
 [build]
 builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
+restartPolicyType = "ON_FAILURE"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 10
 startCommand = "node main.js"
 
 [mount]
 source = "."
 destination = "/app"
 
-[[services]]
-name = "api"
-internal_port = "3000"
-auto_deploy = true
-
 [nixpacks]
+setup = ["nodejs-18_x"]
+install = ["pnpm i"]
 start = "node main.js"
+
+[phases.setup]
+nixPkgs = ["nodejs", "openssl"]
+
+[phases.build]
+command = "pnpm i && pnpm run build"
+
+[[services]]
+internal_port = 3000
+protocol = "http"
+auto_deploy = true

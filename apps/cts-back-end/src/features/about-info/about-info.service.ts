@@ -11,19 +11,12 @@ export class AboutInfoService {
 	) {}
 
 	async getAboutInfo(): Promise<GetAboutInfoBaseDto> {
-		// const res = await this.prisma.aboutInfo.findFirst({
-		// 	where: { aboutId: 1 },
-		// });
-		// if (!res)
-		// 	return defaultAboutInfoData;
-		// return omit(res, ['aboutId']);
-		return {
-			visual: '/img/kenny-logo.png',
-			slogan: 'Quisque ac magna urna. Sed feugiat iaculis tincidunt',
-			philosophy: 'Maecenas at convallis sapien',
-			quote: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-			epilogue: 'Aliquam non dictum felis',
-		};
+		const res = await this.prisma.aboutInfo.findFirst({
+			where: { aboutId: 1 },
+		});
+		if (!res)
+			return defaultAboutInfoData;
+		return omit(res, ['aboutId']);
 	}
 
 	async updateAboutInfo({ data }: { data: UpdateAboutInfoDto }): Promise<ApiResponse<null>> {
