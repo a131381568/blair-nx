@@ -46,7 +46,7 @@ const homeData = computed(() => {
 				<router-link
 					class="home-read-more btn draw meet mt-8 inline-block animate-flipInX animation-delay-2000 large-pc:mt-12"
 					to="/science"
-					data-name="ctsm__btn"
+					data-name="ctsm__readmore__btn"
 				>
 					<span>查看更多</span>
 				</router-link>
