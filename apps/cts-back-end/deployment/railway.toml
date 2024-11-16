@@ -5,26 +5,18 @@ dockerfilePath = "Dockerfile"
 [deploy]
 restartPolicyType = "ON_FAILURE"
 healthcheckPath = "/api/health"
-healthcheckTimeout = 30  # 增加超時時間
-healthcheckInterval = 15  # 添加檢查間隔
+healthcheckTimeout = 30
 startCommand = "node main.js"
 
 [mount]
 source = "."
 destination = "/app"
 
-[nixpacks]
-setup = ["nodejs-18_x"]
-install = ["pnpm i"]
-start = "node main.js"
-
 [[services]]
 internal_port = 3000
 protocol = "http"
 auto_deploy = true
-healthcheck = {
-  interval = "15s",
-  timeout = "10s",
-  retries = 3,
-  startup_period = "30s"  # 給應用足夠的啟動時間
-}
+
+[env]
+PORT = "3000"
+NODE_ENV = "production"

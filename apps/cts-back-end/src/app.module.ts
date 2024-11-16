@@ -14,6 +14,7 @@ import { StargazingModule } from './features/stargazing/stargazing.module';
 import { UsersModule } from './features/users/users.module';
 import { AuthModule } from './features/auth/auth.module';
 import { FileModule } from './features/file/file.module';
+import { HealthController } from './features/health/health.controller';
 
 @Module({
 	imports: [
@@ -46,5 +47,7 @@ import { FileModule } from './features/file/file.module';
 			inject: [HttpAdapterHost],
 		},
 	],
+	controllers: [HealthController],
+
 })
 export class AppModule {}
