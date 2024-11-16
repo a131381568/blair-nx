@@ -1,25 +1,7 @@
-[project]
-name = "ctsf_railway"
-
 [build]
 builder = "DOCKERFILE"
-dockerfilePath = "Dockerfile"
-
-[deploy]
-restartPolicyType = "ON_FAILURE"
-healthcheckPath = "/"
-healthcheckTimeout = 10
-deploymentType = "image"
-startCommand = "nginx -g 'daemon off;'"
-
-[nixpacks]
-setup = [ "nginx" ]
-start = "nginx -g 'daemon off;'"
-
-[phases.setup]
-nixPkgs = [ "nginx" ]
+dockerfilePath = "apps/cts-front-end/deployment/Dockerfile"
 
 [[services]]
 internal_port = 80
 protocol = "http"
-auto_deploy = true
