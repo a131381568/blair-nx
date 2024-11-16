@@ -4,17 +4,7 @@ dockerfilePath = "Dockerfile"
 
 [deploy]
 restartPolicyType = "ON_FAILURE"
-healthcheckPath = "/api/health"
-healthcheckTimeout = 30
 startCommand = "node main.js"
-
-[deploy.healthcheck]
-successStatus = 200
-successBody = '{"success":true,"data":{"status":"ok"}}'
-failureStatuses = [500, 503]
-interval = "10s"
-timeout = "5s"
-retries = 3
 
 [[services]]
 internal_port = 3000
