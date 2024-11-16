@@ -1,6 +1,7 @@
 [build]
 builder = "DOCKERFILE"
 dockerfilePath = "apps/cts-front-end/deployment/Dockerfile"
+# context = "../.." # 指向專案根目錄
 
 [[services]]
 internal_port = 80
