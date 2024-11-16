@@ -33,8 +33,8 @@ export default [
 			'**/.env.*',
 			'**/.env',
 			'**/.dockerignore',
-			'**/deployment',
-			'.github/*'
+			'**/.github/*',
+			'**/deployment/*'
 		],
 	},
 	{

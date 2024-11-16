@@ -13,11 +13,11 @@ deploymentType = "image"
 startCommand = "nginx -g 'daemon off;'"
 
 [nixpacks]
-setup = ["nginx"]
+setup = [ "nginx" ]
 start = "nginx -g 'daemon off;'"
 
 [phases.setup]
-nixPkgs = ["nginx"]
+nixPkgs = [ "nginx" ]
 
 [[services]]
 internal_port = 80

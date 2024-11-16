@@ -34,6 +34,7 @@ export default antfu(
 			'**/.env',
 			'**/public',
 			'**/assets/img',
+			'**/deployment/*',
 		],
 	},
 	{
