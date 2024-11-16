@@ -9,7 +9,7 @@
   },
   "tasks": [
     {
-        "label": "Create terminals",
+        "label": "setup-cts-dev",
         "dependsOn": [
           "ctsf-local",
           "ctsb-local"
@@ -19,10 +19,10 @@
           "kind": "build",
           "isDefault": true
         },
-        // Try start the task on folder open
-        "runOptions": {
-          "runOn": "folderOpen"
-        }
+        // 開啟專案資料夾時執行
+        // "runOptions": {
+        //   "runOn": "folderOpen"
+        // }
       },
       {
           "label": "ctsf-local",

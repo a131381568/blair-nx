@@ -4,6 +4,13 @@
 	"sourceRoot": "apps/cts-back-end/src",
 	"projectType": "application",
 	"targets": {
+		"start": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "./",
+				"command": "node main.js"
+			}
+		},
 		"serve": {
 			"executor": "@nx/js:node",
 			"defaultConfiguration": "local",
@@ -42,7 +49,7 @@
 			"executor": "nx:run-commands",
 			"options": {
 				"cwd": "{workspaceRoot}",
-				"command": "node tools/copy-env.ts {projectName}"
+				"command": "node tools/copy-env.js {projectName}"
 			}
 		},
 		"prisma:m": {
@@ -88,5 +95,6 @@
 			}
 		}
 	},
-	"tags": ["type:back_app", "publish:false", "class:cts"]
+	"tags": ["type:back_app", "publish:false", "class:cts", "class:cts-build"],
+	"implicitDependencies": ["cts-shared"]
 }

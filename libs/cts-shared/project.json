@@ -4,6 +4,16 @@
 	"sourceRoot": "libs/cts-shared",
 	"projectType": "library",
 	"targets": {
+		"build": {
+			"executor": "@nx/js:tsc",
+			"outputs": ["{options.outputPath}"],
+			"options": {
+				"outputPath": "dist/out-tsc/libs/cts-shared",
+				"main": "libs/cts-shared/index.ts",
+				"tsConfig": "libs/cts-shared/tsconfig.json",
+				"assets": []
+			}
+		},
 		"lint": {
 			"executor": "nx:run-commands",
 			"options": {

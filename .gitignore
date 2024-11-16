@@ -54,11 +54,11 @@ Thumbs.db
 **/cypress/downloads
 
 # env
+.env.local
 .env
-.env.*
+.env.testing
+.env.staging
+.env.production
 
 # storybook
 storybook-static
-
-# prisma
-**/prisma/migrations

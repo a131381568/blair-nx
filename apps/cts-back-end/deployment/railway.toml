@@ -1,0 +1,8 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "apps/cts-back-end/deployment/Dockerfile"
+contexxt = "../.." # 指向專案根目錄
+
+[[services]]
+internal_port = 3000
+protocol = "http"

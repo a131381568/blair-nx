@@ -3,7 +3,6 @@
 - 專案名稱：cts-front-end
 - 此專案為 [catching-the-star-master](https://github.com/a131381568/catching-the-star-master) 的前端重構專案
 
-
 ## A. 簡述
 
 **Catch the stars** (cts) 是基於 Vue3 製作的天文網站
@@ -140,6 +139,14 @@ ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
     ```shell
     pnpm exec nx lint cts-front-end
     ```
+
+## D. 部署
+
+使用第三方的: https://railway.app
+
+- libs/cts-shared/.env.example: 有幾乎全部的環境變數
+- 前端藉由客製化容器 Nginx 的 Dockerfile 來裝打包出來的 Vue
+- 有特別為 ctsf 寫自動化打包的流程: .github/workflows/deploy-frontend.yml (後續還要改進)
 
 ## E. 聲明
 - 僅作為學術研究用途，無商業行為。

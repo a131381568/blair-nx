@@ -14,5 +14,6 @@
 		"outDir": "../../dist/out-tsc",
 		"forceConsistentCasingInFileNames": true
 	},
-	"include": ["**/*.ts"]
+	"include": ["**/*.ts"],
+	"exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }

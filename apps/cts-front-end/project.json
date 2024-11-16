@@ -41,14 +41,14 @@
 			"executor": "@nx/vite:build",
 			"defaultConfiguration": "production",
 			"options": {
-				"outputPath": "dist/{projectName}",
+				"outputPath": "dist/ctsf/frontend",
 				"reportCompressedSize": false,
 				"commonjsOptions": {
 					"transformMixedEsModules": true,
 					"requireReturnsDefault": true
 				},
 				"emptyOutDir": true,
-				"assetsDir": "{projectName}/assets",
+				"assetsDir": "./assets",
 				"generatePackageJson": false,
 				"terserOptions": {
 					"drop_console": true
@@ -67,8 +67,7 @@
 				"production": {
 					"envFiles": [".env", ".env.production"]
 				}
-			},
-			"dependsOn": ["lint"]
+			}
 		},
 		"lint": {
 			"executor": "nx:run-commands",
@@ -85,5 +84,5 @@
 			}
 		}
 	},
-	"tags": ["type:front_app", "publish:false", "class:cts"]
+	"tags": ["type:front_app", "publish:false", "class:cts", "class:cts-build"]
 }

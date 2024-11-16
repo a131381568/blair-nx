@@ -29,7 +29,10 @@ const homeData = computed(() => {
 		<div class="flex h-full items-stretch">
 			<div class="h-16 w-1/12 flex-none" />
 			<div class="size-auto grow self-center text-white">
-				<h1 class="animate-fadeInLeft font-serif tracking-normal mobile:capitalize middle-pc:text-8xl large-pc:text-9xl">
+				<h1
+					class="animate-fadeInLeft font-serif tracking-normal mobile:capitalize middle-pc:text-8xl large-pc:text-9xl"
+					data-name="home__title"
+				>
 					<span class="font-normal tracking-normal text-sp-color-light middle-pc:text-8xl large-pc:text-9xl">{{
 						homeData.pageTitle[0]
 					}}</span>
@@ -37,11 +40,13 @@ const homeData = computed(() => {
 				</h1>
 				<h4
 					class="mt-6 animate-fadeIn text-main-color-light animation-delay-1000 mobile:text-lg h-table:w-380px h-table:text-lg middle-pc:w-auto large-pc:mt-10 large-pc:text-2xl"
+					data-name="home__subTitle"
 					v-html="homeData.subPageTitle"
 				/>
 				<router-link
 					class="home-read-more btn draw meet mt-8 inline-block animate-flipInX animation-delay-2000 large-pc:mt-12"
 					to="/science"
+					data-name="ctsm__readmore__btn"
 				>
 					<span>查看更多</span>
 				</router-link>

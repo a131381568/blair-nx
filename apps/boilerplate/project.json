@@ -84,7 +84,7 @@
 			"executor": "nx:run-commands",
 			"options": {
 				"cwd": "{workspaceRoot}",
-				"command": "node tools/copy-env.ts {projectName}"
+				"command": "node tools/copy-env.js {projectName}"
 			}
 		}
 	},

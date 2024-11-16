@@ -10,7 +10,7 @@
 			"options": {
 				"outputPath": "dist/libs/{projectName}",
 				"main": "libs/{projectName}/src/index.ts",
-				"tsConfig": "libs/{projectName}/tsconfig.lib.json",
+				"tsConfig": "libs/{projectName}/tsconfig.json",
 				"assets": [],
 				"generatePackageJson": true,
 				"format": ["cjs"]

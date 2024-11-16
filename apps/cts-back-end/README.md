@@ -2,6 +2,7 @@
 
 - 專案名稱：cts-back-end
 - 本機端網址：http://localhost:3000
+- 線上網址：https://star-api.puraliena.com/api
 
 此為 [catching-the-star-master](https://github.com/a131381568/ctsm-sql) 的後端重構專案
 
@@ -10,7 +11,7 @@
 
 ## B. 使用技術
 
-- 資料庫: PostgreSQL
+- 資料庫: PostgreSQL(16.4)
 - 資料庫溝通: Prisma
 - 後端框架: NestJs 
 - 身份驗證: Passport, JWT
@@ -103,3 +104,24 @@ pnpm exec nx lint cts-back-end
 pnpm exec nx prisma:m cts-back-end
 pnpm exec nx prisma:g cts-back-end
 ```
+
+## D. 打包
+
+1. 將前後端檔案打包至`dist/cts` (可能暫時不會使用)
+```shell
+ pnpm exec nx deploy cts-back-end
+```
+
+2. 將 `dist/cts` 內的檔案搬移到要部署的地方後, 在根目錄建立容器
+```shell
+docker-compose up -d
+```
+
+## E. 部署
+
+使用第三方的 railway: https://railway.app/
+
+- libs/cts-shared/.env.example: 有幾乎全部的環境變數
+- 有特別為 ctsb 寫自動化打包的流程: .github/workflows/deploy-backend.yml (後續還要改進)
+- Postgres 由 railway 託管，只要輸入環境變數，就能使用；會公開對外的資料庫連線方式，所以就能夠拿來倒資料、備份資料了
+- 很多時候使用`railwayapp/cli`來開發溝通比較有效率
