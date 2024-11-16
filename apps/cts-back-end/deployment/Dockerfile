@@ -4,17 +4,13 @@ workdir /workspace
 
 copy . .
 
+run npm install -g pnpm@8.15.3
+run pnpm add tslib
+run pnpm install
+
 run apk add --no-cache netcat-openbsd
 run apk add --no-cache postgresql-client
 
-run npm install -g pnpm@8.15.3 \
-    pnpm add tslib \
-    pnpm install --frozen-lockfile \
-    pnpm dlx prisma generate
-
-ENV NODE_ENV=production \
-    PORT=3000
-
-EXPOSE 3000
+run  pnpm dlx prisma generate
 
 CMD ["node", "main.js"]
