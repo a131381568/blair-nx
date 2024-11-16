@@ -2,14 +2,9 @@
 builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
-[deploy]
-restartPolicyType = "ON_FAILURE"
-startCommand = "node main.js"
-
 [[services]]
 internal_port = 3000
 protocol = "http"
-auto_deploy = true
 
 [mount]
 source = "."
