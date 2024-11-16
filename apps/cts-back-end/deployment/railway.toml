@@ -8,14 +8,22 @@ healthcheckPath = "/api/health"
 healthcheckTimeout = 30
 startCommand = "node main.js"
 
-[mount]
-source = "."
-destination = "/app"
+[deploy.healthcheck]
+successStatus = 200
+successBody = '{"success":true,"data":{"status":"ok"}}'
+failureStatuses = [500, 503]
+interval = "10s"
+timeout = "5s"
+retries = 3
 
 [[services]]
 internal_port = 3000
 protocol = "http"
 auto_deploy = true
+
+[mount]
+source = "."
+destination = "/app"
 
 [env]
 PORT = "3000"
