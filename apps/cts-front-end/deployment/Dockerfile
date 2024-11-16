@@ -3,12 +3,16 @@ FROM node:20.17.0-alpine AS builder
 ARG VITE_APP_API
 ARG VITE_APP_HOST
 
-RUN echo $VITE_APP_HOST > .env
-RUN echo $VITE_APP_HOST > .env
+RUN echo "$VITE_APP_API" > .env
+RUN echo "$VITE_APP_HOST" > .env
 
-RUN echo 'show list' && \
-    cd ../../ && \
-    ls
+RUN echo 'show apart 1' && \
+    cd .. && \
+    ls -l
+
+RUN echo 'show apart 2' && \
+    cd ../ && \
+    ls -l
 
 # 先複製依賴檔案
 COPY ../../package.json .
