@@ -157,7 +157,7 @@
 
 ## E. 部署
 
-- [railway 相關](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md#railway)
+- [railway 相關](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md#railway-%E7%9B%B8%E9%97%9C)
 
 
 ## F. 聲明
