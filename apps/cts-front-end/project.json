@@ -84,5 +84,6 @@
 			}
 		}
 	},
-	"tags": ["type:front_app", "publish:false", "class:cts", "class:cts-build"]
+	"tags": ["type:front_app", "publish:false", "class:cts", "class:cts-build"],
+	"implicitDependencies": ["cts-shared"]
 }

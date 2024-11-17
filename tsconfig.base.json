@@ -24,7 +24,7 @@
     "esModuleInterop": true,
     "strict": true
   },
-  "references": [           // 添加這個區塊
+  "references": [
     {
       "path": "libs/cts-shared"
     }
