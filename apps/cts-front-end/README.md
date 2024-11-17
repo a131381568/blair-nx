@@ -93,6 +93,8 @@ ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
 [blair-nx project board: 重構 ctsm 專案](https://github.com/a131381568/blair-nx/projects?query=is%3Aopen)
 
 #### B-2-2 重構差異
+- node 20.17
+- vue 3.4.38
 - 整個專案架構，將前端跟後端都放進 Nx (Monorepo) 內管理
 - 換掉原本套裝的 Apollo GraphQL 方案，改用 RESTful 的 NestJS
 - 前後端藉由 cts-shared 專案來共用 type/schema 還有設定檔，藉此達到共用 ts-rest 的 API 合約
@@ -109,6 +111,9 @@ ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
 ![所有路由](https://i.imgur.com/QabR3Uf.png)
 
 ### C-2 頁面依賴關係
+
+> 天文科普頁面依賴
+
 ![天文科普依賴](https://i.imgur.com/W9WR9hc.png)
 
 ### C-3 專案間的依賴關係
@@ -140,14 +145,18 @@ ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
     pnpm exec nx lint cts-front-end
     ```
 
-## D. 部署
+## D. 打包
 
-使用第三方的: https://railway.app
+```shell
+ pnpm exec nx build cts-front-end
+ # 會將檔案打包至 dist/cts
+```
 
-- libs/cts-shared/.env.example: 有幾乎全部的環境變數
-- 前端藉由客製化容器 Nginx 的 Dockerfile 來裝打包出來的 Vue
-- 有特別為 ctsf 寫自動化打包的流程: .github/workflows/deploy-frontend.yml (後續還要改進)
+## E. 部署
 
-## E. 聲明
+- [railway 相關](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md#railway相關)
+
+
+## F. 聲明
 - 僅作為學術研究用途，無商業行為。
 - 素材與資料來源：台北市立天文科學教育館、南瀛天文教育園區、國立自然科學博物館、交通部中央氣象局、Freepik、Wikipedia、ELLE。

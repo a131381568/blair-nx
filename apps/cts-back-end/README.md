@@ -10,8 +10,8 @@
 此專案為 [cts-front-end](#) 的後端系統，不同於原本舊後端的 GraphQL，是使用 RESTful 的 [NestJS](https://docs.nestjs.com/) 開發
 
 ## B. 使用技術
-
-- 資料庫: PostgreSQL(16.4)
+- node 20.17
+- 資料庫: PostgreSQL 16.4
 - 資料庫溝通: Prisma
 - 後端框架: NestJs 
 - 身份驗證: Passport, JWT
@@ -74,17 +74,22 @@ sequenceDiagram
 ![bruno_about](https://i.imgur.com/RTA3ikG.png)
 
 ### C-4 專案間的依賴關係
-- [專案依賴](#)
-- [查看前端專案](#)
-- [查看共享專案](#)
+- [專案依賴](https://github.com/a131381568/blair-nx/tree/development/apps/cts-front-end#c-3-%E5%B0%88%E6%A1%88%E9%96%93%E7%9A%84%E4%BE%9D%E8%B3%B4%E9%97%9C%E4%BF%82)
+- [查看前端專案](https://github.com/a131381568/blair-nx/tree/development/apps/cts-front-end)
+- [查看共享專案](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md)
 
 
 ## D. 本地開發
 
-1. 啟動資料庫與 pgAdmin
+1. 啟動本地 PostgreSQL 與 pgAdmin
+
+``` shell
+brew install docker
+brew install docker-compose
+```
+
 ```shell
 pnpm exec nx docker:d cts-back-end
-
 ```
 
 2. 起本地 NestJS Server
@@ -92,7 +97,7 @@ pnpm exec nx docker:d cts-back-end
 pnpm exec nx serve cts-back-end
 ```
 - 每次起後端 Server 時，都會觸發`copy-env`指令
-- 需要讓`.env`放置在`apps/cts-back-end/bruno`下才會生效
+- `.env`在`apps/cts-back-end/bruno`下才會生效
 
 3. 檢查程式碼
 ```shell
@@ -107,21 +112,11 @@ pnpm exec nx prisma:g cts-back-end
 
 ## D. 打包
 
-1. 將前後端檔案打包至`dist/cts` (可能暫時不會使用)
 ```shell
- pnpm exec nx deploy cts-back-end
-```
-
-2. 將 `dist/cts` 內的檔案搬移到要部署的地方後, 在根目錄建立容器
-```shell
-docker-compose up -d
+ pnpm exec nx build cts-back-end
+ # 會將檔案打包至 dist/cts
 ```
 
 ## E. 部署
 
-使用第三方的 railway: https://railway.app/
-
-- libs/cts-shared/.env.example: 有幾乎全部的環境變數
-- 有特別為 ctsb 寫自動化打包的流程: .github/workflows/deploy-backend.yml (後續還要改進)
-- Postgres 由 railway 託管，只要輸入環境變數，就能使用；會公開對外的資料庫連線方式，所以就能夠拿來倒資料、備份資料了
-- 很多時候使用`railwayapp/cli`來開發溝通比較有效率
+- [railway 相關](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md#railway相關)
