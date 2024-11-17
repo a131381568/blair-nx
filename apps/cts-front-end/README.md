@@ -1,9 +1,12 @@
 # Cts Front End
 
 - 專案名稱：cts-front-end
-- 此專案為 [catching-the-star-master](https://github.com/a131381568/catching-the-star-master) 的前端重構專案
+- 本機端網址：http://localhost:4200
+- 線上網址：https://star.puraliena.com
 
 ## A. 簡述
+
+- 此專案為 [catching-the-star-master](https://github.com/a131381568/catching-the-star-master) 的前端重構專案
 
 **Catch the stars** (cts) 是基於 Vue3 製作的天文網站
 
@@ -14,12 +17,12 @@
 
 ### A-1 前台形象
 
-ctsf: [https://star.puraliena.com](https://star.puraliena.com)
+[https://star.puraliena.com](https://star.puraliena.com)
 ![home](https://i.imgur.com/p7QVKDf.png)
 
 ### A-2 後台管理
 
-ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
+[https://star.puraliena.com/login](https://star.puraliena.com/login)
 ![login](https://i.imgur.com/CuRF9jw.png)
 
 
@@ -118,8 +121,8 @@ ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
 
 ### C-3 專案間的依賴關係
 ![專案間的依賴關係](https://i.imgur.com/rt5D6w4.png)
-- [查看後端專案](#)
-- [查看共享專案](#)
+- [查看後端專案](https://github.com/a131381568/blair-nx/tree/development/apps/cts-back-end)
+- [查看共享專案](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md)
 
 
 ## D. 本機開發
@@ -154,7 +157,7 @@ ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
 
 ## E. 部署
 
-- [railway 相關](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md#railway相關)
+- [railway 相關](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md#railway)
 
 
 ## F. 聲明

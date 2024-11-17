@@ -4,10 +4,10 @@
 - 本機端網址：http://localhost:3000
 - 線上網址：https://star-api.puraliena.com/api
 
-此為 [catching-the-star-master](https://github.com/a131381568/ctsm-sql) 的後端重構專案
-
 ## A. 簡述
-此專案為 [cts-front-end](#) 的後端系統，不同於原本舊後端的 GraphQL，是使用 RESTful 的 [NestJS](https://docs.nestjs.com/) 開發
+
+- 此為 [catching-the-star-master](https://github.com/a131381568/ctsm-sql) 的後端重構專案，而且現在是 [cts-front-end](https://github.com/a131381568/blair-nx/tree/development/apps/cts-front-end) 的後端
+- 同於原本舊後端的 GraphQL，是使用 RESTful 的 [NestJS](https://docs.nestjs.com/) 開發
 
 ## B. 使用技術
 - node 20.17
@@ -83,9 +83,9 @@ sequenceDiagram
 
 1. 啟動本地 PostgreSQL 與 pgAdmin
 
-``` shell
-brew install docker
-brew install docker-compose
+``` shell 
+brew install colima docker docker-compose
+colima start
 ```
 
 ```shell
@@ -119,4 +119,4 @@ pnpm exec nx prisma:g cts-back-end
 
 ## E. 部署
 
-- [railway 相關](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md#railway相關)
+- [railway 相關](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md#railway)
