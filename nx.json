@@ -54,8 +54,10 @@
     {
       "plugin": "@nx/playwright/plugin",
       "options": {
-        "ciTargetName": "pw-ci",
-        "targetName": "pw"
+        "targetName": "pw",
+        "openTargetName": "pw:op",
+        "componentTestingTargetName": "component-test",
+        "ciTargetName": "pw-ci"
       }
     },
     {

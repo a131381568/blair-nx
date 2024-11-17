@@ -1,0 +1,55 @@
+{
+  "name": "cts-front-end-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/{projectName}/src",
+  "implicitDependencies": ["cts-front-end"],
+  "projectType": "application",
+  "targets": {
+    "pw": {
+      "executor": "@nx/playwright:playwright",
+      "outputs": ["{workspaceRoot}/dist/.playwright/apps/{projectName}"],
+      "options": {
+        "config": "apps/{projectName}/playwright.config.ts"
+      }
+    },
+    "pw:op": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm dlx playwright test --ui",
+        "cwd": "apps/{projectName}"
+      }
+    },
+    "pw:report": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "pnpm dlx playwright show-report apps/{projectName}/playwright-report"
+        ],
+        "cwd": ".",
+        "parallel": false
+      }
+    },
+    "pw-ci": {
+      "executor": "@nx/playwright:playwright",
+      "options": {
+        "config": "apps/{projectName}/playwright.config.ts",
+        "CI": true
+      }
+    },
+    "component-test": {
+      "executor": "@nx/playwright:playwright",
+      "options": {
+        "config": "apps/{projectName}/playwright.config.ts",
+        "testType": "component"
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "apps/{projectName}",
+        "command": "eslint ."
+      }
+    }
+  },
+  "tags": ["type:e2e"]
+}
