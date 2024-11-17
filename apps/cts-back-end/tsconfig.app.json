@@ -20,9 +20,15 @@
 		"outDir": "../../dist/out-tsc",
 		"sourceMap": false
 	},
+	"references": [
+		{
+			"path": "../../libs/cts-shared"
+		}
+	],
 	"include": [
 		"src/**/*.ts",
-		"src/typings.d.ts"
+		"src/typings.d.ts",
+		"../../libs/cts-shared/**/*.ts"
 	],
 	"exclude": [
 		"jest.config.ts",
