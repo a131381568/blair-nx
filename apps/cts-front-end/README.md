@@ -22,9 +22,11 @@
 
 ### A-2 後台管理
 
-[https://star.puraliena.com/login](https://star.puraliena.com/login)
-![login](https://i.imgur.com/CuRF9jw.png)
+- 帳號：kevin@test.com
+- 密碼：123456
+- 登入：[https://star.puraliena.com/login](https://star.puraliena.com/login)
 
+![login](https://i.imgur.com/CuRF9jw.png)
 
 ## B. 專案規劃
 
