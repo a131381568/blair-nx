@@ -17,7 +17,7 @@ export class ScienceController {
 	constructor(private readonly scienceService: ScienceService) {}
 
 	@TsRestHandler(c[GET_QUERY])
-	async getScienceList(@Query() data: ScienceQueryPartialDto) {
+	getScienceList(@Query() data: ScienceQueryPartialDto) {
 		return tsRestHandler(c[GET_QUERY], async (_reqInfo): Promise<ResponseShapes[typeof GET_QUERY]> => {
 			const listData = await this.scienceService[GET_QUERY]({ data });
 			return { status: 200, body: listData };
@@ -25,7 +25,7 @@ export class ScienceController {
 	}
 
 	@TsRestHandler(c[GET_SINGLE])
-	async getScienceDetail(@Param('id') id: NanoIdDto) {
+	getScienceDetail(@Param('id') id: NanoIdDto) {
 		return tsRestHandler(c[GET_SINGLE], async (_reqInfo): Promise<ResponseShapes[typeof GET_SINGLE]> => {
 			const resData = await this.scienceService[GET_SINGLE]({ id });
 			if (!resData)
@@ -36,7 +36,7 @@ export class ScienceController {
 
 	@UseGuards(AuthGuard('jwt'))
 	@TsRestHandler(c[CREATE])
-	async createScienceDetail(@Body() data: CreateScienceDto) {
+	createScienceDetail(@Body() data: CreateScienceDto) {
 		return tsRestHandler(c[CREATE], async (_reqInfo): Promise<ResponseShapes[typeof CREATE]> => {
 			await this.scienceService[CREATE]({ data });
 			return { status: 200, body: 'Create success' };
@@ -45,7 +45,7 @@ export class ScienceController {
 
 	@UseGuards(AuthGuard('jwt'))
 	@TsRestHandler(c[PUT])
-	async updateScienceDetail(@Param('id') id: NanoIdDto, @Body() data: CreateScienceDto) {
+	updateScienceDetail(@Param('id') id: NanoIdDto, @Body() data: CreateScienceDto) {
 		return tsRestHandler(c[PUT], async (_reqInfo): Promise<ResponseShapes[typeof PUT]> => {
 			const success = await this.scienceService[PUT]({ id, data });
 			if (!success)
@@ -56,7 +56,7 @@ export class ScienceController {
 
 	@UseGuards(AuthGuard('jwt'))
 	@TsRestHandler(c[DELETE])
-	async deleteScienceDetail(@Param('id') id: NanoIdDto) {
+	deleteScienceDetail(@Param('id') id: NanoIdDto) {
 		return tsRestHandler(c[DELETE], async (_reqInfo): Promise<ResponseShapes[typeof DELETE]> => {
 			const success = await this.scienceService[DELETE]({ id });
 			if (!success)
