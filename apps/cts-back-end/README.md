@@ -88,6 +88,8 @@ brew install colima docker docker-compose
 colima start
 ```
 
+> 如果是初始裝態就需要倒資料
+
 ```shell
 pnpm exec nx docker:d cts-back-end
 ```
@@ -104,7 +106,12 @@ pnpm exec nx serve cts-back-end
 pnpm exec nx lint cts-back-end
 ```
 
-4. 遷移資料庫
+4. 單元測試
+```shell
+pnpm exec nx test cts-back-end
+```
+
+5. 遷移資料庫
 ```shell
 pnpm exec nx prisma:m cts-back-end
 pnpm exec nx prisma:g cts-back-end
