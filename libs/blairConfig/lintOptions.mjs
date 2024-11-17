@@ -70,6 +70,17 @@ export default [
 		rules: {
 			'antfu/top-level-function': 'off',
 			'prefer-arrow-callback': 'off',
+			'@typescript-eslint/no-unused-vars': ['error', {
+				'argsIgnorePattern': '^_',
+				'varsIgnorePattern': '^_',
+				'caughtErrorsIgnorePattern': '^_'
+			}],
+			'unused-imports/no-unused-vars': ['error', {
+				'argsIgnorePattern': '^_',
+				'varsIgnorePattern': '^_',
+				'caughtErrorsIgnorePattern': '^_'
+			}],
+			'no-mixed-spaces-and-tabs': [2, false]
 		},
 	},
 	// nx rule
@@ -92,7 +103,8 @@ export default [
 			'**/*.interceptor.ts',
 			'**/*.filter.ts',
 			'**/*.types.ts',
-			'**/*.schemas.ts'
+			'**/*.schemas.ts',
+			'**/*.spec.ts'
 		],
 		rules: {
 			'@typescript-eslint/consistent-type-imports': 'off'

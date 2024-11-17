@@ -4,7 +4,13 @@
 		"composite": true,
 		"target": "es2021",
 		"emitDecoratorMetadata": true,
+		"baseUrl": ".",
 		"module": "commonjs",
+		"paths": {
+			"@cts-shared": ["../../libs/cts-shared/index.ts"],
+			"@cts-shared/*": ["../../libs/cts-shared/*"],
+			"@/*": ["./src/*"]
+		},
 		"types": [
 			"node",
 			"@types/node"
@@ -14,12 +20,14 @@
 		"outDir": "../../dist/out-tsc",
 		"sourceMap": false
 	},
-	"references": [
-		{
-			"path": "../../libs/cts-shared"
-		}
+	"include": [
+		"src/**/*.ts",
+		"src/typings.d.ts"
 	],
-	"include": ["src/**/*.ts", "src/typings.d.ts", "../../libs/cts-shared/**/*.ts"],
-	"exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
-
+	"exclude": [
+		"jest.config.ts",
+		"src/**/*.spec.ts",
+		"src/**/*.test.ts",
+		"**/*.spec.ts"
+	]
 }
