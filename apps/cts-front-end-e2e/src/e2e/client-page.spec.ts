@@ -5,6 +5,7 @@ import { SciencePage } from '../support/pages/science.page';
 import { AboutPage } from '../support/pages/about.page';
 import { StoryPage } from '../support/pages/story.page';
 import { FacilitiesPage } from '../support/pages/facilities.page';
+import { StargazingPage } from '../support/pages/stargazing.page';
 
 // 定義 fixtures
 interface PageFixtures {
@@ -14,11 +15,13 @@ interface PageFixtures {
 	sciencePage: SciencePage;
 	storyPage: StoryPage;
 	facilitiesPage: FacilitiesPage;
+	stargazing: StargazingPage;
 }
 
 // 測試物件配置
 const test = base.extend<PageFixtures>({
 	homePage: async ({ page }, use) => {
+		// page.setViewportSize({ width: 1920, height: 1080 });
 		const homePage = new HomePage(page);
 		await use(homePage);
 	},
@@ -41,6 +44,10 @@ const test = base.extend<PageFixtures>({
 	facilitiesPage: async ({ page }, use) => {
 		const facilitiesPage = new FacilitiesPage(page);
 		await use(facilitiesPage);
+	},
+	stargazing: async ({ page }, use) => {
+		const stargazing = new StargazingPage(page);
+		await use(stargazing);
 	},
 });
 
@@ -94,6 +101,15 @@ test.describe('天文設施', () => {
 	test('水平滾動檢查', ({ basePage }) => basePage.checkHorizontalScroll());
 	test('驗證機構連結有效', ({ facilitiesPage }) => facilitiesPage.verifyItemLink());
 	test('驗證天文台分類切換', ({ facilitiesPage }) => facilitiesPage.verifyObservatoryCatChange());
+});
+
+test.describe('觀星地點', () => {
+	test.beforeEach(({ stargazing }) => stargazing.goto());
+
+	test('檢查顯示內容', ({ stargazing }) => stargazing.verifyContent());
+	test('水平滾動檢查', ({ basePage }) => basePage.checkHorizontalScroll());
+	test('驗證抽屜資訊和開啟關閉', ({ stargazing }) => stargazing.verifyDrawerToggle());
+	test('驗證地圖初始化', ({ stargazing }) => stargazing.verifyMapInitialized());
 });
 
 // 為了保險起見，統一處理未捕獲的例外
