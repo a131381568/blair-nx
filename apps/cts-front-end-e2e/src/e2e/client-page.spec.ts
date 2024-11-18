@@ -6,6 +6,7 @@ import { AboutPage } from '../support/pages/about.page';
 import { StoryPage } from '../support/pages/story.page';
 import { FacilitiesPage } from '../support/pages/facilities.page';
 import { StargazingPage } from '../support/pages/stargazing.page';
+import { SearchPage } from '../support/pages/search.page';
 
 // 定義 fixtures
 interface PageFixtures {
@@ -16,6 +17,7 @@ interface PageFixtures {
 	storyPage: StoryPage;
 	facilitiesPage: FacilitiesPage;
 	stargazing: StargazingPage;
+	searchPage: SearchPage;
 }
 
 // 測試物件配置
@@ -49,6 +51,10 @@ const test = base.extend<PageFixtures>({
 		const stargazing = new StargazingPage(page);
 		await use(stargazing);
 	},
+	searchPage: async ({ page }, use) => {
+		const searchPage = new SearchPage(page);
+		await use(searchPage);
+	},
 });
 
 test.describe('首頁測試', () => {
@@ -63,10 +69,10 @@ test.describe('選單跳轉測試', () => {
 
 	test('關於我們', ({ basePage }) => basePage.clickMenuAndNavigate('About'));
 	test('天文科普', ({ basePage }) => basePage.clickMenuAndNavigate('Science'));
-	test('星星物語', async ({ basePage }) => basePage.clickMenuAndNavigate('Story'));
-	test('天文設施', async ({ basePage }) => basePage.clickMenuAndNavigate('Facilities'));
-	test('觀星地點', async ({ basePage }) => basePage.clickMenuAndNavigate('Stargazing'));
-	test('搜尋頁面', async ({ basePage }) => basePage.clickMenuAndNavigate('Search'));
+	test('星星物語', ({ basePage }) => basePage.clickMenuAndNavigate('Story'));
+	test('天文設施', ({ basePage }) => basePage.clickMenuAndNavigate('Facilities'));
+	test('觀星地點', ({ basePage }) => basePage.clickMenuAndNavigate('Stargazing'));
+	test('搜尋頁面', ({ basePage }) => basePage.clickMenuAndNavigate('Search'));
 });
 
 test.describe('關於我們', () => {
@@ -110,6 +116,22 @@ test.describe('觀星地點', () => {
 	test('水平滾動檢查', ({ basePage }) => basePage.checkHorizontalScroll());
 	test('驗證抽屜資訊和開啟關閉', ({ stargazing }) => stargazing.verifyDrawerToggle());
 	test('驗證地圖初始化', ({ stargazing }) => stargazing.verifyMapInitialized());
+});
+
+test.describe('搜尋', () => {
+	test.beforeEach(({ searchPage }) => searchPage.goto());
+
+	test('無結果', async ({ searchPage }) => {
+		await searchPage.searchSwitch('xxxxxxxxxx');
+		await searchPage.verifySearchNothing();
+	});
+
+	test('有結果', async ({ searchPage }) => {
+		await searchPage.searchSwitch('月亮');
+		await searchPage.verifySearchList();
+		// 驗證連結正常
+		await searchPage.verifyItemLink();
+	});
 });
 
 // 為了保險起見，統一處理未捕獲的例外

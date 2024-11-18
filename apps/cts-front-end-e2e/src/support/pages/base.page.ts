@@ -15,6 +15,7 @@ export class BasePage {
 		await this.page.locator(`[data-testid="menu__toggle__btn"]`).click();
 		await this.page.waitForSelector(`[data-testid="menu__modal"]`, { state: 'visible' });
 		await this.page.getByText(routeName).click();
+		await this.page.waitForLoadState('networkidle');
 		await expect(this.page.locator(`[data-testid="pageSubTitle"]`)).toHaveText(routeName.toLowerCase());
 	}
 
