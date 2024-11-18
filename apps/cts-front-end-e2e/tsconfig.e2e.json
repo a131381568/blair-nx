@@ -1,6 +1,7 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
+		"composite": true,
 		"target": "es5",
 		"module": "commonjs",
 		"types": [
@@ -10,6 +11,7 @@
 		],
 		"allowJs": true,
 		"strict": true,
+		"declaration": true,
 		"noEmit": true,
 		"outDir": "../../dist/out-tsc",
 		"sourceMap": false,

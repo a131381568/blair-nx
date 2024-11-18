@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
+import { TEST_CONFIG } from '../config/test.config';
 
 export class LoginPage {
 	constructor(private page: Page) {
@@ -18,7 +19,7 @@ export class LoginPage {
 
 	// 頁面操作
 	async goto() {
-		await this.page.goto(`http://localhost:4200/login`);
+		await this.page.goto(`${TEST_CONFIG.baseUrl}/login`);
 		// 增加超時時間和等待條件
 		await this.page.waitForLoadState('networkidle');
 		await expect(this.page.locator(this.loginButton)).toBeVisible({ timeout: 10000 });

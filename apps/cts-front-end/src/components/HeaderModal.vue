@@ -70,9 +70,9 @@ watchThrottled(
 		modal-content-animation="vfm-slide-up"
 	>
 		<template #body>
-			<div class="modal-content relative m-auto size-full overflow-auto bg-secondary screens-h-900:overflow-y-auto">
-				<div class="grid h-screen overflow-auto py-20 mobile:grid-cols-none mobile:px-9 h-table:grid-cols-none h-table:px-20 h-table:pb-14 h-table:pt-32 w-table:grid-cols-2 laptop:px-40">
-					<ul class="menu-grid-ul grid grid-flow-row auto-rows-max gap-7 text-left w-table:gap-9 large-pc:auto-rows-auto large-pc:gap-12 screens-h-900:auto-rows-max">
+			<div class="modal-content bg-secondary screens-h-900:overflow-y-auto relative m-auto size-full overflow-auto">
+				<div class="mobile:grid-cols-none mobile:px-9 h-table:grid-cols-none h-table:px-20 h-table:pb-14 h-table:pt-32 w-table:grid-cols-2 laptop:px-40 grid h-screen overflow-auto py-20">
+					<ul class="menu-grid-ul w-table:gap-9 large-pc:auto-rows-auto large-pc:gap-12 screens-h-900:auto-rows-max grid grid-flow-row auto-rows-max gap-7 text-left">
 						<li
 							v-for="({ path, title, enTitle, refId }, index) in menuList"
 							:key="index"
@@ -81,14 +81,15 @@ watchThrottled(
 								:id="refId"
 								:to="path"
 								:title="title"
-								class="font-serif tracking-wide-menu text-main-color-dark duration-1000 hover:text-sp-color-light mobile:text-5xl h-table:text-8xl w-table:text-7xl large-pc:text-menu-title screens-h-900:text-5xl"
+								:data-testid="title"
+								class="tracking-wide-menu text-main-color-dark hover:text-sp-color-light mobile:text-5xl h-table:text-8xl w-table:text-7xl large-pc:text-menu-title screens-h-900:text-5xl font-serif duration-1000"
 							>
 								{{ enTitle }}
 							</router-link>
 						</li>
 					</ul>
 					<div
-						class="relative -top-4 bg-cover bg-center bg-no-repeat transition-all duration-[400ms] mobile:hidden mobile:text-5xl h-table:hidden w-table:block large-pc:mb-16"
+						class="mobile:hidden mobile:text-5xl h-table:hidden w-table:block large-pc:mb-16 relative -top-4 bg-cover bg-center bg-no-repeat transition-all duration-[400ms]"
 						:style="{
 							'background-image': `url(${activeTopic.img})`,
 						}"
@@ -96,7 +97,7 @@ watchThrottled(
 						<!-- :class="`bg-menu-${activeTopic.refId}`" -->
 						<router-link
 							:to="activeTopic.path"
-							class="text-shadow absolute bottom-12 right-12 text-3xl text-white duration-1000 hover:text-sub-color-light"
+							class="text-shadow hover:text-sub-color-light absolute bottom-12 right-12 text-3xl text-white duration-1000"
 						>
 							{{ activeTopic.title }}
 						</router-link>

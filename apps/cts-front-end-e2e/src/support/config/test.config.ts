@@ -9,5 +9,5 @@ export const TEST_CONFIG = {
 			password: process.env.TEST_ADMIN_PASSWORD,
 		},
 	},
-	baseUrl: 'http://localhost:4200',
+	baseUrl: process.env.VITE_APP_HOST,
 } as const;

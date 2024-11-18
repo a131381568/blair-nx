@@ -28,10 +28,11 @@
 			}
 		},
 		"pw:op": {
-			"executor": "nx:run-commands",
+			"executor": "@nx/playwright:playwright",
 			"options": {
-				"command": "pnpm dlx playwright test --ui",
-				"cwd": "apps/{projectName}"
+				"config": "apps/{projectName}/playwright.config.ts",
+				"ui": true,
+				"debug": true
 			}
 		},
 		"pw:report": {

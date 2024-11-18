@@ -1,9 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
-import dotenv from 'dotenv';
-
-dotenv.config({ path: 'apps/cts-front-end-e2e/.env' });
+import { TEST_CONFIG } from './src/support/config/test.config';
 
 const projects = [
 	{
@@ -48,7 +46,7 @@ export default defineConfig({
 			}], ['list']],
 	outputDir: `${projectDir}/test-results`,
 	use: {
-		baseURL: 'http://localhost:4200',
+		baseURL: TEST_CONFIG.baseUrl,
 		// CI 環境中的追蹤和截圖設定
 		trace: process.env.CI ? 'on-first-retry' : 'on', // 啟用追蹤
 		screenshot: process.env.CI ? 'only-on-failure' : 'on', // 失敗時截圖
@@ -59,7 +57,7 @@ export default defineConfig({
 	projects,
 	webServer: {
 		command: 'pnpm exec nx serve cts-front-end',
-		url: 'http://localhost:4200',
+		url: TEST_CONFIG.baseUrl,
 		reuseExistingServer: !process.env.CI,
 		timeout: 120000,
 	},

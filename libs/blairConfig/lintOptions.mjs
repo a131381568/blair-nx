@@ -34,7 +34,12 @@ export default [
 			'**/.env',
 			'**/.dockerignore',
 			'**/.github/*',
-			'**/deployment/*'
+			'**/deployment/*',
+			'**/test-results/*',
+			'**/playwright-report/*',
+			'**/playwright/.cache/*',
+			'**/e2e/*.png',
+			'**/e2e/*.pdf',
 		],
 	},
 	{
