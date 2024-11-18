@@ -35,12 +35,12 @@ export class FacilitiesPage {
 		const obsEl = this.page.locator(this.OBSERVATORY_CAT);
 		const obsCount = await obsEl.count();
 
-		expect(this.page.locator(this.AGENCY_TITLE)).toHaveText('推廣機構');
+		await expect(this.page.locator(this.AGENCY_TITLE)).toHaveText('推廣機構');
 		expect(facilityCount).toBe(3);
 
-		expect(this.page.locator(this.OBSERVATORY_TABLE_TITLE)).toHaveText('天文台');
+		await expect(this.page.locator(this.OBSERVATORY_TABLE_TITLE)).toHaveText('天文台');
 		expect(obsCount).toBeGreaterThan(1);
-		this.verifyTableHasRows();
+		await this.verifyTableHasRows();
 	}
 
 	async verifyItemLink() {
@@ -59,6 +59,6 @@ export class FacilitiesPage {
 	async verifyObservatoryCatChange() {
 		await this.page.locator(this.OBSERVATORY_CAT).last().click();
 		await this.page.waitForLoadState('networkidle', { timeout: 10000 });
-		this.verifyTableHasRows();
+		await this.verifyTableHasRows();
 	}
 }

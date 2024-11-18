@@ -47,7 +47,7 @@ export class SciencePage extends BasePage {
 		await this.page.locator(this.FILTER_TAG).filter({ hasText: ACTIVE_CAT }).click();
 		await this.waitApiCall(this.API_ROUTE);
 		await this.page.waitForLoadState('networkidle', { timeout: 10000 });
-		this.verifyAllCardsCategory(ACTIVE_CAT);
+		await this.verifyAllCardsCategory(ACTIVE_CAT);
 	}
 
 	async verifyCardLink() {

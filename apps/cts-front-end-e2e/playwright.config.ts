@@ -53,6 +53,7 @@ export default defineConfig({
 		// video: 'on-first-retry', // 啟用影片錄製
 		// actionTimeout: 10000, // 動作超時
 		// navigationTimeout: 30000, // 導航超時
+		// ignoreHTTPSErrors: true,
 	},
 	projects,
 	webServer: {
