@@ -4,6 +4,7 @@ import { HomePage } from '../support/pages/home.page';
 import { SciencePage } from '../support/pages/science.page';
 import { AboutPage } from '../support/pages/about.page';
 import { StoryPage } from '../support/pages/story.page';
+import { FacilitiesPage } from '../support/pages/facilities.page';
 
 // 定義 fixtures
 interface PageFixtures {
@@ -12,6 +13,7 @@ interface PageFixtures {
 	aboutPage: AboutPage;
 	sciencePage: SciencePage;
 	storyPage: StoryPage;
+	facilitiesPage: FacilitiesPage;
 }
 
 // 測試物件配置
@@ -35,6 +37,10 @@ const test = base.extend<PageFixtures>({
 	storyPage: async ({ page }, use) => {
 		const storyPage = new StoryPage(page);
 		await use(storyPage);
+	},
+	facilitiesPage: async ({ page }, use) => {
+		const facilitiesPage = new FacilitiesPage(page);
+		await use(facilitiesPage);
 	},
 });
 
@@ -79,6 +85,15 @@ test.describe('星星故事', () => {
 	test('檢查顯示 Grid', ({ storyPage }) => storyPage.verifyContent());
 	test('水平滾動檢查', ({ basePage }) => basePage.checkHorizontalScroll());
 	test('驗證 Grid 資料與連結', ({ storyPage }) => storyPage.verifyCardLink());
+});
+
+test.describe('天文設施', () => {
+	test.beforeEach(({ facilitiesPage }) => facilitiesPage.goto());
+
+	test('檢查顯示內容', ({ facilitiesPage }) => facilitiesPage.verifyContent());
+	test('水平滾動檢查', ({ basePage }) => basePage.checkHorizontalScroll());
+	test('驗證機構連結有效', ({ facilitiesPage }) => facilitiesPage.verifyItemLink());
+	test('驗證天文台分類切換', ({ facilitiesPage }) => facilitiesPage.verifyObservatoryCatChange());
 });
 
 // 為了保險起見，統一處理未捕獲的例外
