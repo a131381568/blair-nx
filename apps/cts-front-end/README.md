@@ -161,7 +161,10 @@
 
 - [railway 相關](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md#railway-%E7%9B%B8%E9%97%9C)
 
+## F. E2E 測試
 
-## F. 聲明
+[E2E 說明](https://github.com/a131381568/blair-nx/tree/development/apps/cts-front-end-e2e)
+
+## G. 聲明
 - 僅作為學術研究用途，無商業行為。
 - 素材與資料來源：台北市立天文科學教育館、南瀛天文教育園區、國立自然科學博物館、交通部中央氣象局、Freepik、Wikipedia、ELLE。
