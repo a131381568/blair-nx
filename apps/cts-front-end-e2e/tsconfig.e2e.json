@@ -1,0 +1,26 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"target": "es5",
+		"module": "commonjs",
+		"types": [
+			"node",
+			"@nx/playwright",
+			"@playwright/test"
+		],
+		"allowJs": true,
+		"strict": true,
+		"noEmit": true,
+		"outDir": "../../dist/out-tsc",
+		"sourceMap": false,
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"skipLibCheck": true
+	},
+	"include": [
+		"playwright.config.ts",
+		"src/e2e/**/*.ts",
+		"src/support/**/*.ts"
+	],
+	"exclude": ["node_modules"]
+}

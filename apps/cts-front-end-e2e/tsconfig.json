@@ -1,20 +1,24 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "jsx": "preserve",
-    "jsxImportSource": "vue",
-    "moduleResolution": "node",
-    "resolveJsonModule": true
-  },
-  "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    }
-  ],
-  "extends": "../../tsconfig.base.json"
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"jsx": "preserve",
+		"jsxImportSource": "vue",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"types": ["node"],
+		"allowJs": true,
+		"strict": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true
+	},
+	"references": [
+		{
+			"path": "./tsconfig.lib.json"
+		},
+		{
+			"path": "./tsconfig.e2e.json"
+		}
+	],
+	"files": [],
+	"include": []
 }

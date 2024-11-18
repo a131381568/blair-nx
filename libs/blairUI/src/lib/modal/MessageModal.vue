@@ -30,6 +30,7 @@ const typeIcon = computed(() => props.type === 'success' ? SuccessIcon : Warning
 		:z-index-fn="({ index }) => 3000 + 2 * index"
 		content-transition="vfm-fade"
 		overlay-transition="vfm-fade"
+		data-testid="blairUI__messageModal"
 	>
 		<div
 			class="fixed inset-0 transition-opacity"
@@ -61,7 +62,10 @@ const typeIcon = computed(() => props.type === 'success' ? SuccessIcon : Warning
 						{{ title }}
 					</h3>
 					<div class="mt-2">
-						<p class="text-left text-sm text-gray-500">
+						<p
+							class="text-left text-sm text-gray-500"
+							data-testid="blairUI__messageModal__msg"
+						>
 							{{ content }}
 						</p>
 					</div>
