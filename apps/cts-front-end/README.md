@@ -122,7 +122,7 @@
 ![天文科普依賴](https://i.imgur.com/W9WR9hc.png)
 
 ### C-3 專案間的依賴關係
-![專案間的依賴關係](https://i.imgur.com/rt5D6w4.png)
+![專案間的依賴關係](https://i.imgur.com/QT5FbuY.png)
 - [查看後端專案](https://github.com/a131381568/blair-nx/tree/development/apps/cts-back-end)
 - [查看共享專案](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md)
 
