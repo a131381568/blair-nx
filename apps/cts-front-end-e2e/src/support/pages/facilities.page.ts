@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 
 export class FacilitiesPage {
-	constructor(private page: Page) {}
+	constructor(protected page: Page) {}
 
 	// 選擇器
 	private readonly PAGE_TITLE = `[data-testid="pageTitle"]`;
@@ -20,11 +20,6 @@ export class FacilitiesPage {
 		await this.page.waitForSelector(this.FACILITY_CONTAINER);
 		await expect(this.page.locator(this.PAGE_SUB_TITLE)).toHaveText('facilities');
 		expect(this.page.locator(this.PAGE_TITLE)).toHaveText('天文設施');
-	}
-
-	async waitApiCall(apiUrl: string) {
-		const response = await this.page.waitForResponse(res => res.url().includes(apiUrl));
-		expect(response.status()).toBe(200);
 	}
 
 	async verifyTableHasRows() {

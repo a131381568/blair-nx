@@ -1,8 +1,11 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
+import { BasePage } from './base.page';
 
-export class SciencePage {
-	constructor(private page: Page) {}
+export class SciencePage extends BasePage {
+	constructor(page: Page) {
+		super(page);
+	}
 
 	// 選擇器
 	private readonly PAGE_TITLE = `[data-testid="pageTitle"]`;
@@ -19,11 +22,6 @@ export class SciencePage {
 		await this.page.goto('/science');
 		await this.page.waitForSelector(this.CARD_CONTAINER);
 		await expect(this.page.locator(this.PAGE_SUB_TITLE)).toHaveText('science');
-	}
-
-	async waitApiCall(apiUrl: string) {
-		const response = await this.page.waitForResponse(res => res.url().includes(apiUrl));
-		expect(response.status()).toBe(200);
 	}
 
 	async verifyAllCardsCategory(postCategoryId: string) {
