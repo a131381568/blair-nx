@@ -52,7 +52,7 @@ watchEffect(() => {
 <template>
 	<Header />
 	<div
-		class="flex-wrap items-start justify-center px-8 pb-32 mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72"
+		class="mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72 flex-wrap items-start justify-center px-8 pb-32"
 	>
 		<TitleBox
 			:page-title="storyMeta.pageTitle"
@@ -61,7 +61,7 @@ watchEffect(() => {
 		<div
 			v-if="timeLineRef.length"
 			ref="masonryRef"
-			class="grid-col-2 container relative mx-auto grid h-full animate-fadeInUp grid-flow-col justify-items-center h-table:w-10/12"
+			class="grid-col-2 animate-fadeInUp h-table:w-10/12 container relative mx-auto grid h-full grid-flow-col justify-items-center"
 		>
 			<masonry-wall
 				:items="timeLineRef"
@@ -70,6 +70,7 @@ watchEffect(() => {
 				:gap="0"
 				class="timeline-grid py-56"
 				:style="{ width: '100%' }"
+				data-testid="story__grids"
 			>
 				<template #default="{ item, index }">
 					<div
@@ -80,21 +81,24 @@ watchEffect(() => {
 						]"
 						class="single-timeline-grid group flex"
 						:style="{ width: `${gridWidth}px` }"
+						data-testid="story__grid"
 					>
 						<div
-							class="left-line mr-2 mt-5 flex h-0 w-3/12 items-stretch justify-start border border-x-0 border-t-0 border-main-color-middle"
+							class="left-line border-main-color-middle mr-2 mt-5 flex h-0 w-3/12 items-stretch justify-start border border-x-0 border-t-0"
 						>
-							<span class="relative -left-4px block h-9px w-9px self-center rounded-full bg-sub-color-dark" />
+							<span class="-left-4px h-9px w-9px bg-sub-color-dark relative block self-center rounded-full" />
 						</div>
 						<div class="middle-pc:w-9/12">
 							<router-link
 								class="single-timeline-grid-link"
 								:to="`/story/${item.postNanoId}`"
+								data-testid="story__grid__link"
 							>
-								<h2 class="text-3xl text-white delay-75 duration-1000 group-hover:text-sp-color-light">
-									{{
-										item.title
-									}}
+								<h2
+									class="group-hover:text-sp-color-light text-3xl text-white delay-75 duration-1000"
+									data-testid="story__grid__title"
+								>
+									{{ item.title }}
 								</h2>
 							</router-link>
 							<div class="w-full">
@@ -108,9 +112,9 @@ watchEffect(() => {
 							<span class="grid-des-box text-main-color-light">{{ stripMarkdown(String(item.content)) }}</span>
 						</div>
 						<div
-							class="right-line ml-2 mt-5 flex h-0 w-3/12 items-stretch justify-end border border-x-0 border-t-0 border-main-color-middle"
+							class="right-line border-main-color-middle ml-2 mt-5 flex h-0 w-3/12 items-stretch justify-end border border-x-0 border-t-0"
 						>
-							<span class="relative -right-5px h-9px w-9px self-center rounded-full bg-sub-color-dark" />
+							<span class="-right-5px h-9px w-9px bg-sub-color-dark relative self-center rounded-full" />
 						</div>
 					</div>
 				</template>
@@ -118,7 +122,7 @@ watchEffect(() => {
 		</div>
 		<div
 			v-show="storyListAPI?.body.data.meta.nextPage"
-			class="text-left h-table:w-10/12 w-table:text-center"
+			class="h-table:w-10/12 w-table:text-center text-left"
 		>
 			<button
 				class="btn draw meet timeline-loadmore mt-20"
