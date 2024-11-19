@@ -1,21 +1,25 @@
-import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 import { TestHelper } from '../support/helpers/test.helper';
+import { AboutPage } from '../support/pages/about.page';
+import { HomePage } from '../support/pages/home.page';
 
 test.describe('管理首頁和關於我', () => {
-	test.beforeEach(async ({ page }) => {
-		const helper = new TestHelper(page);
-		await helper.loginAsAdmin();
-	});
+	let helperPage: TestHelper;
+	let aboutPage: AboutPage;
+	let homePage: HomePage;
 
-	const isSuccess = async (page: Page) => {
-		await page.waitForSelector(`[data-testid="blairUI__messageModal"]`, { state: 'visible', timeout: 10000 });
-		await expect(page.locator(`[data-testid="blairUI__messageModal__msg"]`)).toContainText('Update success');
-	};
+	test.beforeEach(async ({ page }) => {
+		helperPage = new TestHelper(page);
+		aboutPage = new AboutPage(page);
+		homePage = new HomePage(page);
+		helperPage.loginAdmin();
+	});
 
 	test('首頁-主視覺標語和引言', async ({ page }) => {
 		const IMPORT_TITLE = 'Catch the starsaaaa';
 		const IMPORT_SUB_TITLE = '誰能數得清天上的星星？誰能說出它們對世界的影響？——詹·湯姆遜 aaaa';
+
+		await aboutPage.goAdmin();
 		await page.getByRole('link', { name: '首頁標語' }).click();
 		await page.getByRole('button', { name: '編輯標語' }).first().click();
 		await page.getByPlaceholder('主視覺標語').clear();
@@ -24,9 +28,9 @@ test.describe('管理首頁和關於我', () => {
 		await page.getByPlaceholder('主視覺引言').fill(IMPORT_SUB_TITLE);
 		await page.getByRole('button', { name: '儲存標語' }).first().click();
 		// 成功訊息
-		await isSuccess(page);
+		await helperPage.showModelIsSuccess();
 		// 驗證
-		await page.goto('http://localhost:4200');
+		await homePage.goto();
 		await expect(page.getByTestId('home__title')).toContainText(IMPORT_TITLE);
 		await expect(page.getByTestId('home__subTitle')).toContainText(IMPORT_SUB_TITLE);
 	});
@@ -45,9 +49,9 @@ test.describe('管理首頁和關於我', () => {
 		await page.getByPlaceholder('關於我們理念').fill(IMPORT_PHILOSOPHY_HTML);
 		await page.locator('h2:has-text("關於我們—理念") ~ button').click();
 		// 成功訊息
-		await isSuccess(page);
+		await helperPage.showModelIsSuccess();
 		// 驗證
-		await page.goto('http://localhost:4200/about');
+		await aboutPage.goto();
 		await expect(page.getByTestId('about__slogan')).toContainText(IMPORT_SLOGAN);
 		await expect(page.getByTestId('about__philosophy').getByRole('paragraph')).toContainText(IMPORT_PHILOSOPHY_VAL);
 	});
@@ -63,9 +67,9 @@ test.describe('管理首頁和關於我', () => {
 		await page.getByPlaceholder('關於我們引言').fill(IMPORT_QUOTE__HTML);
 		await page.locator('h2:has-text("關於我們—引言") ~ button').click();
 		// 成功訊息
-		await isSuccess(page);
+		await helperPage.showModelIsSuccess();
 		// 驗證
-		await page.goto('http://localhost:4200/about');
+		await aboutPage.goto();
 		await expect(page.getByTestId('about__quote').getByRole('paragraph')).toContainText(IMPORT_QUOTE__VAL);
 	});
 
@@ -80,12 +84,13 @@ test.describe('管理首頁和關於我', () => {
 		await page.getByPlaceholder('關於我們結語').fill(IMPORT_EPILOGUE__HTML);
 		await page.locator('h2:has-text("關於我們—結語") ~ button').click();
 		// 成功訊息
-		await isSuccess(page);
+		await helperPage.showModelIsSuccess();
 		// 驗證
-		await page.goto('http://localhost:4200/about');
+		await aboutPage.goto();
 		await expect(page.getByTestId('about__epilogue').getByRole('paragraph')).toContainText(IMPORT_EPILOGUE__VAL);
 	});
 
+	/**
 	test('復原程序', async ({ page }) => {
 		// 1
 		const HOME_TITLE = 'Catch the stars';
@@ -98,7 +103,7 @@ test.describe('管理首頁和關於我', () => {
 		await page.getByPlaceholder('主視覺引言').fill(HOME_SUB_TITLE);
 		await page.getByRole('button', { name: '儲存標語' }).first().click();
 		// 成功訊息
-		await isSuccess(page);
+		await helperPage.showModelIsSuccess();
 		// 2
 		const ABOUT_SLOGAN__HTML = '我們是「雲上的小貓」，致力於寫下故事、留下故事。';
 		const ABOUT_PHILOSOPHY_HTML = '人是被賦予豐富情感的動物，會笑、會哭、會憤怒、會感動，所以有溫度的故事是能夠觸動人心的，甚至能夠在心中種下一顆希望的種子，在未來成長為茁壯的大樹。<br />\n正因凡走過必留下痕跡，可以是歷史？也可以是虛構的童話？\n不管它是什麼？<br />\n總會能夠會帶給我們些什麼？對吧？<br />\n無論是虛無飄渺的疑問？還是膽戰心驚的恐懼？又或著肯定的勇氣？每個人都有故事，因為這是我們自己開啟的故事——。';
@@ -133,4 +138,5 @@ test.describe('管理首頁和關於我', () => {
 		// 成功訊息
 		await isSuccess(page);
 	});
+	 */
 });

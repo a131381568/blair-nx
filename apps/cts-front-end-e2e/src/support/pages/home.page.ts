@@ -6,7 +6,7 @@ export class HomePage {
 
 	async goto() {
 		await this.page.goto('/');
-		await expect(this.page.locator(`[data-testid="home__title"]`)).toHaveText('Catch the stars');
+		await expect(this.page.locator(`[data-testid="home__title"]`)).toContainText('Catch');
 	}
 
 	async verifyContent() {

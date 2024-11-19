@@ -3,7 +3,11 @@
 	"compilerOptions": {
 		"composite": true,
 		"target": "es5",
+		"baseUrl": ".",
 		"module": "commonjs",
+		"paths": {
+			"@cts-shared": ["../../libs/cts-shared/index.ts"]
+		},
 		"types": ["node", "@nx/playwright", "@playwright/test"],
 		"allowJs": true,
 		"strict": true,
@@ -14,10 +18,16 @@
 		"isolatedModules": true,
 		"skipLibCheck": true
 	},
+	"references": [
+		{
+			"path": "../../libs/cts-shared"
+		}
+	],
 	"include": [
 		"playwright.config.ts",
 		"src/e2e/**/*.ts",
-		"src/support/**/*.ts"
+		"src/support/**/*.ts",
+		"../../libs/cts-shared/**/*.ts"
 	],
 	"exclude": ["node_modules"]
 }

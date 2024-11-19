@@ -1,6 +1,10 @@
 import type { Page, Route } from '@playwright/test';
-import { TEST_CONFIG } from '../config/test.config';
+import { expect } from '@playwright/test';
+import axios from 'axios';
+import { tryit } from 'radash';
+import { AUTH_CONFIG } from '@cts-shared';
 import { LoginPage } from '../pages/login.page';
+import { TEST_CONFIG } from '../config/test.config';
 
 export class TestHelper {
 	constructor(private page: Page) {}
@@ -44,4 +48,50 @@ export class TestHelper {
 			await route.fulfill({ json: response });
 		});
 	}
+
+	// check modal
+	async showModelCheckText(text: string) {
+		await this.page.waitForSelector(`[data-testid="blairUI__messageModal"]`, { state: 'visible', timeout: 10000 });
+		await expect(this.page.locator(`[data-testid="blairUI__messageModal__msg"]`)).toContainText(text);
+	};
+
+	async showModelIsSuccess() {
+		await this.showModelCheckText('Update success');
+	};
+
+	async showModelIsCreate() {
+		await this.showModelCheckText('Create success');
+	};
+
+	// cookie
+	async setCookies(cookies: Array<{ name: string; value: string }>) {
+		await this.page.context().addCookies(
+			cookies.map(cookie => ({
+				...cookie,
+				domain: 'localhost',
+				path: '/',
+				expires: Math.floor(Date.now() / 1000) + 3600,
+			})),
+		);
+	}
+
+	async getCookie(name: string) {
+		const cookies = await this.page.context().cookies();
+		return cookies.find(cookie => cookie.name === name);
+	}
+
+	// login by api
+	async loginAdmin() {
+		const getTokenGroup = () => axios.post(`${TEST_CONFIG.apiUrl}/auth/login`, TEST_CONFIG.users.admin);
+
+		const [_err, tokenGroup] = await tryit(getTokenGroup)();
+		const { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } = AUTH_CONFIG;
+		const accessTokenVal = tokenGroup?.data?.data.accessToken;
+		const refreshTokenVal = tokenGroup?.data?.data.refreshToken;
+
+		await this.setCookies([
+			{ name: ACCESS_TOKEN_KEY, value: String(accessTokenVal) },
+			{ name: REFRESH_TOKEN_KEY, value: String(refreshTokenVal) },
+		]);
+	};
 }

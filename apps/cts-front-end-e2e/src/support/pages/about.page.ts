@@ -9,6 +9,11 @@ export class AboutPage {
 		await expect(this.page.locator(`[data-testid="pageSubTitle"]`)).toHaveText('about');
 	}
 
+	async goAdmin() {
+		await this.page.goto('/board/slogan');
+		await expect(this.page.locator(`h1`)).toHaveText('標語管理');
+	}
+
 	async verifyContent() {
 		await expect(this.page.locator(`[data-testid="about__slogan"]`)).not.toBeEmpty();
 		await expect(this.page.locator(`[data-testid="about__philosophy"] > .github-markdown-body`)).not.toBeEmpty();
