@@ -1,5 +1,7 @@
 import path from 'node:path';
+import type { UserConfig } from 'vite';
 import { defineConfig } from 'vite';
+import type { UserConfigExport as VitestConfigExport } from 'vitest/config';
 import vue from '@vitejs/plugin-vue';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
@@ -33,6 +35,11 @@ export default defineConfig({
 			reportsDirectory: '../../coverage/apps/cts-front-end',
 			provider: 'v8',
 		},
+		setupFiles: ['./vitest.setup.ts'],
+		typecheck: {
+			enabled: true,
+			tsconfig: './tsconfig.spec.json',
+		},
 	},
 	resolve: {
 		alias: {
@@ -42,4 +49,4 @@ export default defineConfig({
 	css: {
 		postcss: path.resolve(__dirname, 'postcss.config.js'),
 	},
-});
+} as UserConfig & VitestConfigExport);
