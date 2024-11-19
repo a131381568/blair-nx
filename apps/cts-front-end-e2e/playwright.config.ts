@@ -48,7 +48,7 @@ export default defineConfig({
 	use: {
 		baseURL: TEST_CONFIG.baseUrl,
 		// CI 環境中的追蹤和截圖設定
-		trace: 'off', // process.env.CI ? 'on-first-retry' : 'on', // 啟用追蹤
+		trace: 'on', // process.env.CI ? 'on-first-retry' : 'on', // 啟用追蹤
 		screenshot: 'off', // process.env.CI ? 'only-on-failure' : 'on', // 失敗時截圖
 		// video: 'on-first-retry', // 啟用影片錄製
 		// actionTimeout: 10000, // 動作超時
@@ -62,4 +62,6 @@ export default defineConfig({
 		reuseExistingServer: !process.env.CI,
 		timeout: 120000,
 	},
+	// 在所有測試結束後執行
+	globalTeardown: require.resolve('./src/support/utils/global-teardown'),
 });

@@ -10,4 +10,5 @@ export const TEST_CONFIG = {
 		},
 	},
 	baseUrl: process.env.VITE_APP_HOST,
+	apiUrl: process.env.VITE_APP_API,
 } as const;
