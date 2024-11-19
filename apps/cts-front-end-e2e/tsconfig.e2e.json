@@ -4,16 +4,11 @@
 		"composite": true,
 		"target": "es5",
 		"module": "commonjs",
-		"types": [
-			"node",
-			"@nx/playwright",
-			"@playwright/test"
-		],
+		"types": ["node", "@nx/playwright", "@playwright/test"],
 		"allowJs": true,
 		"strict": true,
 		"declaration": true,
-		"noEmit": true,
-		"outDir": "../../dist/out-tsc",
+		"outDir": "../../dist/out-tsc/apps/cts-front-end-e2e/e2e",
 		"sourceMap": false,
 		"esModuleInterop": true,
 		"isolatedModules": true,

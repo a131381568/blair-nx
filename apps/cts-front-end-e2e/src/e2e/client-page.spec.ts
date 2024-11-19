@@ -133,13 +133,3 @@ test.describe('搜尋', () => {
 		await searchPage.verifyItemLink();
 	});
 });
-
-// 為了保險起見，統一處理未捕獲的例外
-test.afterEach(async ({ page }, testInfo) => {
-	if (testInfo.status !== 'passed') {
-		await page.screenshot({
-			path: `test-results/${testInfo.title}-failure.png`,
-			fullPage: true,
-		});
-	}
-});

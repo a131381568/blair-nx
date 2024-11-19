@@ -2,13 +2,9 @@
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
 		"composite": true,
-		"types": [
-			"node",
-			"@playwright/test",
-			"vite/client"
-		],
+		"types": ["node", "@playwright/test", "vite/client"],
 		"declaration": true,
-		"outDir": "../../dist/out-tsc"
+		"outDir": "../../dist/out-tsc/apps/cts-front-end-e2e/lib"
 	},
 	"include": [
 		"src/**/*.js",
@@ -22,13 +18,7 @@
 		"src/**/__tests__/*",
 		"src/**/*.spec.ts",
 		"src/**/*.test.ts",
-		"src/**/*.spec.tsx",
-		"src/**/*.test.tsx",
-		"src/**/*.spec.js",
-		"src/**/*.test.js",
-		"src/**/*.spec.jsx",
-		"src/**/*.test.jsx",
-		"src/**/*.spec.vue",
-		"src/**/*.test.vue"
+		"src/e2e/**/*.ts",
+		"src/support/**/*.ts"
 	]
 }
