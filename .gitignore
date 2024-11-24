@@ -69,3 +69,10 @@ storybook-static
 **/playwright/.cache/
 **/e2e/*.png
 **/e2e/*.pdf
+
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
