@@ -2,7 +2,7 @@
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
 		"composite": true,
-		"rootDir": "../../",
+		"rootDir": ".",
 		"module": "commonjs",
 		"types": ["node"],
 		"strict": true,
@@ -11,9 +11,12 @@
 		"noImplicitReturns": true,
 		"noPropertyAccessFromIndexSignature": true,
 		"declaration": true,
-		"outDir": "../../dist/out-tsc",
+		"outDir": "../../dist/out-tsc/libs/cts-shared",
 		"forceConsistentCasingInFileNames": true
 	},
-	"include": ["**/*.ts"],
+	"include": [
+		"**/*.ts",
+		"index.ts"
+	],
 	"exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }

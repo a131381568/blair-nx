@@ -2,14 +2,26 @@
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
 		"composite": true,
+		"target": "es2021",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"baseUrl": ".",
 		"module": "commonjs",
+		"paths": {
+			"@cts-shared": ["../../libs/cts-shared/index.ts"]
+		},
 		"types": ["jest", "node"],
-		"outDir": "../../dist/out-tsc"
+		"outDir": "../../dist/out-tsc",
+		"sourceMap": true
 	},
+	"references": [
+		{
+			"path": "../../libs/cts-shared"
+		}
+	],
 	"include": [
 		"jest.config.ts",
-		"src/**/*.test.ts",
-		"src/**/*.spec.ts",
-		"src/**/*.d.ts"
+		"src/**/*.ts",
+		"../../libs/cts-shared/**/*.ts"
 	]
 }

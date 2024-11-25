@@ -75,14 +75,14 @@ const selectCatName = computed(() => {
 <template>
 	<Header />
 	<div
-		class="flex-wrap items-start justify-center px-8 pb-32 mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72"
+		class="mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72 flex-wrap items-start justify-center px-8 pb-32"
 		@click.self="closeDefaultMenu()"
 	>
 		<TitleBox
 			:page-title="scienceMeta.pageTitle"
 			:page-sub-title="scienceMeta.subPageTitle"
 		/>
-		<div class="science-filter-bar mb-16 mt-6 hidden w-10/12 laptop:inline-flex middle-pc:mb-20 middle-pc:mt-16">
+		<div class="science-filter-bar laptop:inline-flex middle-pc:mb-20 middle-pc:mt-16 mb-16 mt-6 hidden w-10/12">
 			<ul
 				v-if="postCategories.length && postCategories"
 				class="flex"
@@ -91,23 +91,24 @@ const selectCatName = computed(() => {
 					v-for="(val, key) in postCategories"
 					:key="key"
 					class="science-filter-item w-auto min-w-min"
+					data-testid="science__filter__item"
 					@click="reSearchData(String(val.postCategoryId))"
 				>
-					<div class="group flex items-center laptop:mr-6 large-pc:mr-10">
+					<div class="laptop:mr-6 large-pc:mr-10 group flex items-center">
 						<input
 							:id="String(val.postCategoryId)"
 							class="hidden"
 							:value="val.postCategoryId"
 						>
 						<label
-							class="flex flex-none cursor-pointer items-center text-2xl delay-75 duration-1000 group-hover:text-sp-color-light"
+							class="group-hover:text-sp-color-light flex flex-none cursor-pointer items-center text-2xl delay-75 duration-1000"
 							:class="[
 								{ 'text-sub-color-light': val.postCategoryId === selectCat },
 								{ 'text-main-color-light': val.postCategoryId !== selectCat },
 							]"
 						>
 							<span
-								class="border-grey flex-no-shrink mr-2 inline-block size-3 flex-none whitespace-nowrap rounded-full border delay-75 duration-1000 group-hover:bg-sp-color-light"
+								class="border-grey flex-no-shrink group-hover:bg-sp-color-light mr-2 inline-block size-3 flex-none whitespace-nowrap rounded-full border delay-75 duration-1000"
 								:class="{ 'bg-sub-color-light': val.postCategoryId === selectCat }"
 							/>
 							{{ val.postCategoryName }}
@@ -117,10 +118,10 @@ const selectCatName = computed(() => {
 			</ul>
 		</div>
 		<!-- 選單樣式 -->
-		<div class="dropdown-menu relative z-40 mb-8 h-table:w-10/12 laptop:hidden">
+		<div class="dropdown-menu h-table:w-10/12 laptop:hidden relative z-40 mb-8">
 			<button
 				id="dropdownDefault"
-				class="relative inline-flex w-[200px] items-center border border-white/60 bg-white/0 p-3 pl-4 text-center text-xl font-medium tracking-wide-content text-main-color-light duration-1000 hover:border-white/0 hover:bg-white/18 hover:text-sub-color-light focus:border-white/0 focus:bg-white/18 focus:text-sub-color-light focus:outline-none"
+				class="tracking-wide-content text-main-color-light hover:bg-white/18 hover:text-sub-color-light focus:bg-white/18 focus:text-sub-color-light relative inline-flex w-[200px] items-center border border-white/60 bg-white/0 p-3 pl-4 text-center text-xl font-medium duration-1000 hover:border-white/0 focus:border-white/0 focus:outline-none"
 				type="button"
 				@click.prevent="toggleFilter()"
 			>
@@ -144,13 +145,13 @@ const selectCatName = computed(() => {
 			<div
 				v-show="toggleFilterVal"
 				id="dropdown"
-				class="absolute z-10 w-[200px] divide-y divide-gray-100 bg-main-color-light"
+				class="bg-main-color-light absolute z-10 w-[200px] divide-y divide-gray-100"
 			>
-				<ul class="cursor-pointer py-1 text-sm text-main-color-black">
+				<ul class="text-main-color-black cursor-pointer py-1 text-sm">
 					<li
 						v-for="(val, key) in postCategories"
 						:key="key"
-						class="block px-4 py-2 tracking-wide-content hover:text-sub-color-dark"
+						class="tracking-wide-content hover:text-sub-color-dark block px-4 py-2"
 						@click.stop="selectDropCat(String(val.postCategoryId))"
 					>
 						{{ val.postCategoryName }}
@@ -161,15 +162,17 @@ const selectCatName = computed(() => {
 		<!-- post grid -->
 		<div
 			v-if="postListRef.length"
-			class="grid animate-fadeInUp grid-cols-2 overflow-hidden mobile:grid-cols-1 mobile:gap-5 h-table:w-10/12 h-table:gap-12 laptop:grid-cols-3 pro-pc:gap-24"
+			class="animate-fadeInUp mobile:grid-cols-1 mobile:gap-5 h-table:w-10/12 h-table:gap-12 laptop:grid-cols-3 pro-pc:gap-24 grid grid-cols-2 overflow-hidden"
+			data-testid="science__cards"
 		>
 			<div
 				v-for="(val, key) in postListRef"
 				:key="key"
+				data-testid="science__card"
 			>
 				<!-- card -->
 				<div
-					class="grid-card h-96 animate-fadeInUp border border-white/0 px-8 py-12 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0"
+					class="grid-card animate-fadeInUp h-96 border border-white/0 px-8 py-12 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0"
 					:class="[
 						{ 'bg-opacity/18': (key + 1) % 3 === 0 },
 						{ 'bg-opacity/12': (key + 3) % 3 === 1 },
@@ -177,22 +180,26 @@ const selectCatName = computed(() => {
 					]"
 				>
 					<!-- title -->
-					<p class="grid-card-title truncate text-3xl font-normal text-white">
+					<p
+						class="grid-card-title truncate text-3xl font-normal text-white"
+						data-testid="science__card__title"
+					>
 						{{ val.title }}
 					</p>
 					<!-- date & cat -->
-					<p class="mt-1 text-tiny text-main-color-light">
+					<p class="text-tiny text-main-color-light mt-1">
 						{{ val.updateTime }},
 						<router-link
 							:to="`/archive/${val.postCategoryId}`"
 							class="grid-card-tag text-sub-color-light hover:text-sp-color-light"
+							data-testid="science__card__postCategoryId"
 						>
 							{{ val.postCategoryName }}
 						</router-link>
 					</p>
 					<!-- des -->
 					<p
-						class="grid-des-box mt-5 font-light text-main-color-light"
+						class="grid-des-box text-main-color-light mt-5 font-light"
 						height="400px"
 					>
 						{{ stripMarkdown(String(val.content)) }}
@@ -201,6 +208,7 @@ const selectCatName = computed(() => {
 					<router-link
 						class="btn draw meet grid-card-read mt-10 inline-block"
 						:to="`/science/${val.postNanoId}`"
+						data-testid="science__card__link"
 					>
 						<span>查看更多</span>
 					</router-link>
@@ -209,14 +217,14 @@ const selectCatName = computed(() => {
 		</div>
 		<div
 			v-show="!postListRef.length"
-			class="h-screen h-table:w-10/12"
+			class="h-table:w-10/12 h-screen"
 		/>
 		<div
 			v-show="scienceListAPI?.body.data.meta.nextPage"
-			class="text-center h-table:w-10/12"
+			class="h-table:w-10/12 text-center"
 		>
 			<button
-				class="btn draw meet mt-6 mobile:mt-11 h-table:mt-24"
+				class="btn draw meet mobile:mt-11 h-table:mt-24 mt-6"
 				@click.prevent="loadMoreData"
 			>
 				<span>加載更多</span>

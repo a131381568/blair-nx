@@ -24,5 +24,10 @@
     "esModuleInterop": true,
     "strict": true
   },
+  "references": [
+    {
+      "path": "libs/cts-shared"
+    }
+  ],
   "exclude": ["node_modules", "tmp"]
 }

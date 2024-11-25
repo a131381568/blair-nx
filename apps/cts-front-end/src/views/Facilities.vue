@@ -64,25 +64,30 @@ handleObservatoriesData();
 <template>
 	<Header />
 	<div
-		class="flex-wrap items-start justify-center px-8 pb-32 mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72"
+		class="mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72 flex-wrap items-start justify-center px-8 pb-32"
 	>
 		<TitleBox
 			:page-title="facilitiesMeta.pageTitle"
 			:page-sub-title="facilitiesMeta.subPageTitle"
 		/>
 		<div class="mb-14 mt-8 w-10/12">
-			<h2	class="text-left text-main-color-light">
+			<h2
+				class="text-main-color-light text-left"
+				data-testid="promotional__agency__title"
+			>
 				推廣機構
 			</h2>
 		</div>
 		<!-- post grid -->
 		<div
-			class="facility-items grid grid-cols-1 gap-8 overflow-hidden h-table:w-10/12 h-table:gap-10 h-table:pr-36 laptop:grid-cols-3 laptop:pr-0 large-pc:gap-24"
+			class="facility-items h-table:w-10/12 h-table:gap-10 h-table:pr-36 laptop:grid-cols-3 laptop:pr-0 large-pc:gap-24 grid grid-cols-1 gap-8 overflow-hidden"
+			data-testid="facility__items"
 		>
 			<div
 				v-for="(val, key) in eduCategories"
 				:key="key"
-				class="facility-item group animate-fadeInUp"
+				class="facility-item animate-fadeInUp group"
+				data-testid="facility__item"
 			>
 				<img
 					class="h-[130px] w-full border border-b-0 border-white/0 object-cover delay-75 duration-1000 group-hover:border-white/60"
@@ -102,7 +107,7 @@ handleObservatoriesData();
 						{{ val.facilitiesTitle }}
 					</p>
 					<!-- des -->
-					<p class="grid-des-box mt-6 text-lg font-light text-main-color-light">
+					<p class="grid-des-box text-main-color-light mt-6 text-lg font-light">
 						{{ val.facilitiesDescription }}
 					</p>
 					<!-- link -->
@@ -121,7 +126,10 @@ handleObservatoriesData();
 			ref="block_observatory_target"
 			class="mb-0 mt-28 w-10/12"
 		>
-			<h2 class="text-left text-main-color-light">
+			<h2
+				class="text-main-color-light text-left"
+				data-testid="observatory__table__title"
+			>
 				天文台
 			</h2>
 		</div>
@@ -130,10 +138,12 @@ handleObservatoriesData();
 			<ul
 				v-if="observatoryCategories"
 				class="flex flex-wrap"
+				data-testid="observatory__categories__container"
 			>
 				<li
 					v-for="(val, key) in observatoryCategories"
 					:key="key"
+					data-testid="observatory__category"
 				>
 					<div class="group mr-10 flex items-center">
 						<input
@@ -146,14 +156,14 @@ handleObservatoriesData();
 						>
 						<label
 							:for="String(val.observatoryCategoryId)"
-							class="table-name flex cursor-pointer items-center text-2xl delay-75 duration-1000 group-hover:text-sp-color-light"
+							class="table-name group-hover:text-sp-color-light flex cursor-pointer items-center text-2xl delay-75 duration-1000"
 							:class="[
 								{ 'text-sub-color-light': val.observatoryCategoryId === selectCat },
 								{ 'text-main-color-light': val.observatoryCategoryId !== selectCat },
 							]"
 						>
 							<span
-								class="border-grey flex-no-shrink mr-2 inline-block size-3 rounded-full border delay-75 duration-1000 group-hover:bg-sp-color-light"
+								class="border-grey flex-no-shrink group-hover:bg-sp-color-light mr-2 inline-block size-3 rounded-full border delay-75 duration-1000"
 								:class="{ 'bg-sub-color-light': val.observatoryCategoryId === selectCat }"
 							/>
 							{{ val.observatoryCategoryName }}

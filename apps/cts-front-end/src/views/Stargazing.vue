@@ -134,7 +134,7 @@ const stargazingMeta = computed(() => currentPageMeta.value(String(route.name)))
 <template>
 	<Header />
 	<div
-		class="flex-wrap items-start justify-center px-8 pb-7 mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72"
+		class="mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72 flex-wrap items-start justify-center px-8 pb-7"
 	>
 		<TitleBox
 			:page-title="stargazingMeta.pageTitle"
@@ -143,10 +143,10 @@ const stargazingMeta = computed(() => currentPageMeta.value(String(route.name)))
 	</div>
 	<!---------- 地點列表 ---------->
 	<!-- 手機板選單樣式 -->
-	<div class="dropdown-menu absolute z-[401] ml-2 mt-2 hidden shadow-2xl mobile:block">
+	<div class="dropdown-menu mobile:block absolute z-[401] ml-2 mt-2 hidden shadow-2xl">
 		<button
 			id=" dropdownDefault"
-			class="relative inline-flex w-full items-center border border-white/60 bg-white py-3 pl-4 pr-12 text-center text-lg font-medium tracking-normal text-main-color-black duration-1000"
+			class="text-main-color-black relative inline-flex w-full items-center border border-white/60 bg-white py-3 pl-4 pr-12 text-center text-lg font-medium tracking-normal duration-1000"
 			type="button"
 			@click.prevent="togglePlace()"
 		>
@@ -157,13 +157,13 @@ const stargazingMeta = computed(() => currentPageMeta.value(String(route.name)))
 		<div
 			v-show="togglePlaceVal"
 			id="dropdown"
-			class="absolute z-10 w-full divide-y divide-gray-100 bg-main-color-light"
+			class="bg-main-color-light absolute z-10 w-full divide-y divide-gray-100"
 		>
-			<ul class="h-[200px] cursor-pointer overflow-y-auto py-1 text-sm text-main-color-black">
+			<ul class="text-main-color-black h-[200px] cursor-pointer overflow-y-auto py-1 text-sm">
 				<li
 					v-for="(val, key) in stargazingList"
 					:key="key"
-					class="block px-4 py-2 tracking-normal hover:text-sub-color-dark"
+					class="hover:text-sub-color-dark block px-4 py-2 tracking-normal"
 					@click.stop="clickSingleInfo(val)"
 				>
 					{{ val.stargazingTitle }}
@@ -172,38 +172,47 @@ const stargazingMeta = computed(() => currentPageMeta.value(String(route.name)))
 		</div>
 	</div>
 	<!-- 桌機左側列表樣式 -->
-	<div class="stargazing-menu absolute z-[401] hidden h-[80vh] w-full animate-slideInLeft overflow-x-hidden bg-white px-7 py-8 shadow-2xl h-table:block h-table:w-5/12 w-table:w-1/3 middle-pc:w-1/5">
+	<div class="stargazing-menu animate-slideInLeft h-table:block h-table:w-5/12 w-table:w-1/3 middle-pc:w-1/5 absolute z-[401] hidden h-[80vh] w-full overflow-x-hidden bg-white px-7 py-8 shadow-2xl">
 		<h2 class="mb-9 font-normal">
 			地點列表
 		</h2>
-		<ul>
+		<ul data-testid="stargazing__list">
 			<li
 				v-for="(val, key) in stargazingList"
 				:key="key"
-				class="group mb-3 flex cursor-pointer items-center font-normal tracking-wide text-main-color-middle"
+				class="text-main-color-middle group mb-3 flex cursor-pointer items-center font-normal tracking-wide"
+				data-testid="stargazing__li"
 				@click.stop="clickSingleInfo(val)"
 			>
 				<img
 					class="mr-2 w-[15px]"
 					src="/svg/mark.svg"
 				>
-				<span class="whitespace-nowrap delay-75 duration-1000 group-hover:text-sp-color-light">{{
-					val.stargazingTitle
-				}}</span>
+				<span
+					class="group-hover:text-sp-color-light whitespace-nowrap delay-75 duration-1000"
+					data-testid="stargazing__li__title"
+				>
+					{{ val.stargazingTitle }}
+				</span>
 			</li>
 		</ul>
 	</div>
 	<!-- 單一地點介紹 -->
 	<div
-		class="stargazing-info-card grid-flow-rows absolute z-[401] grid h-[80vh] w-full animate-slideInLeft bg-white	shadow-2xl h-table:w-1/2 w-table:w-5/12 middle-pc:w-1/3"
+		class="stargazing-info-card grid-flow-rows animate-slideInLeft h-table:w-1/2 w-table:w-5/12 middle-pc:w-1/3 absolute z-[401] grid	h-[80vh] w-full bg-white shadow-2xl"
 		:class="{ '-z-9999': isReady, 'animate-slideOutLeft': !infoBoxState }"
+		data-testid="stargazing__drawer__container"
 	>
 		<div class="row-span-1 flex w-full items-center justify-between p-4">
-			<h2 class="truncate font-normal tracking-normal mobile:text-xl h-table:text-xl middle-pc:text-4xl">
+			<h2
+				class="mobile:text-xl h-table:text-xl middle-pc:text-4xl truncate font-normal tracking-normal"
+				data-testid="stargazing__drawer__title"
+			>
 				{{ activeInfo.stargazingTitle }}
 			</h2>
 			<button
-				class="close-stargazing-menu-btn relative bottom-[7px] right-7 -m-6 size-[15px] p-6 before:absolute before:left-[15px] before:h-[15px] before:w-[2px] before:rotate-45 before:bg-black after:absolute after:left-[15px] after:h-[15px] after:w-[2px] after:-rotate-45 after:bg-black mobile:right-2"
+				class="close-stargazing-menu-btn mobile:right-2 relative bottom-[7px] right-7 -m-6 size-[15px] p-6 before:absolute before:left-[15px] before:h-[15px] before:w-[2px] before:rotate-45 before:bg-black after:absolute after:left-[15px] after:h-[15px] after:w-[2px] after:-rotate-45 after:bg-black"
+				data-testid="stargazing__drawer__close"
 				@click.stop="closeInfoBox"
 			/>
 		</div>
@@ -211,12 +220,12 @@ const stargazingMeta = computed(() => currentPageMeta.value(String(route.name)))
 			class="row-span-6 min-h-[100px] w-full bg-cover bg-bottom bg-no-repeat"
 			:style="`background-image: url(${activeInfo.stargazingImage})`"
 		/>
-		<div class="row-span-4 p-4 text-main-color-middle">
+		<div class="text-main-color-middle row-span-4 p-4">
 			<div class="stargazing-info-description">
 				{{ activeInfo.stargazingDescription }}
 			</div>
 		</div>
-		<div class="row-span-1 flex items-center px-4 text-sub-color-light mobile:pb-2">
+		<div class="text-sub-color-light mobile:pb-2 row-span-1 flex items-center px-4">
 			<img
 				class="mr-2 w-[15px]"
 				src="/svg/mark.svg"
@@ -233,7 +242,8 @@ const stargazingMeta = computed(() => currentPageMeta.value(String(route.name)))
 	<div
 		id="map-container"
 		ref="mapContainer"
-		class="z-0 h-[80vh] w-full h-table:mb-24 middle-pc:mb-60"
+		data-testid="map-container"
+		class="h-table:mb-24 middle-pc:mb-60 z-0 h-[80vh] w-full"
 	/>
 	<Footer />
 </template>

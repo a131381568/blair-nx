@@ -1,9 +1,12 @@
 # Cts Front End
 
 - 專案名稱：cts-front-end
-- 此專案為 [catching-the-star-master](https://github.com/a131381568/catching-the-star-master) 的前端重構專案
+- 本機端網址：http://localhost:4200
+- 線上網址：https://star.puraliena.com
 
 ## A. 簡述
+
+- 此專案為 [catching-the-star-master](https://github.com/a131381568/catching-the-star-master) 的前端重構專案
 
 **Catch the stars** (cts) 是基於 Vue3 製作的天文網站
 
@@ -14,14 +17,16 @@
 
 ### A-1 前台形象
 
-ctsf: [https://star.puraliena.com](https://star.puraliena.com)
+[https://star.puraliena.com](https://star.puraliena.com)
 ![home](https://i.imgur.com/p7QVKDf.png)
 
 ### A-2 後台管理
 
-ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
-![login](https://i.imgur.com/CuRF9jw.png)
+- 帳號：kevin@test.com
+- 密碼：123456
+- 登入：[https://star.puraliena.com/login](https://star.puraliena.com/login)
 
+![login](https://i.imgur.com/CuRF9jw.png)
 
 ## B. 專案規劃
 
@@ -93,6 +98,8 @@ ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
 [blair-nx project board: 重構 ctsm 專案](https://github.com/a131381568/blair-nx/projects?query=is%3Aopen)
 
 #### B-2-2 重構差異
+- node 20.17
+- vue 3.4.38
 - 整個專案架構，將前端跟後端都放進 Nx (Monorepo) 內管理
 - 換掉原本套裝的 Apollo GraphQL 方案，改用 RESTful 的 NestJS
 - 前後端藉由 cts-shared 專案來共用 type/schema 還有設定檔，藉此達到共用 ts-rest 的 API 合約
@@ -109,12 +116,15 @@ ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
 ![所有路由](https://i.imgur.com/QabR3Uf.png)
 
 ### C-2 頁面依賴關係
+
+> 天文科普頁面依賴
+
 ![天文科普依賴](https://i.imgur.com/W9WR9hc.png)
 
 ### C-3 專案間的依賴關係
-![專案間的依賴關係](https://i.imgur.com/rt5D6w4.png)
-- [查看後端專案](#)
-- [查看共享專案](#)
+![專案間的依賴關係](https://i.imgur.com/QT5FbuY.png)
+- [查看後端專案](https://github.com/a131381568/blair-nx/tree/development/apps/cts-back-end)
+- [查看共享專案](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md)
 
 
 ## D. 本機開發
@@ -140,14 +150,21 @@ ctsb: [https://star.puraliena.com/login](https://star.puraliena.com/login)
     pnpm exec nx lint cts-front-end
     ```
 
-## D. 部署
+## D. 打包
 
-使用第三方的: https://railway.app
+```shell
+ pnpm exec nx build cts-front-end
+ # 會將檔案打包至 dist/cts
+```
 
-- libs/cts-shared/.env.example: 有幾乎全部的環境變數
-- 前端藉由客製化容器 Nginx 的 Dockerfile 來裝打包出來的 Vue
-- 有特別為 ctsf 寫自動化打包的流程: .github/workflows/deploy-frontend.yml (後續還要改進)
+## E. 部署
 
-## E. 聲明
+- [railway 相關](https://github.com/a131381568/blair-nx/blob/development/libs/cts-shared/README.md#railway-%E7%9B%B8%E9%97%9C)
+
+## F. E2E 測試
+
+[E2E 說明](https://github.com/a131381568/blair-nx/tree/development/apps/cts-front-end-e2e)
+
+## G. 聲明
 - 僅作為學術研究用途，無商業行為。
 - 素材與資料來源：台北市立天文科學教育館、南瀛天文教育園區、國立自然科學博物館、交通部中央氣象局、Freepik、Wikipedia、ELLE。

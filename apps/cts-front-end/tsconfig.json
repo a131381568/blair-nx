@@ -4,7 +4,16 @@
 		"composite": true,
 		"jsx": "preserve",
 		"jsxImportSource": "vue",
+		"lib": ["ES2015", "DOM"],
+		"baseUrl": "../../",
 		"rootDir": "../../",
+		"paths": {
+			"@cts-shared": ["libs/cts-shared/index.ts"],
+			"@ctsf-src/*": ["apps/cts-front-end/src/*"],
+			"@blair-nx-composables": ["libs/blairComposables/src/index.ts"],
+			"@blair-nx-config/*": ["libs/blairConfig/*"],
+			"@blair-nx-ui": ["libs/blairUI/src/index.ts"]
+		},
 		"resolveJsonModule": true,
 		"types": ["node"],
 		"allowJs": true,
@@ -21,9 +30,12 @@
 		},
 		{
 			"path": "./tsconfig.spec.json"
+		},
+		{
+			"path": "../../libs/cts-shared"
 		}
 	],
 	"files": [],
 	"include": [],
-	"exclude": []
+	"exclude": ["node_modules"]
 }
