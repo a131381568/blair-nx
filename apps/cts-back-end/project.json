@@ -90,7 +90,7 @@
 		"docker:d": {
 			"executor": "nx:run-commands",
 			"options": {
-				"cwd": "apps/cts-back-end/deployment",
+				"cwd": "apps/cts-back-end/deployment/local",
 				"command": "docker-compose up -d"
 			}
 		}

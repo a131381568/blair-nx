@@ -64,12 +64,12 @@ const validateForm = useDebounceFn(async () => {
 
 <template>
 	<div
-		class="items-center justify-center p-8 mobile:pb-20 mobile:pt-32 h-table:flex h-table:px-6 h-table:py-32 middle-pc:px-28 middle-pc:pb-44 middle-pc:pt-64"
+		class="mobile:pb-20 mobile:pt-32 h-table:flex h-table:px-6 h-table:py-32 middle-pc:px-28 middle-pc:pb-44 middle-pc:pt-64 items-center justify-center p-8"
 	>
-		<div class="w-full bg-main-color-light/90 py-16 shadow-30-box h-table:w-10/12 w-table:w-7/12 laptop:w-1/2 large-pc:w-1/3">
+		<div class="bg-main-color-light/90 shadow-30-box h-table:w-10/12 w-table:w-7/12 laptop:w-1/2 large-pc:w-1/3 w-full py-16">
 			<div class="m-auto mb-8 block self-center">
 				<LoginLogo class="admin-login-svg-obj svg-obj mx-auto h-auto w-[77px]" />
-				<div class="mt-2 text-center font-serif text-4xl font-medium tracking-wider text-main-color-dark">
+				<div class="text-main-color-dark mt-2 text-center font-serif text-4xl font-medium tracking-wider">
 					Catch the stars
 				</div>
 			</div>
@@ -83,7 +83,7 @@ const validateForm = useDebounceFn(async () => {
 						type="text"
 						autocomplete="off"
 						:maxlength="COMMON_ID_MAX_LENGTH"
-						class="m-auto block h-8 w-10/12 border-x-0 border-b-2 border-t-0 bg-transparent px-0 py-7 text-middle placeholder:text-main-color-dark focus:border-main-color-black/70 focus:outline-0 focus:ring-0 focus:placeholder:text-transparent h-table:w-5/12"
+						class="text-middle placeholder:text-main-color-dark focus:border-main-color-black/70 h-table:w-5/12 m-auto block h-8 w-10/12 border-x-0 border-b-2 border-t-0 bg-transparent px-0 py-7 focus:outline-0 focus:ring-0 focus:placeholder:text-transparent"
 						:class="[
 							{ 'border-sp-color-dark': validateLoginMsg.email },
 							{ 'border-main-color-black/30': !validateLoginMsg.email },
@@ -92,7 +92,8 @@ const validateForm = useDebounceFn(async () => {
 					>
 					<span
 						v-show="validateLoginMsg.email"
-						class="errors-tip mx-auto mb-auto mt-1 block h-5 w-10/12 text-xs text-sp-color-dark h-table:w-5/12"
+						class="errors-tip text-sp-color-dark h-table:w-5/12 mx-auto mb-auto mt-1 block h-5 w-10/12 text-xs"
+						data-testid="emailError"
 					>
 						{{ validateLoginMsg.email }}
 					</span>
@@ -104,7 +105,7 @@ const validateForm = useDebounceFn(async () => {
 						type="password"
 						autocomplete="off"
 						:maxlength="COMMON_ID_MAX_LENGTH"
-						class="m-auto mt-2 block h-8 w-10/12 border-x-0 border-b-2 border-t-0 bg-transparent px-0 py-7 text-middle placeholder:text-main-color-dark focus:border-main-color-black/70 focus:outline-0 focus:ring-0 focus:placeholder:text-transparent h-table:w-5/12"
+						class="text-middle placeholder:text-main-color-dark focus:border-main-color-black/70 h-table:w-5/12 m-auto mt-2 block h-8 w-10/12 border-x-0 border-b-2 border-t-0 bg-transparent px-0 py-7 focus:outline-0 focus:ring-0 focus:placeholder:text-transparent"
 						:class="[
 							{ 'border-sp-color-dark': validateLoginMsg.password },
 							{ 'border-main-color-black/30': !validateLoginMsg.password },
@@ -113,14 +114,15 @@ const validateForm = useDebounceFn(async () => {
 					>
 					<span
 						v-show="validateLoginMsg.password"
-						class="errors-tip mx-auto mb-auto mt-1 block h-5 w-10/12 text-xs text-sp-color-dark h-table:w-5/12"
+						class="errors-tip text-sp-color-dark h-table:w-5/12 mx-auto mb-auto mt-1 block h-5 w-10/12 text-xs"
+						data-testid="passwordError"
 					>
 						{{ validateLoginMsg.password }}
 					</span>
 				</span>
 				<button
 					id="submit-login"
-					class="btn m-auto mt-14 block h-12 w-10/12 items-center justify-center border border-main-color-black p-0 text-center text-middle font-bold tracking-wide-content text-main-color-black shadow-none transition-all duration-300 hover:bg-main-color-dark hover:text-main-color-light h-table:w-5/12"
+					class="btn border-main-color-black text-middle tracking-wide-content text-main-color-black hover:bg-main-color-dark hover:text-main-color-light h-table:w-5/12 m-auto mt-14 block h-12 w-10/12 items-center justify-center border p-0 text-center font-bold shadow-none transition-all duration-300"
 					@click.prevent="validateForm"
 				>
 					登入後台

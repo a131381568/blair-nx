@@ -92,6 +92,9 @@ dependencies:
   crypto-js:
     specifier: ^4.2.0
     version: 4.2.0
+  dotenv:
+    specifier: ^16.4.5
+    version: 16.4.5
   express:
     specifier: ^4.21.1
     version: 4.21.1
@@ -169,6 +172,9 @@ devDependencies:
   '@nx/cypress':
     specifier: 19.8.0
     version: 19.8.0(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@18.16.9)(cypress@13.7.3)(eslint@8.57.1)(nx@19.8.0)(typescript@5.5.4)
+  '@nx/devkit':
+    specifier: 19.8.0
+    version: 19.8.0(nx@19.8.0)
   '@nx/esbuild':
     specifier: 19.8.0
     version: 19.8.0(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@18.16.9)(esbuild@0.19.12)(nx@19.8.0)(typescript@5.5.4)
@@ -190,6 +196,9 @@ devDependencies:
   '@nx/node':
     specifier: 19.8.0
     version: 19.8.0(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@18.16.9)(eslint@8.57.1)(nx@19.8.0)(ts-node@10.9.2)(typescript@5.5.4)
+  '@nx/playwright':
+    specifier: 19.8.0
+    version: 19.8.0(@playwright/test@1.48.2)(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@18.16.9)(esbuild@0.19.12)(eslint@8.57.1)(nx@19.8.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.5.4)(vite@5.4.8)(vitest@1.6.0)(vue-tsc@2.1.6)(webpack-cli@5.1.4)
   '@nx/storybook':
     specifier: 19.8.0
     version: 19.8.0(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@18.16.9)(cypress@13.7.3)(eslint@8.57.1)(nx@19.8.0)(typescript@5.5.4)
@@ -211,6 +220,9 @@ devDependencies:
   '@pinia/testing':
     specifier: ^0.1.5
     version: 0.1.5(pinia@2.2.2)(vue@3.4.38)
+  '@playwright/test':
+    specifier: ^1.36.0
+    version: 1.48.2
   '@rollup/plugin-commonjs':
     specifier: ^25.0.7
     version: 25.0.8
@@ -301,6 +313,9 @@ devDependencies:
   eslint-plugin-format:
     specifier: ^0.1.1
     version: 0.1.2(eslint@8.57.1)
+  eslint-plugin-playwright:
+    specifier: ^1.6.2
+    version: 1.8.3(eslint@8.57.1)
   eslint-plugin-tailwindcss:
     specifier: ^3.17.0
     version: 3.17.4(tailwindcss@3.4.13)
@@ -4812,6 +4827,59 @@ packages:
     dev: true
     optional: true
 
+  /@nx/playwright@19.8.0(@playwright/test@1.48.2)(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@18.16.9)(esbuild@0.19.12)(eslint@8.57.1)(nx@19.8.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.5.4)(vite@5.4.8)(vitest@1.6.0)(vue-tsc@2.1.6)(webpack-cli@5.1.4):
+    resolution: {integrity: sha512-6BSyhj5j5lUU2RvhrfFRL2bNn8UAgG8XYC+3V6Ome1UVBYhPq7AAnE7/Rr7fC0EcVYEechbouXc9TFXNK60UaA==}
+    peerDependencies:
+      '@playwright/test': ^1.36.0
+    peerDependenciesMeta:
+      '@playwright/test':
+        optional: true
+    dependencies:
+      '@nx/devkit': 19.8.0(nx@19.8.0)
+      '@nx/eslint': 19.8.0(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@18.16.9)(eslint@8.57.1)(nx@19.8.0)
+      '@nx/js': 19.8.0(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@18.16.9)(nx@19.8.0)(typescript@5.5.4)
+      '@nx/vite': 19.8.0(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@18.16.9)(nx@19.8.0)(typescript@5.5.4)(vite@5.4.8)(vitest@1.6.0)
+      '@nx/webpack': 19.8.0(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@18.16.9)(esbuild@0.19.12)(nx@19.8.0)(react-dom@18.3.1)(react@18.3.1)(typescript@5.5.4)(vue-tsc@2.1.6)(webpack-cli@5.1.4)
+      '@phenomnomnominal/tsquery': 5.0.1(typescript@5.5.4)
+      '@playwright/test': 1.48.2
+      minimatch: 9.0.3
+      tslib: 2.7.0
+    transitivePeerDependencies:
+      - '@babel/traverse'
+      - '@parcel/css'
+      - '@rspack/core'
+      - '@swc-node/register'
+      - '@swc/core'
+      - '@swc/css'
+      - '@swc/wasm'
+      - '@types/node'
+      - '@zkochan/js-yaml'
+      - bufferutil
+      - clean-css
+      - csso
+      - debug
+      - esbuild
+      - eslint
+      - fibers
+      - html-webpack-plugin
+      - lightningcss
+      - node-sass
+      - nx
+      - react
+      - react-dom
+      - sass-embedded
+      - supports-color
+      - typescript
+      - uglify-js
+      - utf-8-validate
+      - verdaccio
+      - vite
+      - vitest
+      - vue-template-compiler
+      - vue-tsc
+      - webpack-cli
+    dev: true
+
   /@nx/storybook@19.8.0(@swc-node/register@1.9.2)(@swc/core@1.5.29)(@types/node@18.16.9)(cypress@13.7.3)(eslint@8.57.1)(nx@19.8.0)(typescript@5.5.4):
     resolution: {integrity: sha512-Sobofeub7ZRkMY2hSi3aC6/aEn742Xy9UWZ1y0DRMW8VIfCVhPYGHLLLflMfGymctrm+r4IsUjYxd7l6q6Kl6g==}
     dependencies:
@@ -5046,6 +5114,14 @@ packages:
   /@pkgr/core@0.1.1:
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+    dev: true
+
+  /@playwright/test@1.48.2:
+    resolution: {integrity: sha512-54w1xCWfXuax7dz4W2M9uw0gDyh+ti/0K/MxcCUxChFh37kkdxPdfZDw5QBbuPUJHr1CiHJ1hXgSs+GgeQc5Zw==}
+    engines: {node: '>=18'}
+    hasBin: true
+    dependencies:
+      playwright: 1.48.2
     dev: true
 
   /@polka/url@1.0.0-next.28:
@@ -10639,6 +10715,20 @@ packages:
       - typescript
     dev: true
 
+  /eslint-plugin-playwright@1.8.3(eslint@8.57.1):
+    resolution: {integrity: sha512-h87JPFHkz8a6oPhn8GRGGhSQoAJjx0AkOv1jME6NoMk2FpEsfvfJJNaQDxLSqSALkCr0IJXPGTnp6SIRVu5Nqg==}
+    engines: {node: '>=16.6.0'}
+    peerDependencies:
+      eslint: '>=8.40.0'
+      eslint-plugin-jest: '>=25'
+    peerDependenciesMeta:
+      eslint-plugin-jest:
+        optional: true
+    dependencies:
+      eslint: 8.57.1
+      globals: 13.24.0
+    dev: true
+
   /eslint-plugin-prettier@4.2.1(eslint-config-prettier@8.10.0)(eslint@8.57.1)(prettier@2.8.8):
     resolution: {integrity: sha512-f/0rXLXUt0oFYs8ra4w49wYZBG5GKZpAYsJSm6rnYL5uVDjd+zowwMwVZHnAjf4edNrKpCDYfXDgmRE/Ak7QyQ==}
     engines: {node: '>=12.0.0'}
@@ -11576,6 +11666,14 @@ packages:
 
   /fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
+
+  /fsevents@2.3.2:
+    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
+    os: [darwin]
+    requiresBuild: true
+    dev: true
+    optional: true
 
   /fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -15251,6 +15349,22 @@ packages:
       confbox: 0.1.7
       mlly: 1.7.1
       pathe: 1.1.2
+    dev: true
+
+  /playwright-core@1.48.2:
+    resolution: {integrity: sha512-sjjw+qrLFlriJo64du+EK0kJgZzoQPsabGF4lBvsid+3CNIZIYLgnMj9V6JY5VhM2Peh20DJWIVpVljLLnlawA==}
+    engines: {node: '>=18'}
+    hasBin: true
+    dev: true
+
+  /playwright@1.48.2:
+    resolution: {integrity: sha512-NjYvYgp4BPmiwfe31j4gHLa3J7bD2WiBz8Lk2RoSsmX38SVIARZ18VYjxLjAcDsAhA+F4iSEXTSGgjua0rrlgQ==}
+    engines: {node: '>=18'}
+    hasBin: true
+    dependencies:
+      playwright-core: 1.48.2
+    optionalDependencies:
+      fsevents: 2.3.2
     dev: true
 
   /pluralize@8.0.0:

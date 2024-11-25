@@ -108,26 +108,28 @@ watchDebounced(searchWord, () => {
 <template>
 	<Header />
 	<div
-		class="flex-wrap items-start justify-center px-8 pb-32 mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72"
+		class="mobile:pt-32 h-table:flex h-table:px-6 h-table:pt-32 middle-pc:px-20 middle-pc:pt-72 flex-wrap items-start justify-center px-8 pb-32"
 	>
 		<TitleBox
 			:page-title="searchMeta.pageTitle"
 			:page-sub-title="searchMeta.subPageTitle"
 		/>
 		<!-- 搜尋框 -->
-		<div class="mt-1 w-full mobile:-mt-8 h-table:w-10/12">
+		<div class="mobile:-mt-8 h-table:w-10/12 mt-1 w-full">
 			<div class="relative bg-transparent text-lg text-gray-800">
 				<div class="flex items-center border-b border-white/25 py-2 duration-500 focus-within:border-white/60">
 					<input
 						v-model="searchWord"
-						class="mr-3 w-full border-none border-transparent bg-transparent px-2 text-xl text-main-color-middle focus:border-transparent focus:text-main-color-light focus:outline-0 focus:ring-0 h-table:text-3xl"
+						class="text-main-color-middle focus:text-main-color-light h-table:text-3xl mr-3 w-full border-none border-transparent bg-transparent px-2 text-xl focus:border-transparent focus:outline-0 focus:ring-0"
 						type="text"
 						placeholder="Search"
+						data-testid="search__input"
 						@keyup.enter="searchData"
 					>
 					<button
 						type="submit"
-						class="search-btn absolute right-0 top-0 mr-1 mt-2 h-table:mr-4 h-table:mt-0"
+						class="search-btn h-table:mr-4 h-table:mt-0 absolute right-0 top-0 mr-1 mt-2"
+						data-testid="search__btn"
 						@click.prevent="searchData"
 					>
 						<SearchBtn />
@@ -137,17 +139,20 @@ watchDebounced(searchWord, () => {
 		</div>
 		<div
 			v-show="!postListRef.length"
-			class="mt-16 h-[200px] h-table:w-10/12"
+			class="h-table:w-10/12 mt-16 h-[200px]"
 		>
 			<!-- 搜尋無結果 -->
 			<div
 				v-show="!pagiMeta.totalCount && !postListRef.length && searchWord"
 				class="search-nothing-tip"
 			>
-				<p class="text-xl font-normal text-white h-table:text-3xl">
+				<p
+					class="h-table:text-3xl text-xl font-normal text-white"
+					data-testid="search__nothing__tip__string"
+				>
 					查無結果
 				</p>
-				<p class="mt-1 truncate text-lg font-light text-main-color-light h-table:mt-5">
+				<p class="text-main-color-light h-table:mt-5 mt-1 truncate text-lg font-light">
 					請使用其它關鍵字搜尋
 				</p>
 			</div>
@@ -155,7 +160,7 @@ watchDebounced(searchWord, () => {
 		<!-- 主視覺 -->
 		<div
 			v-show="postListRef.length"
-			class="mt-20 hidden h-full animate-flipInY w-table:block w-table:w-5/12 middle-pc:w-4/12"
+			class="animate-flipInY w-table:block w-table:w-5/12 middle-pc:w-4/12 mt-20 hidden h-full"
 		>
 			<img
 				class="w-auto"
@@ -163,13 +168,17 @@ watchDebounced(searchWord, () => {
 			>
 		</div>
 		<!-- post grid -->
-		<div class="post-grid-items mt-14 grid w-10/12 grid-cols-1 overflow-hidden mobile:w-full w-table:mt-36 w-table:w-5/12 middle-pc:w-6/12">
+		<div
+			class="post-grid-items mobile:w-full w-table:mt-36 w-table:w-5/12 middle-pc:w-6/12 mt-14 grid w-10/12 grid-cols-1 overflow-hidden"
+		>
 			<div
 				v-for="(val, key) in postListRef"
 				:key="key"
+				data-testid="search__item"
 				class="post-grid-item animate-fadeInUp"
 			>
 				<router-link
+					data-testid="search__item__link"
 					:to="{
 						name: String(val.postCategoryId) === 'story' ? 'SingleStory' : 'SingleScience',
 						params: { sid: String(val.postNanoId) },
@@ -177,12 +186,15 @@ watchDebounced(searchWord, () => {
 				>
 					<!-- card -->
 					<div
-						class="mb-1 border border-white/0 bg-white/6 p-6 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0 laptop:px-16 laptop:py-8"
+						class="bg-white/6 laptop:px-16 laptop:py-8 mb-1 border border-white/0 p-6 delay-75 duration-1000 hover:border-white/60 hover:bg-white/0"
 					>
-						<p class="text-xl font-normal text-white h-table:text-3xl">
+						<p
+							data-testid="search__item__title"
+							class="h-table:text-3xl text-xl font-normal text-white"
+						>
 							{{ val.title }}
 						</p>
-						<p class="mt-1 truncate text-lg font-light text-main-color-light h-table:mt-5">
+						<p class="text-main-color-light h-table:mt-5 mt-1 truncate text-lg font-light">
 							{{ stripMarkdown(String(val.content)) }}
 						</p>
 					</div>

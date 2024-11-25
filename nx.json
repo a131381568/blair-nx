@@ -52,6 +52,15 @@
       }
     },
     {
+      "plugin": "@nx/playwright/plugin",
+      "options": {
+        "targetName": "pw",
+        "openTargetName": "pw:op",
+        "componentTestingTargetName": "component-test",
+        "ciTargetName": "pw-ci"
+      }
+    },
+    {
       "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint"

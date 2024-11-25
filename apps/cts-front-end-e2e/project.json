@@ -1,0 +1,74 @@
+{
+	"name": "cts-front-end-e2e",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/{projectName}/src",
+	"implicitDependencies": ["cts-front-end"],
+	"projectType": "application",
+	"targets": {
+		"pw:codegen": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "playwright codegen http://localhost:4200",
+				"cwd": "apps/{projectName}"
+			}
+		},
+		"pw": {
+			"executor": "@nx/playwright:playwright",
+			"outputs": ["{workspaceRoot}/dist/.playwright/apps/{projectName}"],
+			"options": {
+				"config": "apps/{projectName}/playwright.config.ts"
+			},
+			"configurations": {
+				"ci": {
+					"CI": true
+				},
+				"debug": {
+					"debug": true
+				}
+			}
+		},
+		"pw:op": {
+			"executor": "@nx/playwright:playwright",
+			"options": {
+				"config": "apps/{projectName}/playwright.config.ts",
+				"ui": true,
+				"debug": true
+			}
+		},
+		"pw:report": {
+			"executor": "nx:run-commands",
+			"options": {
+				"commands": [
+					"pnpm dlx playwright show-report playwright-report"
+				],
+				"cwd": "apps/{projectName}",
+				"parallel": false
+			}
+		},
+		"pw-ci": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "pnpm dlx playwright test --config=playwright.config.ts",
+				"cwd": "apps/{projectName}",
+				"env": {
+					"CI": "true"
+				}
+			}
+		},
+		"component-test": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "pnpm dlx playwright test --config=playwright.config.ts --project=@playwright/test",
+				"cwd": "apps/{projectName}"
+			}
+		},
+		"lint": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/{projectName}",
+				"command": "eslint ."
+			}
+		}
+	},
+	"tags": ["type:e2e"]
+}
