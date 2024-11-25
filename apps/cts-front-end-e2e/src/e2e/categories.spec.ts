@@ -1,19 +1,25 @@
 import { expect, test } from '@playwright/test';
 import { TestHelper } from '../support/helpers/test.helper';
+import { BasePage } from '../support/pages/base.page';
 
-test.describe('文章分類管理', () => {
+// serial 確保測試順序
+test.describe.serial('文章分類管理', () => {
 	let helperPage: TestHelper;
+	let basePage: BasePage;
 
 	test.beforeEach(async ({ page }) => {
 		helperPage = new TestHelper(page);
-		helperPage.loginAdmin();
+		basePage = new BasePage(page);
+		await helperPage.loginAdmin();
+		page.goto('/board/categories');
+		await basePage.waitApiCall('/api/post-categories');
+		await expect(page.locator('h1')).toHaveText('文章分類管理');
 	});
 
-	test('新增分類', async ({ page }) => {
-		const CREATE_NAME = '蘋果不好吃';
-		const CREATE_ID = 'badapple';
+	test('新增分類', async ({ page, browserName }) => {
+		const CREATE_NAME = `蘋果不好吃_${browserName}`;
+		const CREATE_ID = `apple${browserName}`;
 
-		await page.goto('http://localhost:4200/board/categories');
 		await page.getByRole('link', { name: '新增', exact: true }).click();
 		await page.locator('div').filter({ hasText: /^分類名稱$/ }).getByRole('textbox').fill(CREATE_NAME);
 		await page.locator('div').filter({ hasText: /^分類 ID$/ }).getByRole('textbox').fill(CREATE_ID);
@@ -22,38 +28,44 @@ test.describe('文章分類管理', () => {
 		await page.getByRole('button', { name: '確定' }).click();
 		// 成功訊息
 		await helperPage.showModelIsCreate();
-		await expect(page.getByRole('cell', { name: CREATE_NAME })).toBeVisible();
-		await expect(page.getByRole('cell', { name: CREATE_ID })).toBeVisible();
+		await expect(page.locator(`[data-title="名稱"]`).filter({ hasText: CREATE_NAME })).toBeVisible();
+		await expect(page.locator(`[data-title="ID"]`).filter({ hasText: CREATE_ID })).toBeVisible();
 	});
 
-	test('sss', () => {
-		/*****
-		await page.getByRole('row', { name: '蘋果不好吃 badapple' }).getByRole('link').click();
-		await page.locator('div').filter({ hasText: /^分類名稱$/ }).getByRole('textbox').click();
-		await page.locator('div').filter({ hasText: /^分類名稱$/ }).getByRole('textbox').press('CapsLock');
-		await page.locator('div').filter({ hasText: /^分類名稱$/ }).getByRole('textbox').fill('蘋果不好吃吃');
-		await page.locator('div').filter({ hasText: /^分類名稱$/ }).getByRole('textbox').press('Enter');
-		await page.locator('div').filter({ hasText: /^分類 ID$/ }).getByRole('textbox').click();
-		await page.locator('div').filter({ hasText: /^分類 ID$/ }).getByRole('textbox').fill('badapple');
-		await page.locator('div').filter({ hasText: /^分類 ID$/ }).getByRole('textbox').press('CapsLock');
-		await page.locator('div').filter({ hasText: /^分類 ID$/ }).getByRole('textbox').fill('badappleee');
+	test('編輯分類', async ({ page, browserName }) => {
+		const ORI_NAME = `蘋果不好吃_${browserName}`;
+		const EDIT_NAME = `aaaaa蘋果不好吃_${browserName}`;
+
+		const rowEl = page.locator(`tr:has-text("${ORI_NAME}")`);
+		await rowEl.waitFor({ state: 'visible' });
+		const editLinkEl = rowEl.locator('td[data-title="編輯"] a');
+		// 進入編輯頁
+		await editLinkEl.click();
+		await expect(page.locator('h1')).toHaveText('編輯文章分類');
+		const catNameEl = page.locator('div').filter({ hasText: /^分類名稱$/ }).getByRole('textbox');
+		await catNameEl.waitFor();
+		await catNameEl.clear();
+		await catNameEl.fill(EDIT_NAME);
+		await expect(catNameEl).toHaveValue(EDIT_NAME);
+		// 送出編輯
 		await page.getByRole('button', { name: '儲存編輯' }).click();
 		await expect(page.getByLabel('更新訊息')).toBeVisible();
 		await page.getByRole('button', { name: '確定' }).click();
-		await expect(page.getByRole('cell', { name: '蘋果不好吃吃' })).toBeVisible();
-		await expect(page.getByRole('cell', { name: 'badappleee' })).toBeVisible();
-		await page.getByRole('link', { name: '新增', exact: true }).click();
-		await page.locator('div').filter({ hasText: /^分類名稱$/ }).getByRole('textbox').click();
-		await page.locator('div').filter({ hasText: /^分類名稱$/ }).getByRole('textbox').press('CapsLock');
-		await page.locator('div').filter({ hasText: /^分類名稱$/ }).getByRole('textbox').fill('ㄎ');
-		await page.locator('div').filter({ hasText: /^分類名稱$/ }).getByRole('textbox').click();
-		await page.locator('div').filter({ hasText: /^分類名稱$/ }).getByRole('textbox').fill('');
-		await page.getByText('新增文章分類儲存新增分類名稱分類 ID Copyright').click();
-		await page.getByRole('link', { name: '全部分類' }).click();
-		await page.getByRole('row', { name: '蘋果不好吃吃 badappleee' }).getByRole('img').nth(1).click();
+		await helperPage.showModelIsSuccess();
+		await expect(page.locator(`[data-title="名稱"]`).filter({ hasText: EDIT_NAME })).toBeVisible();
+	});
+
+	test('刪除分類', async ({ page, browserName }) => {
+		const DEL_NAME = `aaaaa蘋果不好吃_${browserName}`;
+		const rowEl = page.locator(`tr:has-text("${DEL_NAME}")`);
+		await rowEl.waitFor({ state: 'visible' });
+		const delLinkEl = rowEl.locator('td[data-title="刪除"] svg');
+		await delLinkEl.waitFor({ state: 'visible' });
+		await delLinkEl.click();
+
 		await expect(page.getByLabel('刪除訊息')).toBeVisible();
-		await expect(page.getByText('確定刪除該分類 ?')).toBeVisible();
 		await page.getByRole('button', { name: '確定' }).click();
-    *****/
+		await helperPage.showModelIsDel();
+		await expect(page.locator(`[data-title="名稱"]`).filter({ hasText: DEL_NAME })).toBeHidden();
 	});
 });

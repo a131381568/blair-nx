@@ -63,6 +63,10 @@ export class TestHelper {
 		await this.showModelCheckText('Create success');
 	};
 
+	async showModelIsDel() {
+		await this.showModelCheckText('Delete success');
+	};
+
 	// cookie
 	async setCookies(cookies: Array<{ name: string; value: string }>) {
 		await this.page.context().addCookies(
