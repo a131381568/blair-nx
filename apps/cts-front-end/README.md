@@ -109,6 +109,7 @@
 - 重建 eslint 環境與規則
 - 燈箱相關功能藉由自製封裝的 Vue Final Modal 組件來實現
 - Leaflet 相關功能封裝
+- e2e 專案單獨拆出來，並從 cypress 改成 playwright 來撰寫
 
 ## C. 詳盡資訊
 
@@ -148,6 +149,12 @@
 
     ```shell
     pnpm exec nx lint cts-front-end
+    ```
+
+4. 組件測試
+
+    ```shell
+    pnpm exec nx test cts-front-end
     ```
 
 ## D. 打包
