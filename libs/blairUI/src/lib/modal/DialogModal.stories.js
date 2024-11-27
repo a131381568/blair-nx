@@ -1,3 +1,4 @@
+import { ref } from 'vue';
 import CloseVector from '../../svg/CloseVector.vue';
 import DialogModal from './DialogModal.vue';
 

@@ -1,4 +1,5 @@
 <script setup>
+import { computed, ref, useSlots } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import {
 	arrow,

@@ -1,3 +1,4 @@
+import { ref } from 'vue';
 import { onClickOutside } from '@vueuse/core';
 import BlairVirtualPopover from './BlairVirtualPopover.vue';
 
