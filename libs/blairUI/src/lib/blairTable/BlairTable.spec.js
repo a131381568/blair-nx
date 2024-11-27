@@ -1,7 +1,5 @@
-<script setup lang="ts">
-import { staticData } from '@demo-src/constants/static-data';
-import CountInfo from '@demo-src/components/CountInfo.vue';
-import { BlairTable } from '@blair-nx-ui';
+import { mount } from '@vue/test-utils';
+import BigfunTable from './BigfunTable.vue';
 
 const MOCK_HEADER_DATA = [
 	{ field: 'community_name', label: '社區名稱', fixed: false, sortable: false, width: '20%', minWidth: '15rem' },
@@ -37,46 +35,129 @@ const MOCK_TABLE_DATA = [
 	{ age: '18', sale_count: '30', id: 'L839498316997', community_name: '花漾社區', district: '萬華區', household: '223戶', floor: '11F', public_ratio: '0.00%', building_type: '大樓', price: '99.19萬', community_state: '' },
 ];
 
-const routerList = [
-	'welcome',
-	'apple',
-];
-</script>
+const MOCK_PROPS_DATA = {
+	headerData: MOCK_HEADER_DATA,
+	tableData: MOCK_TABLE_DATA,
+	totalCount: 10392,
+	pagiMode: 'classic',
+	pageCount: 20,
+	customThClass: ['h-[2.5rem]', 'text-content-1', 'text-center', 'border-b-2', 'h-[2.5rem]'],
+	customTdClass: ['h-[3.25rem]'],
+	customTrClass: ['[&>td]:odd:bg-gray-4'],
+	currentPagi: 1,
+};
 
-<template>
-	<h1>
-		Home
-	</h1>
-	staticData: {{ staticData }}
-	<h1>大標題一二三四五</h1>
-	<h2>大標題一二三四五</h2>
-	<h3>大標題一二三四五</h3>
-	<h4>大標題一二三四五</h4>
-	<h5>大標題一二三四五</h5>
-	<hr>
-	<ul>
-		<li
-			v-for="path in routerList"
-			:key="path"
-		>
-			<router-link
-				:to="`/${path}`"
-				class="text-[#0000ff] underline"
-			>
-				Go to {{ path }}
-			</router-link>
-		</li>
-	</ul>
-	<hr>
-	<CountInfo />
-	<hr>
-	<h2>BlairTable</h2>
-	<BlairTable
-		:header-data="MOCK_HEADER_DATA"
-		:page-count="20"
-		pagi-mode="classic"
-		:table-data="MOCK_TABLE_DATA"
-		:total-count="10392"
-		:current-pagi="1"
-	/>
-</template>
+const MOCK_SLOT_DATA = `
+	<div data-name="communityNameSlot">
+		<span data-name="rowIndexVal">{{rowIndex}}</span>
+		<span data-name="contentVal">{{content}}</span>
+		<span data-name="tdDataVal">{{tdData}}</span>
+	</div>
+`;
+
+describe('bigfunTable', () => {
+	let wrapper = null;
+
+	beforeEach(() => {
+		wrapper = mount(BigfunTable, {
+			props: MOCK_PROPS_DATA,
+		});
+	});
+
+	afterEach(() => {
+		wrapper = null;
+	});
+
+	// ------------------------------------------------------
+
+	describe('藉由 header 結構生出相對應的 table', () => {
+		it('比對 header 欄位', async () => {
+			wrapper.findAll('thead th').forEach((item, index) => {
+				expect(item.text()).toBe(MOCK_HEADER_DATA[index].label);
+			});
+		});
+
+		it('table 資料能夠對齊 header col', async () => {
+			const firstCommunityTr = wrapper.findAll('tbody tr')[1];
+			firstCommunityTr.findAll('td span').forEach((item, index) => {
+				const fieldName = MOCK_HEADER_DATA[index].field;
+				// 查詢到該欄位的 key 後去找對應的資料是對齊的
+				expect(item.text()).toBe(MOCK_TABLE_DATA[1][fieldName]);
+			});
+		});
+	});
+
+	it('支援 slot 來自定義列顯示', async () => {
+		// 作用域參數分別是該欄的：
+		// 1. rowIndex：順序
+		// 2. content：值
+		// 3. tdData：所有相關資料
+		wrapper = mount(BigfunTable, {
+			props: MOCK_PROPS_DATA,
+			slots: { 'cell(community_name)': MOCK_SLOT_DATA },
+		});
+		const EXPECT_DATA_ORDER = 12;
+		const firstCommunityTr = wrapper.findAll('tbody tr')[EXPECT_DATA_ORDER];
+		const customSlotDom = firstCommunityTr.find(`[data-name="communityNameSlot"]`);
+		// 驗證客製化欄位印出來的 rowIndex, content, tdData; 是否和資料符合
+		expect(customSlotDom.find(`[data-name="rowIndexVal"]`).text()).toBe(String(EXPECT_DATA_ORDER));
+		expect(customSlotDom.find(`[data-name="contentVal"]`).text()).toBe(MOCK_TABLE_DATA[EXPECT_DATA_ORDER].community_name);
+		// 因為完整資料會多兩個 key(id,community_state); 所以斷言比對用部分符合: toMatchObject
+		expect(MOCK_TABLE_DATA[EXPECT_DATA_ORDER]).toMatchObject(JSON.parse(customSlotDom.find(`[data-name="tdDataVal"]`).text()));
+	});
+
+	describe('能夠正確切換分頁模組', () => {
+		it('分頁模組: classic', async () => {
+			await wrapper.setProps({ pagiMode: 'classic' });
+			const paginationDom = wrapper.find(`[data-name="bigfun__pagination__list"]`);
+			expect(paginationDom.exists()).toBe(true);
+		});
+
+		it('分頁模組: modern', async () => {
+			const EXPECT_BTN_COUNT = 2;
+			const EXPECT_INFO = '1-20筆(共10392筆)';
+			await wrapper.setProps({ pagiMode: 'modern' });
+			const classicPagiDom = wrapper.find(`[data-name="bigfun__pagination__list"]`);
+			const haveBtnLen = wrapper.findAll('button').length;
+			const pageInfoDom = wrapper.find('.commonTable__pagination__info');
+			// 驗證 modern 樣式: 兩顆左右按鈕, 右下角的字串
+			expect(classicPagiDom.exists()).not.toBe(true);
+			expect(haveBtnLen).toBe(EXPECT_BTN_COUNT);
+			expect(pageInfoDom.text()).toBe(EXPECT_INFO);
+		});
+	});
+
+	it('無資料時能夠顯示對應文字模組', async () => {
+		const EXPECT_EMPTY_TEXT = '無相關資訊';
+		await wrapper.setProps({ tableData: [], emptyText: EXPECT_EMPTY_TEXT });
+		const tbodyDom = wrapper.find('tbody');
+		expect(tbodyDom.exists()).not.toBe(true);
+		expect(wrapper.text()).toContain(EXPECT_EMPTY_TEXT);
+	});
+
+	it('第一列表頭資料固定至上方', async () => {
+		wrapper = mount(BigfunTable, {
+			props: { ...MOCK_PROPS_DATA, fixedHeader: true },
+		});
+		await nextTick();
+		// overflow 必須要變成預設值 sticky 才會生效
+		expect(wrapper.find('.table-scrollbar').classes()).toContain('overflow-visible');
+		expect(wrapper.find('table').classes()).toContain('fixed__header');
+		// fixed__header 會去把 th 都加上 sticky
+	});
+
+	it.skip('欄位固定至左側或至右側', async () => {
+		// 這個在單元測試沒辦法:觸發複數與子組件有關聯的 watcher 跟 nextTick, 只能去 e2e 測
+		// const DATA_INFO = MOCK_HEADER_DATA.map(({ field, otherInfo }) => ({
+		// 	...otherInfo,
+		// 	fixed: field === "community_name",
+		// }));
+		// await wrapper.setProps(Object.assign({}, MOCK_PROPS_DATA, { headerData: DATA_INFO }));
+	});
+
+	it.skip('開啟排序功能時預期', async () => {
+		// 一樣的理由沒辦法測
+		// 連續點擊會依據順序顯示: 降冪 -> 升冪 -> 取消
+		// https://staging.ibigfun.com/pages/house/0938168671/244ee64b-3da1-11ef-9564-0a84bab091bd
+	});
+});

@@ -51,12 +51,12 @@ export const Base = {
  */
 export const CustomTriggerButton = {
 	render: args => ({
-		components: { BlariPopover, IconCalendar },
+		components: { BlairPopover, IconCalendar },
 		setup() {
 			return { args };
 		},
 		template: `
-			<BlariPopover>
+			<BlairPopover>
 				<template #button>
 					<IconCalendar />
 				</template>
@@ -65,7 +65,7 @@ export const CustomTriggerButton = {
 						class="font-bold text-main"
 					>自動帶入</span>，省去重複作業的流程~
 				</p>
-			</BlariPopover>
+			</BlairPopover>
 		`,
 	}),
 	decorators: [() => ({ template: '<div style="height: 100px;"><story /></div>' })],

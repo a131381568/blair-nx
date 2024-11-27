@@ -7,11 +7,18 @@ import vue from '@vitejs/plugin-vue';
 
 const config: StorybookConfig = {
 	stories: ['../../../apps/**/src/**/*.stories.@(js|jsx|ts|tsx|mdx)', '../../../libs/**/src/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
-	addons: ['@storybook/addon-essentials', '@storybook/addon-interactions'],
+	addons: [
+		'@storybook/addon-links',
+		'@storybook/addon-essentials',
+		'@storybook/addon-interactions',
+	],
 	framework: {
 		name: '@storybook/vue3-vite',
 		options: {
 		},
+	},
+	docs: {
+		autodocs: 'tag',
 	},
 	viteFinal: async config =>
 		mergeConfig(config, {

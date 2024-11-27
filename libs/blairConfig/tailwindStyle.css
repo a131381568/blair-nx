@@ -4,21 +4,21 @@
 
 @layer base {
 	h1 {
-		@apply tw-text-7xl tw-tracking-widest tw-font-bold;
+		@apply text-7xl tracking-widest font-bold;
 	}
 	h2 {
-		@apply tw-text-4xl tw-tracking-widest tw-font-medium;
+		@apply text-4xl tracking-widest font-medium;
 	}
 	h3 {
-		@apply tw-text-3xl tw-tracking-widest tw-font-medium;
+		@apply text-3xl tracking-widest font-medium;
 	}
 	h4 {
-		@apply tw-text-2xl tw-tracking-wider;
+		@apply text-2xl tracking-wider;
 	}
 	h5 {
-		@apply tw-text-lg tw-tracking-wider;
+		@apply text-lg tracking-wider;
 	}
 	h6 {
-		@apply tw-text-base tw-tracking-wider;
+		@apply text-base tracking-wider;
 	}
 }

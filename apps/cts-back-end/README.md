@@ -7,7 +7,7 @@
 ## A. 簡述
 
 - 此為 [catching-the-star-master](https://github.com/a131381568/ctsm-sql) 的後端重構專案，而且現在是 [cts-front-end](https://github.com/a131381568/blair-nx/tree/development/apps/cts-front-end) 的後端
-- 同於原本舊後端的 GraphQL，是使用 RESTful 的 [NestJS](https://docs.nestjs.com/) 開發
+- 不同於原本舊後端的 GraphQL，是使用 RESTful 的 [NestJS](https://docs.nestjs.com/) 開發
 
 ## B. 使用技術
 - node 20.17

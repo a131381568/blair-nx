@@ -1,5 +1,28 @@
 # BlairNx
 
+此專案為 Monorepo 架構的 [Nx](https://nx.dev/getting-started/intro)
+
+## 專案介紹
+
+![nx_graph](https://i.imgur.com/b1lEPpt.png)
+
+- APP
+
+  + [boilerplate](https://github.com/a131381568/blair-nx/tree/development/apps/boilerplate) - 範本專案
+  + [cts-front-end](https://github.com/a131381568/blair-nx/tree/development/apps/cts-front-end) - catch the stars 前端
+  + [cts-back-end](https://github.com/a131381568/blair-nx/tree/development/apps/cts-back-end) - catch the stars 後端
+
+- 共享庫與 E2E
+
+  + [cts-shared](https://github.com/a131381568/blair-nx/tree/development/libs/cts-shared) - 僅 catch the stars 前後端專案的共享資源
+  + [cts-front-end-e2e](https://github.com/a131381568/blair-nx/tree/development/apps/cts-front-end-e2e) - catch the stars 的 E2E 測試 (playwright)
+  + [boilerplate-e2e](https://github.com/a131381568/blair-nx/tree/development/apps/boilerplate-e2e) - 範本專案的 E2E 測試 (cypress)
+  + [blairComposables](https://github.com/a131381568/blair-nx/tree/development/libs/blairComposables) - 全域共享的 composables
+  + [blairConfig](https://github.com/a131381568/blair-nx/tree/development/libs/blairConfig) - 全域共享的設定檔
+  + [blairUI](https://github.com/a131381568/blair-nx/tree/development/libs/blairUI) - 全域共享的 UI 組件
+  + [storybookHost](https://github.com/a131381568/blair-nx/tree/development/libs/storybookHost) - storybook 實例專案
+
+
 ## 環境
 
 - node 版本 v20.17
@@ -15,6 +38,9 @@
   + react 18.3.1
 
 ## 本地開發
+
+- 僅一次的 `npx` 指令，替代為 `pnpm dlx`
+- `npx` 會直接執行 `npm`，須使用 `pnpm exec` 來執行指令
 
 ```shell
 pnpm exec nx serve boilerplate

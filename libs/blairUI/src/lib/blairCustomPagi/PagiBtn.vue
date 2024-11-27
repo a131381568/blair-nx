@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue';
 import { Icon } from '@iconify/vue';
 
 const props = defineProps({
