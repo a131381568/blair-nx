@@ -10,5 +10,4 @@ module.exports = {
 		join(__dirname, '../../libs/**/src/**/*!(*.stories|*.spec).{vue,ts,tsx,js,jsx}'),
 		...createGlobPatternsForDependencies(__dirname),
 	],
-	prefix: 'tw-',
 };

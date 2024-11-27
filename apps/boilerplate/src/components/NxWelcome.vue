@@ -9,15 +9,15 @@ defineProps<{
 </script>
 
 <template>
-	<div class="tw-w-full">
-		<div class="tw-mx-auto tw-w-full tw-max-w-3xl tw-px-4 tw-pb-12 tw-text-[#374151]">
+	<div class="w-full">
+		<div class="mx-auto w-full max-w-3xl px-4 pb-12 text-[#374151]">
 			<BlairUi title="我是標題" />
 			<div
 				id="welcome"
-				class="tw-mt-10"
+				class="mt-10"
 			>
-				<h1 class="tw-text-5xl tw-font-medium tw-tracking-tight">
-					<span class="tw-mb-2 tw-block tw-text-3xl tw-font-light"> Hello there, </span>
+				<h1 class="text-5xl font-medium tracking-tight">
+					<span class="mb-2 block text-3xl font-light"> Hello there, </span>
 					Welcome {{ title }} 👋
 				</h1>
 				<h2>
@@ -26,15 +26,15 @@ defineProps<{
 			</div>
 			<div
 				id="hero"
-				class="tw-mt-14 tw-box-border tw-grid tw-grid-cols-[1fr] tw-items-center tw-rounded-3xl tw-border-0 tw-bg-[#143157] tw-text-[#374151]"
+				class="mt-14 box-border grid grid-cols-[1fr] items-center rounded-3xl border-0 bg-[#143157] text-[#374151]"
 			>
-				<div class="tw-px-12 tw-py-8 tw-text-[#fff]">
-					<h2 class="tw-relative tw-text-2xl">
-						<Pass class="tw-absolute -tw-left-1 tw-top-0 tw-h-8 tw-w-8" />
-						<span class="tw-ml-10">You&apos;re up and running</span>
+				<div class="px-12 py-8 text-white">
+					<h2 class="relative text-2xl">
+						<Pass class="absolute -left-1 top-0 size-8" />
+						<span class="ml-10">You&apos;re up and running</span>
 					</h2>
 					<a
-						class="tw-mt-6 tw-block tw-text-2xl"
+						class="mt-6 block text-2xl"
 						href="https://nx.dev/nx-api/nx/documents/run-many"
 					> What&apos;s next? </a>
 				</div>

@@ -106,101 +106,101 @@ const delItemAct = async () => {
 </script>
 
 <template>
-	<div class="tw-flex tw-h-full tw-flex-col">
+	<div class="flex h-full flex-col">
 		<!-- title part -->
-		<div class="tw-bg-demo-sub tw-p-5">
+		<div class="bg-demo-sub p-5">
 			<h1>Apple</h1>
 			<router-link
 				to="/"
-				class="tw-text-[#0000ff] tw-underline"
+				class="text-[#0000ff] underline"
 			>
 				back to home
 			</router-link>
 		</div>
 		<!-- 取得全列表 (get/list) -->
-		<div class="tw-border-b tw-border-[#000] tw-p-5">
+		<div class="border-b border-black p-5">
 			<h3>1. 取得全列表</h3>
 			<button
-				class="tw-w-20 tw-rounded tw-bg-demo-main tw-py-1 tw-text-[#fff]"
+				class="w-20 rounded bg-demo-main py-1 text-white"
 				@click="getAllListAct"
 			>
 				觸發
 			</button>
 		</div>
 		<!-- 取得指定 ids 陣列資料 (get/item_by_ids) -->
-		<div class="tw-border-b tw-border-[#000] tw-p-5">
+		<div class="border-b border-black p-5">
 			<h3>2. 取得指定 id 陣列資料</h3>
 			id 包含:
 			<ul>
 				<li
 					v-for="id in IDS_LIST"
 					:key="id"
-					class="tw-text-[0.7rem]"
+					class="text-[0.7rem]"
 				>
 					{{ id }}
 				</li>
 			</ul>
 			<button
-				class="tw-rounded tw-bg-demo-main tw-p-5 tw-py-1 tw-text-[#fff]"
+				class="rounded bg-demo-main p-5 py-1 text-white"
 				@click="getIdsData"
 			>
 				取得 ids 資訊
 			</button>
 		</div>
 		<!-- 取得指定 id 資料 (get/item_by_id) -->
-		<div class="tw-border-b tw-border-[#000] tw-p-5">
+		<div class="border-b border-black p-5">
 			<h3>3. 取得指定 id 資料</h3>
 			<button
-				class="tw-rounded tw-bg-demo-main tw-p-5 tw-py-1 tw-text-[#fff]"
+				class="rounded bg-demo-main p-5 py-1 text-white"
 				@click="getSingleData"
 			>
 				取得 {{ IDS_LIST[0] }} 資訊
 			</button>
 		</div>
 		<!-- 新增單筆資料 (post/add_item) -->
-		<div class="tw-border-b tw-border-[#000] tw-p-5">
+		<div class="border-b border-black p-5">
 			<h3>4. 新增單筆資料</h3>
-			<div class="tw-my-4 tw-flex tw-gap-4">
+			<div class="my-4 flex gap-4">
 				<input
 					v-model="itemName"
 					type="text"
 					placeholder="商品名稱"
-					class="tw-border"
+					class="border"
 				>
 				<input
 					v-model="itemYear"
 					type="number"
 					placeholder="商品年份"
-					class="tw-border"
+					class="border"
 				>
 				<input
 					v-model="itemPrice"
 					type="number"
 					placeholder="商品價格"
-					class="tw-border"
+					class="border"
 				>
 				<input
 					v-model="itemCpu"
 					type="text"
 					placeholder="CPU 規格"
-					class="tw-border"
+					class="border"
 				>
 				<input
 					v-model="itemDisk"
 					type="text"
 					placeholder="硬碟大小"
-					class="tw-border"
+					class="border"
 				>
 			</div>
-			<div class="tw-flex tw-gap-4">
+			<div class="flex gap-4">
 				<button
-					class="tw-rounded tw-bg-[#000] tw-p-5 tw-py-1 tw-text-[#fff]"
+					class="rounded bg-black p-5 py-1 text-white"
 					@click="importDefaultData"
 				>
 					帶入預設資料
 				</button>
 				<button
-					class="tw-rounded tw-bg-demo-main tw-p-5 tw-py-1 tw-text-[#fff]"
+					class="rounded bg-demo-main p-5 py-1 text-white"
 					@click="addItemAct"
 				>
 					新增資料
@@ -208,43 +208,43 @@ const delItemAct = async () => {
 			</div>
 		</div>
 		<!-- 更新單筆資料 (put/update_item) -->
-		<div class="tw-border-b tw-border-[#000] tw-p-5">
+		<div class="border-b border-black p-5">
 			<h3>5. 更新單筆資料</h3>
-			<div class="tw-my-4 tw-flex tw-gap-4">
+			<div class="my-4 flex gap-4">
 				<input
 					v-model="putItemName"
 					type="text"
 					placeholder="商品名稱"
-					class="tw-border"
+					class="border"
 				>
 				<input
 					v-model="putItemYear"
 					type="number"
 					placeholder="商品年份"
-					class="tw-border"
+					class="border"
 				>
 				<input
 					v-model="putItemPrice"
 					type="number"
 					placeholder="商品價格"
-					class="tw-border"
+					class="border"
 				>
 				<input
 					v-model="putItemCpu"
 					type="text"
 					placeholder="CPU 規格"
-					class="tw-border"
+					class="border"
 				>
 				<input
 					v-model="putItemDisk"
 					type="text"
 					placeholder="硬碟大小"
-					class="tw-border"
+					class="border"
 				>
 			</div>
-			<div class="tw-flex tw-gap-4">
+			<div class="flex gap-4">
 				<button
-					class="tw-rounded tw-bg-demo-main tw-p-5 tw-py-1 tw-text-[#fff]"
+					class="rounded bg-demo-main p-5 py-1 text-white"
 					@click="putItemAct"
 				>
 					更新  {{ IDS_LIST[0] }} 資料
@@ -252,19 +252,19 @@ const delItemAct = async () => {
 			</div>
 		</div>
 		<!-- 更新單筆'屬性'資料 (patch/partially_update_item) -->
-		<div class="tw-border-b tw-border-[#000] tw-p-5">
+		<div class="border-b border-black p-5">
 			<h3>6. 更新單筆'屬性'資料</h3>
-			<div class="tw-my-4 tw-flex tw-gap-4">
+			<div class="my-4 flex gap-4">
 				<input
 					v-model="putItemYear"
 					type="number"
 					placeholder="商品年份"
-					class="tw-border"
+					class="border"
 				>
 			</div>
-			<div class="tw-flex tw-gap-4">
+			<div class="flex gap-4">
 				<button
-					class="tw-rounded tw-bg-demo-main tw-p-5 tw-py-1 tw-text-[#fff]"
+					class="rounded bg-demo-main p-5 py-1 text-white"
 					@click="patchItemAct"
 				>
 					更新  {{ IDS_LIST[0] }} 其『年份』
@@ -272,19 +272,19 @@ const delItemAct = async () => {
 			</div>
 		</div>
 		<!-- 刪除指定 id 資料 (del/delete_item) -->
-		<div class="tw-border-b tw-border-[#000] tw-p-5">
+		<div class="border-b border-black p-5">
 			<h3>7. 刪除指定 id 資料</h3>
-			<div class="tw-my-4 tw-flex tw-gap-4">
+			<div class="my-4 flex gap-4">
 				<input
 					v-model="delItemId"
 					type="text"
 					placeholder="請輸入要刪除的 id"
-					class="tw-border"
+					class="border"
 				>
 			</div>
-			<div class="tw-flex tw-gap-4">
+			<div class="flex gap-4">
 				<button
-					class="tw-rounded tw-bg-[#7e0000] tw-p-5 tw-py-1 tw-text-[#fff]"
+					class="rounded bg-[#7e0000] p-5 py-1 text-white"
 					@click="delItemAct"
 				>
 					刪除
@@ -293,7 +293,7 @@ const delItemAct = async () => {
 			</div>
 		</div>
 		<!-- 列表顯示區 -->
-		<div class="tw-border-b tw-border-[#000] tw-p-5">
+		<div class="border-b border-black p-5">
 			<h3>8. 列表顯示區 (1,2,3)</h3>
 			<ul v-if="list.length">
 				<li
@@ -308,7 +308,7 @@ const delItemAct = async () => {
 			</p>
 		</div>
 		<!-- 單筆更新回傳專區 -->
-		<div class="tw-grid tw-p-5">
+		<div class="grid p-5">
 			<h3>9. 單筆更新回傳專區 (4,5,6)</h3>
 			<span v-if="latestItem">{{ latestItem }}</span>
 			<span v-else>無</span>
