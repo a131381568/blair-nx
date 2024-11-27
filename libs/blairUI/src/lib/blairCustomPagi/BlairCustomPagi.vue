@@ -1,4 +1,5 @@
 <script setup>
+import { computed, reactive, ref, watch } from 'vue';
 import PagiBtn from './PagiBtn.vue';
 
 const props = defineProps({

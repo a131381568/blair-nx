@@ -19,7 +19,8 @@
       "@blair-nx-ui": ["libs/blairUI/src/index.ts"],
       "@ctsf-src/*": ["apps/cts-front-end/src/*"],
       "@cts-shared": ["libs/cts-shared/index.ts"],
-      "@demo-src/*": ["apps/boilerplate/src/*"]
+      "@demo-src/*": ["apps/boilerplate/src/*"],
+      "@storybook-src/*": ["libs/storybookHost/src/*"]
     },
     "esModuleInterop": true,
     "strict": true

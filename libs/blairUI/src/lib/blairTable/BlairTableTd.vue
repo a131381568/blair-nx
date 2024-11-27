@@ -1,4 +1,6 @@
 <script setup>
+import { computed, inject, nextTick, ref, useSlots } from 'vue';
+
 const props = defineProps({
 	field: {
 		type: String,
@@ -45,7 +47,9 @@ const tdClass = computed(() => {
 const haveSlot = computed(() => !!slots.default() && !!slots.default()[0] && !!slots.default()[0].children.length);
 
 nextTick(() => {
-	stickyInset.value = calcInsetVal({ colRef: tdRef.value });
+	if (tdRef.value) {
+		stickyInset.value = calcInsetVal({ colRef: tdRef.value });
+	}
 });
 </script>
 

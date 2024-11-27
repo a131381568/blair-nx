@@ -1,3 +1,4 @@
+import { ref } from 'vue';
 import BlairCustomPagi from './BlairCustomPagi.vue';
 
 export default {

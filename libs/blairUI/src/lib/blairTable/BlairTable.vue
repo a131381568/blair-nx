@@ -1,4 +1,5 @@
 <script setup>
+import { computed, nextTick, onBeforeUnmount, onMounted, provide, reactive, ref, toRefs, watch } from 'vue';
 import { useScroll, useThrottleFn } from '@vueuse/core';
 import { pick } from 'radash';
 import BlairCustomPagi from '../blairCustomPagi/BlairCustomPagi.vue';
@@ -179,10 +180,13 @@ const calcInsetVal = ({ colRef }) => {
 	};
 };
 
-nextTick(() => {
-	tableRect.value = tableEl.value.getBoundingClientRect();
-	tableClass.fixed__header = props.fixedHeader;
-	props.fieldfixedDirection === 'right' && (showColFixedShadow.value = 1);
+onMounted(async () => {
+	await nextTick();
+	if (tableEl.value) {
+		tableRect.value = tableEl.value.getBoundingClientRect();
+		tableClass.fixed__header = props.fixedHeader;
+		props.fieldfixedDirection === 'right' && (showColFixedShadow.value = 1);
+	};
 });
 
 provide('commonTableInfo', {
