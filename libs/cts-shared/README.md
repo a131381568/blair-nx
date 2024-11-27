@@ -17,7 +17,7 @@
 
 - 部署採用 railway 的 GitHub 整合，指定倉庫跟分支，來達到自動部署的效果
 - libs/cts-shared/.env.example：有全部的環境變數欄位
-- Postgres 由 railway 託管，只要輸入環境變數，就能使用；會公開對外的資料庫連線方式，所以就能夠拿來倒資料、備份資料了
+- Postgres 由 railway 託管，只要輸入環境變數，就能使用；藉由連線託管資料庫，來備份、倒資料了
 - 可以使用 [railwayapp/cli](https://docs.railway.com/reference/cli-api#up) 來開發測試部署作業
 - 前端藉由 Nginx, Node 的容器，來裝打包出來的 Vue
 - 後端端藉由 Node 的容器，來裝打包出來的 NestJS

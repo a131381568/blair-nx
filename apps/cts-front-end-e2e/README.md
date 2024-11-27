@@ -19,6 +19,8 @@ pnpm exec nx pw cts-front-end-e2e
 pnpm exec nx pw:op cts-front-end-e2e
 ```
 
+跑完全部的 e2e 後，會執行 `apps/cts-front-end-e2e/playwright.config.ts` 內的 globalTeardown，來還原資料
+
 ## CI 環境下執行
 
 ```shell
