@@ -12,13 +12,9 @@ import {
 import HelperIcon from '../../svg/HelperIcon.vue';
 
 defineProps({
-	dataGa: {
-		type: String,
-		default: '',
-	},
 	popperClass: {
 		type: String,
-		default: 'z-[2] max-w-max rounded-xl bg-white px-5 py-4 shadow-popover xl:max-w-[calc(100%-2rem)]',
+		default: 'shadow-xl z-[2] max-w-max rounded-xl bg-white px-5 py-4 shadow-popover xl:max-w-[calc(100%-2rem)]',
 	},
 	btnContainerClass: {
 		type: String,

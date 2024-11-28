@@ -13,7 +13,7 @@ import {
 const props = defineProps({
 	popperClass: {
 		type: String,
-		default: 'z-[2] max-w-[150px] rounded-md bg-white p-0 shadow-tip xl:max-w-max',
+		default: 'shadow-xl z-[2] max-w-[150px] rounded-md bg-white p-0 shadow-tip xl:max-w-max',
 	},
 	visible: {
 		type: Boolean,

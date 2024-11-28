@@ -10,7 +10,8 @@
 		"src/**/*.ts",
 		"src/**/*.tsx",
 		"src/**/*.vue",
-		"../../libs/**/*.ts"
+		"../../libs/**/*.ts",
+		"../storybookHost/src/constants/**/*.js"
 	],
 	"exclude": [
 		"src/**/__tests__/*",

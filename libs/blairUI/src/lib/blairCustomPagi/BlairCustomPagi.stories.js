@@ -67,7 +67,7 @@ export const Default = {
 /**
  * - 按預設差別在於 alwayShowNexPreBtn 設置為`true`
  */
-export const Shop = {
+export const Pure = {
 	render: renderDefaultComponent,
 	args: {
 		total: 568,
