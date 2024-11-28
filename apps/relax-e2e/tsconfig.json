@@ -1,0 +1,27 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"composite": true,
+		"jsx": "preserve",
+		"jsxImportSource": "vue",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"types": ["node"],
+		"allowJs": true,
+		"strict": true,
+		"declaration": true,
+		"outDir": "../../dist/out-tsc/apps/relax-e2e",
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true
+	},
+	"references": [
+		{
+			"path": "./tsconfig.lib.json"
+		},
+		{
+			"path": "./tsconfig.e2e.json"
+		}
+	],
+	"files": [],
+	"include": []
+}

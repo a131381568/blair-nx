@@ -1,0 +1,24 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"composite": true,
+		"target": "es5",
+		"baseUrl": ".",
+		"module": "commonjs",
+		"types": ["node", "@nx/playwright", "@playwright/test"],
+		"allowJs": true,
+		"strict": true,
+		"declaration": true,
+		"outDir": "../../dist/out-tsc/apps/relax-e2e/e2e",
+		"sourceMap": false,
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"skipLibCheck": true
+	},
+	"include": [
+		"playwright.config.ts",
+		"src/e2e/**/*.ts",
+		"src/support/**/*.ts",
+	],
+	"exclude": ["node_modules"]
+}
