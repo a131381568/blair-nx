@@ -89,6 +89,9 @@ dependencies:
   big.js:
     specifier: ^6.2.2
     version: 6.2.2
+  classnames:
+    specifier: ^2.5.1
+    version: 2.5.1
   crypto-js:
     specifier: ^4.2.0
     version: 4.2.0
@@ -10238,6 +10241,10 @@ packages:
       define-property: 0.2.5
       isobject: 3.0.1
       static-extend: 0.1.2
+    dev: false
+
+  /classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
     dev: false
 
   /clean-regexp@1.0.0:
