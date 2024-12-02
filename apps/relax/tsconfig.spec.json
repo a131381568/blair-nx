@@ -10,7 +10,8 @@
 			"node",
 			"vitest",
 			"@nx/react/typings/cssmodule.d.ts",
-			"@nx/react/typings/image.d.ts"
+			"@nx/react/typings/image.d.ts",
+			"@testing-library/jest-dom"
 		],
 		"outDir": "../../dist/out-tsc"
 	},
@@ -27,6 +28,7 @@
 		"src/**/*.spec.jsx",
 		"src/**/*.d.ts",
 		"src/**/*.tsx",
-		"src/**/*.ts"
+		"src/**/*.ts",
+		"src/vitest.setup.ts"
 	]
 }

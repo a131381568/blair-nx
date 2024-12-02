@@ -1,71 +1,61 @@
-import cn from 'classnames';
 import type { TodoListProps } from '../types/list';
+import {
+	DeleteButton,
+	TodoCheckbox,
+	TodoContainer,
+	TodoHeader,
+	TodoItem,
+	TodoStats,
+} from '../components/styled/TodoStyles';
 
-// TodoList 組件 - 使用函數組件的方式宣告
 export const TodoList = ({
-	title = '待辦事項清單 - function',
+	title = '待辦事項清單',
 	items,
 	onToggle,
 	onDelete,
 }: TodoListProps) => {
 	const completedCount = items.filter(item => item.completed).length;
 
-	const handleToggle = (id: number) => (onToggle?.(id));
-
-	const handleDelete = (id: number) => (onDelete?.(id));
-
 	return (
-		<div className="todo-list p-4">
-			<h1 className="text-lg font-bold mb-4">{title}</h1>
+		<TodoContainer>
+			<TodoHeader>{title}</TodoHeader>
 
 			{!items.length
 				? (
 						<p>目前沒有待辦事項</p>
 					)
 				: (
-						<ul className="space-y-2">
+						<ul>
 							{items.map(item => (
-								<li
-									key={item.id}
-									className={cn(
-										'flex items-center justify-between p-2 rounded',
-										'hover:bg-gray-50',
-										item.completed ? 'text-[#196c24]' : 'text-[#777]',
-									)}
-								>
-									<div className="flex items-center gap-2">
-										<input
-											type="checkbox"
+								<TodoItem key={item.id} $completed={item.completed}>
+									<div>
+										<TodoCheckbox
 											checked={item.completed}
-											onChange={() => handleToggle(item.id)}
-											className="h-4 w-4"
+											onChange={() => onToggle?.(item.id)}
 										/>
 										<span>{item.text}</span>
 									</div>
-									<button
-										type="button"
-										onClick={() => handleDelete(item.id)}
-										className="text-red-500 hover:text-red-700"
-									>
+									<DeleteButton onClick={() => onDelete?.(item.id)}>
 										刪除
-									</button>
-								</li>
+									</DeleteButton>
+								</TodoItem>
 							))}
 						</ul>
 					)}
 
-			<div className="todo-stats mt-4 text-sm italic">
-				{`總計: ${items.length} 項 / 已完成:`}
-				<span
-					className={cn(
-						'mx-1',
-						completedCount ? 'text-[#196c24]' : 'text-[#f00]',
-					)}
-				>
+			<TodoStats>
+				總計:
+				{' '}
+				{items.length}
+				{' '}
+				項 / 已完成:
+				<span className={completedCount ? 'completed' : 'pending'}>
 					{completedCount}
 				</span>
 				項
-			</div>
-		</div>
+			</TodoStats>
+		</TodoContainer>
 	);
 };
+
+export default TodoList;

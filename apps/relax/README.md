@@ -1,7 +1,7 @@
 以下為 blair-nx 專案的檔案設定
 
+## tsconfig.base.json
 ```
-// tsconfig.base.json
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -38,8 +38,8 @@
 }
 ```
 
+## nx.json
 ```
-// nx.json
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
@@ -160,8 +160,8 @@
 }
 ````
 
+## package.json
 ```
-// package.json
 {
   "name": "@blair-nx/source",
   "version": "0.0.0",
@@ -195,6 +195,7 @@
     "@types/express": "^5.0.0",
     "@types/leaflet": "^1.9.14",
     "@types/qs": "^6.9.16",
+    "@types/styled-components": "^5.1.34",
     "@vueuse/core": "^11.1.0",
     "@yeger/vue-masonry-wall": "^5.0.16",
     "axios": "^1.6.0",
@@ -218,6 +219,7 @@
     "react-dom": "18.3.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
+    "styled-components": "^6.1.13",
     "ts-node": "^10.9.2",
     "tslib": "^2.3.0",
     "vue": "3.4.38",
@@ -320,8 +322,8 @@
 }
 ```
 
+## apps/relax/project.json
 ```
-// apps/relax/project.json
 {
 	"name": "relax",
 	"$schema": "../../node_modules/nx/schemas/project-schema.json",
@@ -333,8 +335,8 @@
 }
 ```
 
+## apps/relax/tsconfig.json
 ```
-// apps/relax/tsconfig.json
 {
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
@@ -368,8 +370,8 @@
 }
 ```
 
+## apps/relax/tsconfig.app.json
 ```
-// apps/relax/tsconfig.app.json
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
@@ -399,8 +401,8 @@
 }
 ```
 
+## apps/relax/tsconfig.spec.json
 ```
-// apps/relax/tsconfig.spec.json
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
@@ -435,8 +437,8 @@
 }
 ```
 
+## apps/relax/eslint.config.mjs
 ```
-// apps/relax/eslint.config.mjs
 import antfu from '@antfu/eslint-config';
 
 export default antfu(
@@ -500,8 +502,8 @@ export default antfu(
 );
 ```
 
+## apps/relax/vite.config.ts
 ```
-// apps/relax/vite.config.ts
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -553,8 +555,8 @@ export default defineConfig({
 });
 ```
 
+## apps/relax/src/main.tsx
 ```
-// apps/relax/src/main.tsx
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
@@ -570,34 +572,38 @@ root.render(
 );
 ```
 
+## apps/relax/src/app/app.tsx
 ```
-// apps/relax/src/app/app.tsx
+import { useState } from 'react';
 import type { TodoItem } from '../types/list';
-import NxWelcome from './nx-welcome';
-import '../assets/style.css';
 import { TodoList } from './TodoList';
 
 export function App() {
-	const todos: TodoItem[] = [
+	const [todos, setTodos] = useState<TodoItem[]>([
 		{ id: 1, text: '學習 React 基礎', completed: true },
 		{ id: 2, text: '理解 JSX 語法', completed: false },
 		{ id: 3, text: '練習使用 Props', completed: false },
-	];
+	]);
+
+	const handleToggle = (id: number) => {
+		setTodos(prevTodos =>
+			prevTodos.map(todo =>
+				todo.id === id ? { ...todo, completed: !todo.completed } : todo,
+			),
+		);
+	};
+
+	const handleDelete = (id: number) => {
+		setTodos(prevTodos => prevTodos.filter(todo => todo.id !== id));
+	};
 
 	return (
-		<div>
-			<div className="app">
-				{/* 使用 TodoList 組件並傳入 props */}
-				<TodoList items={todos} />
-
-				{/* 使用自定義標題 */}
-				<TodoList
-					title="學習清單"
-					items={todos.filter(todo => !todo.completed)}
-				/>
-			</div>
-
-			<NxWelcome title="relax" />
+		<div className="app">
+			<TodoList
+				items={todos}
+				onToggle={handleToggle}
+				onDelete={handleDelete}
+			/>
 		</div>
 	);
 }
@@ -605,8 +611,9 @@ export function App() {
 export default App;
 ```
 
+
+## apps/relax/src/app/nx-welcome.tsx
 ```
-// apps/relax/src/app/nx-welcome.tsx
 /*
  * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  This is a starter component and can be deleted.
@@ -1066,64 +1073,231 @@ export function NxWelcome({ title }: { title: string }) {
 export default NxWelcome;
 ```
 
+## apps/relax/src/types/list.ts
 ```
-// apps/relax/src/app/TodoList.tsx
-import cn from 'classnames';
-import type { TodoListProps } from '../types/list';
+export interface TodoItem {
+	id: number;
+	text: string;
+	completed: boolean;
+}
 
-// TodoList 組件 - 使用函數組件的方式宣告
+// 定義 Props 介面
+export interface TodoListProps {
+	title?: string;
+	items: TodoItem[];
+	onToggle?: (id: number) => void;
+	onDelete?: (id: number) => void;
+}
+```
+
+## apps/relax/src/components/styled/theme.ts
+```
+export const theme = {
+	colors: {
+		primary: '#196c24',
+		danger: '#e53e3e',
+		text: '#2d3748',
+		gray: '#718096',
+	},
+	spacing: {
+		sm: '0.5rem',
+		md: '1rem',
+		lg: '1.5rem',
+	},
+} as const;
+
+export type Theme = typeof theme;
+```
+
+## apps/relax/src/components/styled/TodoStyles.tsx
+```
+import styled from 'styled-components';
+import { theme } from './theme';
+import type { Theme } from './theme';
+
+// Types
+interface TodoItemProps {
+	$completed: boolean;
+	theme: Theme;
+}
+
+// Styled Components
+const TodoContainer = styled.div`
+  padding: ${theme.spacing.md};
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  p {
+    color: ${theme.colors.gray};
+    font-style: italic;
+  }
+`;
+
+const TodoHeader = styled.h1`
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: ${theme.spacing.md};
+  color: ${theme.colors.text};
+`;
+
+const TodoItem = styled.li<TodoItemProps>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: ${theme.spacing.sm};
+  margin: ${theme.spacing.sm} 0;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  background: ${({ $completed }) => $completed ? '#f0fff4' : 'white'};
+  color: ${({ $completed }) => $completed ? theme.colors.primary : theme.colors.gray};
+
+  div {
+    display: flex;
+    align-items: center;
+    gap: ${theme.spacing.sm};
+
+    span.completed {
+      text-decoration: line-through;
+    }
+  }
+
+  &:hover {
+    background: #f7fafc;
+  }
+`;
+
+const TodoCheckbox = styled.input.attrs({ type: 'checkbox' })`
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+
+  &:checked {
+    accent-color: ${theme.colors.primary};
+  }
+`;
+
+const DeleteButton = styled.button`
+  padding: ${theme.spacing.sm};
+  color: ${theme.colors.danger};
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+
+  &:hover {
+    color: #c53030;
+    background: #fff5f5;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+`;
+
+const TodoStats = styled.div`
+  margin-top: ${theme.spacing.md};
+  font-style: italic;
+  font-size: 0.875rem;
+  color: ${theme.colors.gray};
+
+  span {
+    margin: 0 ${theme.spacing.sm};
+    font-weight: bold;
+
+    &.completed {
+      color: ${theme.colors.primary};
+    }
+
+    &.pending {
+      color: ${theme.colors.danger};
+    }
+  }
+`;
+
+export {
+	TodoContainer,
+	TodoHeader,
+	TodoItem,
+	TodoCheckbox,
+	DeleteButton,
+	TodoStats,
+};
+```
+
+## apps/relax/src/app/TodoList.tsx
+```
+import type { TodoListProps } from '../types/list';
+import {
+	DeleteButton,
+	TodoCheckbox,
+	TodoContainer,
+	TodoHeader,
+	TodoItem,
+	TodoStats,
+} from '../components/styled/TodoStyles';
+
 export const TodoList = ({
-	title = '待辦事項清單', // 提供預設值
+	title = '待辦事項清單',
 	items,
+	onToggle,
+	onDelete,
 }: TodoListProps) => {
 	const completedCount = items.filter(item => item.completed).length;
 
 	return (
-		<div className="todo-list">
-			{/* 使用 JSX 的大括號語法來嵌入 JavaScript 表達式 */}
-			<h1 className="text-lg font-bold">{title}</h1>
+		<TodoContainer>
+			<TodoHeader>{title}</TodoHeader>
 
-			{/* 條件渲染：當 items 為空時顯示提示訊息 */}
 			{!items.length
-				? (<p>目前沒有待辦事項</p>)
+				? (
+						<p>目前沒有待辦事項</p>
+					)
 				: (
 						<ul>
-							{/* 使用 map 方法渲染列表，記得提供 key */}
 							{items.map(item => (
-								<li
-									key={item.id}
-									className={cn(
-										'ml-4 text-xs relative flex items-center gap-x-2',
-										'before:content-[""] before:relative before:w-1 before:h-1 before:bg-black before:p-0',
-										item.completed ? 'text-[#196c24]' : 'text-[#777]',
-									)}
-								>
-									{item.text}
-								</li>
+								<TodoItem key={item.id} $completed={item.completed}>
+									<div>
+										<TodoCheckbox
+											checked={item.completed}
+											onChange={() => onToggle?.(item.id)}
+										/>
+										<span>{item.text}</span>
+									</div>
+									<DeleteButton onClick={() => onDelete?.(item.id)}>
+										刪除
+									</DeleteButton>
+								</TodoItem>
 							))}
 						</ul>
 					)}
 
-			{/* 使用 JSX 的註解方式 */}
-			{/* 顯示待辦事項統計 */}
-			<div className="todo-stats italic text-sm">
-				{`總計: ${items.length} 項 / 已完成:`}
-				<span className={cn(
-					'mx-1',
-					completedCount ? 'text-[#196c24]' : 'text-[#f00]',
-				)}
-				>
+			<TodoStats>
+				總計:
+				{' '}
+				{items.length}
+				{' '}
+				項 / 已完成:
+				<span className={completedCount ? 'completed' : 'pending'}>
 					{completedCount}
 				</span>
 				項
-			</div>
-		</div>
+			</TodoStats>
+		</TodoContainer>
 	);
 };
+
+export default TodoList;
 ```
 
+## apps/relax/index.html
 ```
-// apps/relax/index.html
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -1142,8 +1316,8 @@ export const TodoList = ({
 </html>
 ```
 
+## apps/relax/src/assets/style.css
 ```
-// apps/relax/src/assets/style.css
 html {
 	-webkit-text-size-adjust: 100%;
 	font-family:

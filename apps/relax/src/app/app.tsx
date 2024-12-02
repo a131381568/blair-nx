@@ -22,7 +22,7 @@ export function App() {
 	};
 
 	return (
-		<div className="app p-4">
+		<div className="app">
 			<TodoList
 				items={todos}
 				onToggle={handleToggle}
