@@ -415,7 +415,8 @@
 			"node",
 			"vitest",
 			"@nx/react/typings/cssmodule.d.ts",
-			"@nx/react/typings/image.d.ts"
+			"@nx/react/typings/image.d.ts",
+			"@testing-library/jest-dom"
 		],
 		"outDir": "../../dist/out-tsc"
 	},
@@ -432,7 +433,8 @@
 		"src/**/*.spec.jsx",
 		"src/**/*.d.ts",
 		"src/**/*.tsx",
-		"src/**/*.ts"
+		"src/**/*.ts",
+		"src/vitest.setup.ts"
 	]
 }
 ```
@@ -502,6 +504,29 @@ export default antfu(
 );
 ```
 
+## apps/relax/src/vitest.setup.ts
+```
+/// <reference types="vitest/globals" />
+import { afterEach, expect, vi } from 'vitest';
+import { cleanup } from '@testing-library/react';
+import * as matchers from '@testing-library/jest-dom/matchers';
+
+expect.extend(matchers);
+
+afterEach(() => {
+	cleanup();
+});
+
+// Mock ResizeObserver
+const ResizeObserverMock = vi.fn(() => ({
+	observe: vi.fn(),
+	unobserve: vi.fn(),
+	disconnect: vi.fn(),
+}));
+
+vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+```
+
 ## apps/relax/vite.config.ts
 ```
 /// <reference types='vitest' />
@@ -511,47 +536,47 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
 
 export default defineConfig({
-  root: __dirname,
-  cacheDir: '../../node_modules/.vite/apps/relax',
+	root: __dirname,
+	cacheDir: '../../node_modules/.vite/apps/relax',
 
-  server: {
-    port: 4200,
-    host: 'localhost',
-  },
+	server: {
+		port: 4200,
+		host: 'localhost',
+	},
 
-  preview: {
-    port: 4300,
-    host: 'localhost',
-  },
+	preview: {
+		port: 4300,
+		host: 'localhost',
+	},
 
-  plugins: [react(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
+	plugins: [react(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
 
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
+	// Uncomment this if you are using workers.
+	// worker: {
+	//  plugins: [ nxViteTsPaths() ],
+	// },
 
-  build: {
-    outDir: '../../dist/apps/relax',
-    emptyOutDir: true,
-    reportCompressedSize: true,
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
-  },
+	build: {
+		outDir: '../../dist/apps/relax',
+		emptyOutDir: true,
+		reportCompressedSize: true,
+		commonjsOptions: {
+			transformMixedEsModules: true,
+		},
+	},
 
-  test: {
-    watch: false,
-    globals: true,
-    environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-
-    reporters: ['default'],
-    coverage: {
-      reportsDirectory: '../../coverage/apps/relax',
-      provider: 'v8',
-    },
-  },
+	test: {
+		watch: false,
+		globals: true,
+		environment: 'jsdom',
+		setupFiles: ['src/vitest.setup.ts'],
+		include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+		reporters: ['default'],
+		coverage: {
+			reportsDirectory: '../../coverage/apps/relax',
+			provider: 'v8',
+		},
+	},
 });
 ```
 
@@ -610,7 +635,6 @@ export function App() {
 
 export default App;
 ```
-
 
 ## apps/relax/src/app/nx-welcome.tsx
 ```
@@ -1810,4 +1834,89 @@ summary svg {
 		gap: 4rem;
 	}
 }
+```
+
+## apps/relax/src/app/TodoList.spec.tsx
+```
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
+import { ThemeProvider } from 'styled-components';
+import { theme } from '../components/styled/theme';
+import type { TodoItem } from '../types/list';
+import { TodoList } from './TodoList';
+
+// 測試資料
+const mockTodos: TodoItem[] = [
+	{ id: 1, text: '學習 React 基礎', completed: true },
+	{ id: 2, text: '理解 JSX 語法', completed: false },
+];
+
+// 包裝元件以提供 theme
+const renderWithTheme = (component: React.ReactNode) => {
+	return render(
+		<ThemeProvider theme={theme}>
+			{component}
+		</ThemeProvider>,
+	);
+};
+
+describe('todoList Component', () => {
+	it('應該正確渲染標題', () => {
+		renderWithTheme(<TodoList items={[]} />);
+		expect(screen.getByText('待辦事項清單')).toBeInTheDocument();
+	});
+
+	it('應該顯示自定義標題', () => {
+		const customTitle = '我的待辦清單';
+		renderWithTheme(<TodoList title={customTitle} items={[]} />);
+		expect(screen.getByText(customTitle)).toBeInTheDocument();
+	});
+
+	it('當清單為空時應該顯示提示訊息', () => {
+		renderWithTheme(<TodoList items={[]} />);
+		expect(screen.getByText('目前沒有待辦事項')).toBeInTheDocument();
+	});
+
+	it('應該正確渲染待辦事項列表', () => {
+		renderWithTheme(<TodoList items={mockTodos} />);
+		mockTodos.forEach((todo) => {
+			expect(screen.getByText(todo.text)).toBeInTheDocument();
+		});
+	});
+
+	it('應該正確處理待辦事項的完成狀態', () => {
+		const onToggle = vi.fn();
+		renderWithTheme(
+			<TodoList items={mockTodos} onToggle={onToggle} />,
+		);
+
+		const checkboxes = screen.getAllByRole('checkbox');
+		fireEvent.click(checkboxes[0]);
+
+		expect(onToggle).toHaveBeenCalledWith(mockTodos[0].id);
+	});
+
+	it('應該正確處理待辦事項的刪除', () => {
+		const onDelete = vi.fn();
+		renderWithTheme(
+			<TodoList items={mockTodos} onDelete={onDelete} />,
+		);
+
+		const deleteButtons = screen.getAllByText('刪除');
+		fireEvent.click(deleteButtons[0]);
+
+		expect(onDelete).toHaveBeenCalledWith(mockTodos[0].id);
+	});
+
+	it('應該正確顯示待辦事項統計', () => {
+		renderWithTheme(<TodoList items={mockTodos} />);
+
+		const statsDiv = screen.getByText(/總計:/);
+		expect(statsDiv).toHaveTextContent('2');
+		expect(statsDiv).toHaveTextContent('項');
+
+		const completedSpan = screen.getByText('1');
+		expect(completedSpan).toHaveClass('completed');
+	});
+});
 ```

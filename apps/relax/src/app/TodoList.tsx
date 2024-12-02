@@ -11,8 +11,10 @@ import {
 export const TodoList = ({
 	title = '待辦事項清單',
 	items,
+	activeId,
 	onToggle,
 	onDelete,
+	onSelect,
 }: TodoListProps) => {
 	const completedCount = items.filter(item => item.completed).length;
 
@@ -27,15 +29,28 @@ export const TodoList = ({
 				: (
 						<ul>
 							{items.map(item => (
-								<TodoItem key={item.id} $completed={item.completed}>
+								<TodoItem
+									key={item.id}
+									$completed={item.completed}
+									$active={item.id === activeId}
+									onClick={() => onSelect(item.id)}
+								>
 									<div>
 										<TodoCheckbox
 											checked={item.completed}
-											onChange={() => onToggle?.(item.id)}
+											onChange={(e) => {
+												e.stopPropagation();
+												onToggle(item.id);
+											}}
 										/>
 										<span>{item.text}</span>
 									</div>
-									<DeleteButton onClick={() => onDelete?.(item.id)}>
+									<DeleteButton
+										onClick={(e) => {
+											e.stopPropagation();
+											onDelete(item.id);
+										}}
+									>
 										刪除
 									</DeleteButton>
 								</TodoItem>

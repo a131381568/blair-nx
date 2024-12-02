@@ -6,6 +6,7 @@ import type { Theme } from './theme';
 interface TodoItemProps {
 	$completed: boolean;
 	theme: Theme;
+	$active: boolean;
 }
 
 // Styled Components
@@ -38,25 +39,28 @@ const TodoItem = styled.li<TodoItemProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: ${theme.spacing.sm};
-  margin: ${theme.spacing.sm} 0;
+  padding: ${({ theme }) => theme.spacing.sm};
+  margin: ${({ theme }) => theme.spacing.sm} 0;
   border-radius: 4px;
   transition: all 0.2s ease;
-  background: ${({ $completed }) => $completed ? '#f0fff4' : 'white'};
-  color: ${({ $completed }) => $completed ? theme.colors.primary : theme.colors.gray};
-
-  div {
-    display: flex;
-    align-items: center;
-    gap: ${theme.spacing.sm};
-
-    span.completed {
-      text-decoration: line-through;
-    }
+  background: ${({ $completed, $active }) => {
+		if ($active)
+			return '#f0f9ff';
+		return $completed ? '#f0fff4' : 'white';
+	}};
+  cursor: pointer;
+  border: 1px solid ${({ $active, theme }) =>
+		$active ? theme.colors.primary : 'transparent'};
+  
+  &:hover {
+    background: ${({ $active }) =>
+		$active ? '#e0f2fe' : '#f7fafc'};
   }
 
-  &:hover {
-    background: #f7fafc;
+  & > div{
+    display: flex;
+    align-items: center;
+    column-gap: ${theme.spacing.sm};
   }
 `;
 

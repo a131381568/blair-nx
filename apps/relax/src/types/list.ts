@@ -4,10 +4,17 @@ export interface TodoItem {
 	completed: boolean;
 }
 
-// 定義 Props 介面
 export interface TodoListProps {
 	title?: string;
 	items: TodoItem[];
-	onToggle?: (id: number) => void;
-	onDelete?: (id: number) => void;
+	activeId?: number | null;
+	onToggle: (id: number) => void;
+	onDelete: (id: number) => void;
+	onSelect: (id: number) => void;
+}
+
+export interface TodoDetailProps {
+	item: TodoItem;
+	onToggle: (id: number) => void;
+	onDelete: (id: number) => void;
 }
