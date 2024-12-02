@@ -6,6 +6,8 @@ export interface TodoItem {
 
 // 定義 Props 介面
 export interface TodoListProps {
-	title?: string; // 可選的標題屬性
+	title?: string;
 	items: TodoItem[];
+	onToggle?: (id: number) => void;
+	onDelete?: (id: number) => void;
 }
