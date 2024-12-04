@@ -38,6 +38,7 @@ export default antfu(
 			'**/playwright/.cache/*',
 			'**/e2e/*.png',
 			'**/e2e/*.pdf',
+			'**/context.md',
 		],
 	},
 	{
@@ -53,6 +54,7 @@ export default antfu(
 			'**/eslint.config.mjs',
 			'**/encrypt.util.ts',
 			'**/playwright.config.ts',
+			'**/generateContextMd.ts',
 		],
 		rules: {
 			'node/prefer-global/process': ['error', 'always'],
