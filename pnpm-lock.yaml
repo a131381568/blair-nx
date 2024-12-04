@@ -92,6 +92,9 @@ dependencies:
   big.js:
     specifier: ^6.2.2
     version: 6.2.2
+  body-parser:
+    specifier: ^1.20.3
+    version: 1.20.3
   classnames:
     specifier: ^2.5.1
     version: 2.5.1

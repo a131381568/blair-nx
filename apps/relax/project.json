@@ -31,6 +31,12 @@
 				"format": ["cjs"]
 			},
 			"dependsOn": ["copy-env", "build"]
+		},
+		"mockServer": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "node apps/{projectName}/src/api/mock-server.js"
+			}
 		}
 	}
 }
