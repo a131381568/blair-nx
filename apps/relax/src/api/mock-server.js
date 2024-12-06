@@ -69,6 +69,11 @@ app.delete('/api/todo/:id', (req, res) => {
 	res.status(204).send();
 });
 
+app.put('/api/todo', (req, res) => {
+	todoList = req.body;
+	res.json(todoList);
+});
+
 app.use('/', express.static('public'));
 
 app.listen(port, () => {

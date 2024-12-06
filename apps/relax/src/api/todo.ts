@@ -25,4 +25,9 @@ export const TodoAPI = {
 	async delete(id: number) {
 		await apiClient.delete(`/todo/${id}`);
 	},
+
+	async saveList(todoList: TodoItem[]) {
+		const { data } = await apiClient.put<TodoItem[]>('/todo', todoList);
+		return data;
+	},
 };
