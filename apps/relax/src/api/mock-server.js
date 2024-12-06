@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const cors = require('cors');
 
 const app = express();
 const port = 3333;
@@ -9,6 +10,7 @@ let todoList = [
 	{ id: 3, text: '練習使用 Props', completed: false },
 ];
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }));
 app.use(bodyParser.text({ type: 'text/html' }));
