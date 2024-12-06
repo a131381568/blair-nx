@@ -1,38 +1,51 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { theme } from '../components/styled/theme';
-import { useTodoStorage } from '../hooks/useTodoStorage';
+import { useInitialTodos } from '../hooks/useInitialTodos';
+import { TodoAPI } from '../api/todo';
 import { TodoList } from './TodoList';
 import { TodoInput } from './TodoInput';
 import { TodoDetail } from './TodoDetail';
 
 export function App() {
-	const [todos, setTodos] = useTodoStorage([
-		{ id: 1, text: '學習 React 基礎', completed: true },
-		{ id: 2, text: '理解 JSX 語法', completed: false },
-		{ id: 3, text: '練習使用 Props', completed: false },
-	]);
+	const { todos, setTodos, loading, error } = useInitialTodos();
 
 	const [activeId, setActiveId] = useState<number | null>(null);
 
-	const handleAdd = useCallback((text: string) => {
-		setTodos(prev => [...prev, {
-			id: Math.max(0, ...prev.map(t => t.id)) + 1,
-			text,
-			completed: false,
-		}]);
+	const handleAdd = useCallback(async (text: string) => {
+		try {
+			const newTodo = await TodoAPI.create({ text, completed: false });
+			setTodos(prev => [...prev, newTodo]);
+		}
+		catch (err) {
+			console.error('Failed to add todo:', err);
+		}
 	}, [setTodos]);
 
-	const handleToggle = useCallback((id: number) => {
-		setTodos(prev => prev.map(todo =>
-			todo.id === id ? { ...todo, completed: !todo.completed } : todo,
-		));
-	}, [setTodos]);
+	const handleToggle = useCallback(async (id: number) => {
+		try {
+			const todo = todos.find(t => t.id === id);
+			if (!todo)
+				return;
 
-	const handleDelete = useCallback((id: number) => {
-		setTodos(prev => prev.filter(todo => todo.id !== id));
-		if (activeId === id)
-			setActiveId(null);
+			const updated = await TodoAPI.update(id, { completed: !todo.completed });
+			setTodos(prev => prev.map(t => t.id === id ? updated : t));
+		}
+		catch (err) {
+			console.error('Failed to toggle todo:', err);
+		}
+	}, [todos, setTodos]);
+
+	const handleDelete = useCallback(async (id: number) => {
+		try {
+			await TodoAPI.delete(id);
+			setTodos(prev => prev.filter(todo => todo.id !== id));
+			if (activeId === id)
+				setActiveId(null);
+		}
+		catch (err) {
+			console.error('Failed to delete todo:', err);
+		}
 	}, [activeId, setTodos]);
 
 	const handleSelect = useCallback((id: number) => {
@@ -41,6 +54,18 @@ export function App() {
 
 	const activeTodo = useMemo(() =>
 		todos.find(todo => todo.id === activeId), [todos, activeId]);
+
+	if (error) {
+		return (
+			<div className="text-red-500">
+				Error:
+				{error.message}
+			</div>
+		);
+	}
+
+	if (loading)
+		return <div>Loading...</div>;
 
 	return (
 		<ThemeProvider theme={theme}>

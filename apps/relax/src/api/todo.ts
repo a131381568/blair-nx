@@ -1,17 +1,28 @@
+import axios from 'axios';
 import type { TodoItem } from '../types/list';
-import { axiosInstance } from './config';
+
+const apiClient = axios.create({
+	baseURL: 'http://localhost:3333/api',
+	timeout: 5000,
+});
 
 export const TodoAPI = {
-	getAll() {
-		return axiosInstance.get<TodoItem[]>('/todo');
+	async getAll() {
+		const { data } = await apiClient.get<TodoItem[]>('/todo');
+		return data;
 	},
-	create(todo: Omit<TodoItem, 'id'>) {
-		return axiosInstance.post<TodoItem>('/todo', todo);
+
+	async create(todo: Omit<TodoItem, 'id'>) {
+		const { data } = await apiClient.post<TodoItem>('/todo', todo);
+		return data;
 	},
-	update(id: number, todo: Partial<TodoItem>) {
-		return axiosInstance.patch<TodoItem>(`/todo/${id}`, todo);
+
+	async update(id: number, todo: Partial<TodoItem>) {
+		const { data } = await apiClient.patch<TodoItem>(`/todo/${id}`, todo);
+		return data;
 	},
-	delete(id: number) {
-		return axiosInstance.delete(`/todo/${id}`);
+
+	async delete(id: number) {
+		await apiClient.delete(`/todo/${id}`);
 	},
 };
