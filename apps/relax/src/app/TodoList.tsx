@@ -15,6 +15,7 @@ export const TodoList = ({
 	onToggle,
 	onDelete,
 	onSelect,
+	isDisable,
 }: TodoListProps) => {
 	const completedCount = items.filter(item => item.completed).length;
 
@@ -38,6 +39,7 @@ export const TodoList = ({
 									<div>
 										<TodoCheckbox
 											checked={item.completed}
+											disabled={isDisable}
 											onChange={(e) => {
 												e.stopPropagation();
 												onToggle(item.id);

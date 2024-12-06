@@ -11,10 +11,12 @@ export interface TodoListProps {
 	onToggle: (id: number) => void;
 	onDelete: (id: number) => void;
 	onSelect: (id: number) => void;
+	isDisable: boolean;
 }
 
 export interface TodoDetailProps {
 	item: TodoItem;
 	onToggle: (id: number) => void;
 	onDelete: (id: number) => void;
+	isDisable: boolean;
 }
