@@ -38,7 +38,7 @@ export default antfu(
 			'**/playwright/.cache/*',
 			'**/e2e/*.png',
 			'**/e2e/*.pdf',
-			'**/context.md',
+			'**/refer_context.md',
 		],
 	},
 	{
