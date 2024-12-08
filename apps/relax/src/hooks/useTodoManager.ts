@@ -38,11 +38,17 @@ export function useTodoManager() {
 	const activeTodo = useMemo(() =>
 		todos.find(todo => todo.id === activeId), [todos, activeId]);
 
-	const toggleMode = () => {
-		setIsEditMode(!isEditMode);
-		if (!isEditMode)
-			saveList(todos);
-	};
+	const toggleMode = useCallback(async () => {
+		setIsEditMode(prev => !prev);
+		if (!isEditMode) {
+			try {
+				await saveList(todos);
+			}
+			catch (error) {
+				setError(error instanceof Error ? error : new Error('Failed to save todos'));
+			}
+		}
+	}, [isEditMode, todos, saveList]);
 
 	useEffect(() => {
 		let mounted = true;

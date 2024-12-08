@@ -1,5 +1,6 @@
 import { ThemeProvider } from 'styled-components';
 import { theme } from '../components/styled/theme';
+import { TodoListSkeleton } from '../components/TodoListSkeleton';
 import { useTodoManager } from '../hooks/useTodoManager';
 import { AddButton } from '../components/styled/TodoInputStyle';
 import { TodoList } from './TodoList';
@@ -31,7 +32,7 @@ export function App() {
 	}
 
 	if (loading)
-		return <div>Loading...</div>;
+		return <TodoListSkeleton />;
 
 	return (
 		<ThemeProvider theme={theme}>
