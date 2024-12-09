@@ -1,8 +1,9 @@
-import { type ReactNode, useMemo, useState } from 'react';
+import { type ReactNode, useMemo } from 'react';
 import { ThemeContext } from '../ThemeContext';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-	const [isDark, setIsDark] = useState(false);
+	const [isDark, setIsDark] = useLocalStorage('theme', false);
 
 	const value = useMemo(() => ({
 		isDark,
@@ -12,7 +13,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 			background: isDark ? '#1a202c' : '#ffffff',
 			text: isDark ? '#e2e8f0' : '#2d3748',
 		},
-	}), [isDark]);
+	}), [isDark, setIsDark]);
 
 	return (
 		<ThemeContext.Provider value={value}>
