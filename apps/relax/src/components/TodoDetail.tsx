@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { useLanguageContext } from '../hooks/useContexts';
-import type { TodoDetailProps } from '../types/list';
+import { useLanguageContext, useTodoContext } from '../hooks/useContexts';
 
 const DetailContainer = styled.div`
   margin-top: ${({ theme }) => theme.spacing.lg};
@@ -42,8 +41,12 @@ const Status = styled.div<{ $completed: boolean }>`
 		$completed ? theme.colors.primary : theme.colors.gray};
 `;
 
-export const TodoDetail = ({ item, onToggle, onDelete }: TodoDetailProps) => {
+export const TodoDetail = () => {
 	const { t } = useLanguageContext();
+	const { dispatch, activeTodo: item } = useTodoContext();
+
+	if (!item)
+		return null;
 
 	return (
 		<DetailContainer>
@@ -51,14 +54,14 @@ export const TodoDetail = ({ item, onToggle, onDelete }: TodoDetailProps) => {
 				<DetailTitle>{item.text}</DetailTitle>
 				<div>
 					<ActionButton
-						onClick={() => onToggle(item.id)}
+						onClick={() => dispatch({ type: 'TOGGLE_TODO', payload: item.id })}
 						style={{ marginRight: '8px' }}
 					>
 						{item.completed ? t('detailMarkInCompleted') : t('detailMarkCompleted')}
 					</ActionButton>
 					<ActionButton
 						$danger
-						onClick={() => onDelete(item.id)}
+						onClick={() => dispatch({ type: 'DELETE_TODO', payload: item.id })}
 					>
 						{t('deleteTodo')}
 					</ActionButton>

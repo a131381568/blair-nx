@@ -28,19 +28,8 @@ export function App() {
 
 function TodoApp() {
 	const { t } = useLanguageContext();
-	const {
-		loading,
-		error,
-		todos,
-		isEditMode,
-		activeId,
-		handleAdd,
-		handleToggle,
-		handleDelete,
-		handleSelect,
-		activeTodo,
-		toggleMode,
-	} = useTodoContext();
+	const { state, dispatch, activeTodo, api } = useTodoContext();
+	const { loading, error, isEditMode } = state;
 
 	if (error) {
 		return (
@@ -60,25 +49,24 @@ function TodoApp() {
 				<LanguageSwitcher />
 				<ThemeToggle />
 			</div>
-			{!isEditMode && (<TodoInput onAdd={handleAdd} />)}
-			<TodoList
-				items={todos}
-				activeId={activeId}
-				onToggle={handleToggle}
-				onDelete={handleDelete}
-				onSelect={handleSelect}
-				isDisable={isEditMode}
-			/>
-			{activeTodo && !isEditMode && (
-				<TodoDetail
-					item={activeTodo}
-					onToggle={handleToggle}
-					onDelete={handleDelete}
-					isDisable={isEditMode}
-				/>
-			)}
-			<AddButton className="mt-5" onClick={toggleMode}>
-				{ isEditMode ? t('editMode') : t('saveList') }
+			{!isEditMode && <TodoInput />}
+			<TodoList />
+			{activeTodo && !isEditMode && <TodoDetail />}
+			<AddButton
+				className="mt-5"
+				onClick={async () => {
+					try {
+						dispatch({ type: 'TOGGLE_MODE' });
+						if (!isEditMode) {
+							await api.saveTodoList(state.todos);
+						}
+					}
+					catch (err) {
+						console.error(err);
+					}
+				}}
+			>
+				{isEditMode ? t('editMode') : (api.loadingStates.save ? '儲存中...' : t('saveList'))}
 			</AddButton>
 		</div>
 	);

@@ -6,12 +6,6 @@ export interface TodoItem {
 
 export interface TodoListProps {
 	title?: string;
-	items: TodoItem[];
-	activeId?: number | null;
-	onToggle: (id: number) => void;
-	onDelete: (id: number) => void;
-	onSelect: (id: number) => void;
-	isDisable: boolean;
 }
 
 export interface TodoDetailProps {

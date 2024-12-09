@@ -1,18 +1,35 @@
 import type { TodoItem } from '../types/list';
 import { translations } from '../constants/language-translations';
 
-export interface TodoContextType {
+export type TodoAction =
+	| { type: 'ADD_TODO'; payload: string }
+	| { type: 'TOGGLE_TODO'; payload: number }
+	| { type: 'DELETE_TODO'; payload: number }
+	| { type: 'SELECT_TODO'; payload: number }
+	| { type: 'TOGGLE_MODE' }
+	| { type: 'SET_TODOS'; payload: TodoItem[] }
+	| { type: 'SET_ERROR'; payload: Error | null }
+	| { type: 'SET_LOADING'; payload: boolean };
+
+export interface TodoState {
+	todos: TodoItem[];
 	loading: boolean;
 	error: Error | null;
-	todos: TodoItem[];
 	isEditMode: boolean;
 	activeId: number | null;
-	handleAdd: (text: string) => void;
-	handleToggle: (id: number) => void;
-	handleDelete: (id: number) => void;
-	handleSelect: (id: number) => void;
+}
+
+export interface TodoContextType {
+	state: TodoState;
+	dispatch: React.Dispatch<TodoAction>;
 	activeTodo: TodoItem | undefined;
-	toggleMode: () => Promise<void>;
+	api: {
+		addTodo: (text: string) => Promise<void>;
+		toggleTodo: (id: number) => Promise<void>;
+		deleteTodo: (id: number) => Promise<void>;
+		saveTodoList: (todos: TodoItem[]) => Promise<void>;
+		loadingStates: Record<string, boolean>;
+	};
 }
 
 export type Language = 'zh' | 'en';

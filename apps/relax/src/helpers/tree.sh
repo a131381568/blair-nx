@@ -1,4 +1,4 @@
-$ tree         
+$ tree
 .
 ├── eslint.config.mjs
 ├── index.html
@@ -49,12 +49,15 @@ $ tree
 │   │   └── tree.sh
 │   ├── hooks
 │   │   ├── useContexts.ts
-│   │   ├── useLocalStorage.spec.tsx
+│   │   ├── useLocalStorage.spec.ts
 │   │   ├── useLocalStorage.ts
+│   │   ├── useTodoApi.ts
 │   │   ├── useTodoManager.ts
 │   │   ├── useTodoStorage.spec.ts
 │   │   └── useTodoStorage.ts
 │   ├── main.tsx
+│   ├── reducers
+│   │   └── todoReducer.ts
 │   ├── styled.d.ts
 │   ├── styles.css
 │   ├── types

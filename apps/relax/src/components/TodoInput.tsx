@@ -1,18 +1,15 @@
 import { type KeyboardEvent, useState } from 'react';
-import { useLanguageContext } from '../hooks/useContexts';
+import { useLanguageContext, useTodoContext } from '../hooks/useContexts';
 import { AddButton, Input, InputContainer } from './styled/TodoInputStyle';
 
-interface TodoInputProps {
-	onAdd: (text: string) => void;
-}
-
-export const TodoInput = ({ onAdd }: TodoInputProps) => {
+export const TodoInput = () => {
 	const { t } = useLanguageContext();
+	const { api } = useTodoContext();
 	const [text, setText] = useState('');
 
-	const handleAdd = () => {
+	const handleAdd = async () => {
 		if (text.trim()) {
-			onAdd(text.trim());
+			await api.addTodo(text.trim());
 			setText('');
 		}
 	};

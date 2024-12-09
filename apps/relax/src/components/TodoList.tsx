@@ -1,5 +1,5 @@
 import type { TodoListProps } from '../types/list';
-import { useLanguageContext } from '../hooks/useContexts';
+import { useLanguageContext, useTodoContext } from '../hooks/useContexts';
 import {
 	DeleteButton,
 	TodoCheckbox,
@@ -9,54 +9,50 @@ import {
 	TodoStats,
 } from './styled/TodoStyles';
 
-export const TodoList = ({
-	title,
-	items,
-	activeId,
-	onToggle,
-	onDelete,
-	onSelect,
-	isDisable,
-}: TodoListProps) => {
+export const TodoList = ({ title }: TodoListProps) => {
 	const { t } = useLanguageContext();
-	const completedCount = items.filter(item => item.completed).length;
+	const { state, dispatch, api } = useTodoContext();
+	const { todos, activeId, isEditMode } = state;
+
+	const completedCount = todos.filter(item => item.completed).length;
 
 	return (
 		<TodoContainer>
 			<TodoHeader>{title || t('mainTitle')}</TodoHeader>
 
-			{!items.length
+			{!todos.length
 				? (
 						<p>{t('nothing')}</p>
 					)
 				: (
 						<ul>
-							{items.map(item => (
+							{todos.map(item => (
 								<TodoItem
 									key={item.id}
 									$completed={item.completed}
 									$active={item.id === activeId}
-									onClick={() => onSelect(item.id)}
+									onClick={() => dispatch({ type: 'SELECT_TODO', payload: item.id })}
 								>
 									<div>
 										<TodoCheckbox
 											checked={item.completed}
-											disabled={isDisable}
-											onChange={(e) => {
+											disabled={isEditMode || api.loadingStates[`toggle-${item.id}`]}
+											onChange={async (e) => {
 												e.stopPropagation();
-												onToggle(item.id);
+												await api.toggleTodo(item.id);
 											}}
 										/>
 										<span>{item.text}</span>
 									</div>
-									{!isDisable && (
+									{!isEditMode && (
 										<DeleteButton
-											onClick={(e) => {
+											disabled={api.loadingStates[`delete-${item.id}`]}
+											onClick={async (e) => {
 												e.stopPropagation();
-												onDelete(item.id);
+												await api.deleteTodo(item.id);
 											}}
 										>
-											{t('deleteTodo')}
+											{api.loadingStates[`delete-${item.id}`] ? '刪除中...' : t('deleteTodo')}
 										</DeleteButton>
 									)}
 								</TodoItem>
@@ -68,7 +64,7 @@ export const TodoList = ({
 				{t('total')}
 				:
 				{' '}
-				{items.length}
+				{todos.length}
 				{' '}
 				{t('count')}
 				{' '}
