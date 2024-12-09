@@ -1,4 +1,4 @@
-$ tree                   
+$ tree         
 .
 ├── eslint.config.mjs
 ├── index.html
@@ -18,6 +18,8 @@ $ tree
 │   ├── components
 │   │   ├── ErrorBoundary.tsx
 │   │   ├── LanguageSwitcher.tsx
+│   │   ├── ThemeToggle.spec.tsx
+│   │   ├── ThemeToggle.tsx
 │   │   ├── TodoDetail.spec.tsx
 │   │   ├── TodoDetail.tsx
 │   │   ├── TodoInput.spec.tsx
@@ -47,6 +49,8 @@ $ tree
 │   │   └── tree.sh
 │   ├── hooks
 │   │   ├── useContexts.ts
+│   │   ├── useLocalStorage.spec.tsx
+│   │   ├── useLocalStorage.ts
 │   │   ├── useTodoManager.ts
 │   │   ├── useTodoStorage.spec.ts
 │   │   └── useTodoStorage.ts
