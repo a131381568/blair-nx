@@ -1,4 +1,4 @@
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { theme } from '../components/styled/theme';
 import { TodoListSkeleton } from '../components/TodoListSkeleton';
 import { AddButton } from '../components/styled/TodoInputStyle';
@@ -9,16 +9,20 @@ import { TodoProvider } from '../context/providers/TodoProvider';
 import { useLanguageContext, useTodoContext } from '../hooks/useContexts';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
 import { LanguageProvider } from '../context/providers/LanguageProvider';
+import { ThemeToggle } from '../components/ThemeToggle';
+import { ThemeProvider } from '../context/providers/ThemeProvider';
 
 export function App() {
 	return (
-		<ThemeProvider theme={theme}>
-			<LanguageProvider>
-				<TodoProvider>
-					<TodoApp />
-				</TodoProvider>
-			</LanguageProvider>
-		</ThemeProvider>
+		<StyledThemeProvider theme={theme}>
+			<ThemeProvider>
+				<LanguageProvider>
+					<TodoProvider>
+						<TodoApp />
+					</TodoProvider>
+				</LanguageProvider>
+			</ThemeProvider>
+		</StyledThemeProvider>
 	);
 }
 
@@ -54,6 +58,7 @@ function TodoApp() {
 		<div className="app max-w-2xl mx-auto mt-8 px-4">
 			<div className="flex justify-end mb-4">
 				<LanguageSwitcher />
+				<ThemeToggle />
 			</div>
 			{!isEditMode && (<TodoInput onAdd={handleAdd} />)}
 			<TodoList

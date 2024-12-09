@@ -1,4 +1,4 @@
-$ tree
+$ tree                   
 .
 ├── eslint.config.mjs
 ├── index.html
@@ -61,5 +61,3 @@ $ tree
 ├── tsconfig.json
 ├── tsconfig.spec.json
 └── vite.config.ts
-
-14 directories, 48 files
