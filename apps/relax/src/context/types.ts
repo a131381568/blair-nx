@@ -1,4 +1,5 @@
 import type { TodoItem } from '../types/list';
+import { translations } from '../constants/language-translations';
 
 export interface TodoContextType {
 	loading: boolean;
@@ -15,7 +16,7 @@ export interface TodoContextType {
 }
 
 export type Language = 'zh' | 'en';
-export type TranslationKey = 'addTodo' | 'deleteTodo' | 'editMode' | 'saveList';
+export type TranslationKey = keyof (typeof translations)['zh'];
 
 export interface LanguageContextType {
 	currentLang: Language;

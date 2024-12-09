@@ -60,4 +60,12 @@ export default antfu(
 			'node/prefer-global/process': ['error', 'always'],
 		},
 	},
+	{
+		files: [
+			'**/context/types.ts',
+		],
+		rules: {
+			'@typescript-eslint/consistent-type-imports': 'off',
+		},
+	},
 );

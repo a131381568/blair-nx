@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { ThemeProvider } from 'styled-components';
+import { LanguageProvider } from '../context/providers/LanguageProvider';
 import type { TodoItem } from '../types/list';
 import { theme } from './styled/theme';
 import { TodoList } from './TodoList';
@@ -21,7 +22,9 @@ const defaultProps = {
 const renderWithTheme = (component: React.ReactNode) => {
 	return render(
 		<ThemeProvider theme={theme}>
-			{component}
+			<LanguageProvider>
+				{component}
+			</LanguageProvider>
 		</ThemeProvider>,
 	);
 };

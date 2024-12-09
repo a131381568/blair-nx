@@ -6,19 +6,24 @@ import { TodoList } from '../components/TodoList';
 import { TodoInput } from '../components/TodoInput';
 import { TodoDetail } from '../components/TodoDetail';
 import { TodoProvider } from '../context/providers/TodoProvider';
-import { useTodoContext } from '../hooks/useContexts';
+import { useLanguageContext, useTodoContext } from '../hooks/useContexts';
+import { LanguageSwitcher } from '../components/LanguageSwitcher';
+import { LanguageProvider } from '../context/providers/LanguageProvider';
 
 export function App() {
 	return (
 		<ThemeProvider theme={theme}>
-			<TodoProvider>
-				<TodoApp />
-			</TodoProvider>
+			<LanguageProvider>
+				<TodoProvider>
+					<TodoApp />
+				</TodoProvider>
+			</LanguageProvider>
 		</ThemeProvider>
 	);
 }
 
 function TodoApp() {
+	const { t } = useLanguageContext();
 	const {
 		loading,
 		error,
@@ -47,6 +52,9 @@ function TodoApp() {
 
 	return (
 		<div className="app max-w-2xl mx-auto mt-8 px-4">
+			<div className="flex justify-end mb-4">
+				<LanguageSwitcher />
+			</div>
 			{!isEditMode && (<TodoInput onAdd={handleAdd} />)}
 			<TodoList
 				items={todos}
@@ -65,7 +73,7 @@ function TodoApp() {
 				/>
 			)}
 			<AddButton className="mt-5" onClick={toggleMode}>
-				{ isEditMode ? '開啟編輯模式' : '儲存清單' }
+				{ isEditMode ? t('editMode') : t('saveList') }
 			</AddButton>
 		</div>
 	);

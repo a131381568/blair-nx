@@ -17,6 +17,7 @@ $ tree
 │   │   └── style.css
 │   ├── components
 │   │   ├── ErrorBoundary.tsx
+│   │   ├── LanguageSwitcher.tsx
 │   │   ├── TodoDetail.spec.tsx
 │   │   ├── TodoDetail.tsx
 │   │   ├── TodoInput.spec.tsx
@@ -28,6 +29,8 @@ $ tree
 │   │       ├── TodoInputStyle.tsx
 │   │       ├── TodoStyles.tsx
 │   │       └── theme.ts
+│   ├── constants
+│   │   └── language-translations.ts
 │   ├── context
 │   │   ├── LanguageContext.tsx
 │   │   ├── ThemeContext.tsx
@@ -58,3 +61,5 @@ $ tree
 ├── tsconfig.json
 ├── tsconfig.spec.json
 └── vite.config.ts
+
+14 directories, 48 files

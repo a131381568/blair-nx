@@ -1,4 +1,5 @@
 import type { TodoListProps } from '../types/list';
+import { useLanguageContext } from '../hooks/useContexts';
 import {
 	DeleteButton,
 	TodoCheckbox,
@@ -9,7 +10,7 @@ import {
 } from './styled/TodoStyles';
 
 export const TodoList = ({
-	title = '待辦事項清單',
+	title,
 	items,
 	activeId,
 	onToggle,
@@ -17,15 +18,16 @@ export const TodoList = ({
 	onSelect,
 	isDisable,
 }: TodoListProps) => {
+	const { t } = useLanguageContext();
 	const completedCount = items.filter(item => item.completed).length;
 
 	return (
 		<TodoContainer>
-			<TodoHeader>{title}</TodoHeader>
+			<TodoHeader>{title || t('mainTitle')}</TodoHeader>
 
 			{!items.length
 				? (
-						<p>目前沒有待辦事項</p>
+						<p>{t('nothing')}</p>
 					)
 				: (
 						<ul>
@@ -54,7 +56,7 @@ export const TodoList = ({
 												onDelete(item.id);
 											}}
 										>
-											刪除
+											{t('deleteTodo')}
 										</DeleteButton>
 									)}
 								</TodoItem>
@@ -63,15 +65,20 @@ export const TodoList = ({
 					)}
 
 			<TodoStats>
-				總計:
+				{t('total')}
+				:
 				{' '}
 				{items.length}
 				{' '}
-				項 / 已完成:
+				{t('count')}
+				{' '}
+				/
+				{t('finished')}
+				:
 				<span className={completedCount ? 'completed' : 'pending'}>
 					{completedCount}
 				</span>
-				項
+				{t('count')}
 			</TodoStats>
 		</TodoContainer>
 	);

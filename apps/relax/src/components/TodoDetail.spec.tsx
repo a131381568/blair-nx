@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { ThemeProvider } from 'styled-components';
+import { LanguageProvider } from '../context/providers/LanguageProvider';
 import type { TodoItem } from '../types/list';
 import { theme } from './styled/theme';
 import { TodoDetail } from './TodoDetail';
@@ -11,13 +12,19 @@ const mockTodo: TodoItem = {
 	completed: false,
 };
 
-const renderWithTheme = (component: React.ReactNode) => (
-	render(<ThemeProvider theme={theme}>{component}</ThemeProvider>)
+const renderWithProviders = (component: React.ReactNode) => (
+	render(
+		<ThemeProvider theme={theme}>
+			<LanguageProvider>
+				{component}
+			</LanguageProvider>
+		</ThemeProvider>,
+	)
 );
 
 describe('todoDetail Component', () => {
 	it('應該渲染待辦事項詳細資訊', () => {
-		renderWithTheme(
+		renderWithProviders(
 			<TodoDetail
 				item={mockTodo}
 				onToggle={() => {}}
@@ -32,7 +39,7 @@ describe('todoDetail Component', () => {
 
 	it('切換完成狀態時應該顯示正確的按鈕文字', () => {
 		const completedTodo = { ...mockTodo, completed: true };
-		renderWithTheme(
+		renderWithProviders(
 			<TodoDetail
 				item={completedTodo}
 				onToggle={() => {}}
@@ -47,7 +54,7 @@ describe('todoDetail Component', () => {
 
 	it('點擊標記完成按鈕應該觸發 onToggle', () => {
 		const onToggle = vi.fn();
-		renderWithTheme(
+		renderWithProviders(
 			<TodoDetail
 				item={mockTodo}
 				onToggle={onToggle}
@@ -56,13 +63,13 @@ describe('todoDetail Component', () => {
 			/>,
 		);
 
-		fireEvent.click(screen.getByText('標記完成'));
+		fireEvent.click(screen.getByText('標記已完成'));
 		expect(onToggle).toHaveBeenCalledWith(mockTodo.id);
 	});
 
 	it('點擊刪除按鈕應該觸發 onDelete', () => {
 		const onDelete = vi.fn();
-		renderWithTheme(
+		renderWithProviders(
 			<TodoDetail
 				item={mockTodo}
 				onToggle={() => {}}

@@ -1,4 +1,5 @@
 import { type KeyboardEvent, useState } from 'react';
+import { useLanguageContext } from '../hooks/useContexts';
 import { AddButton, Input, InputContainer } from './styled/TodoInputStyle';
 
 interface TodoInputProps {
@@ -6,6 +7,7 @@ interface TodoInputProps {
 }
 
 export const TodoInput = ({ onAdd }: TodoInputProps) => {
+	const { t } = useLanguageContext();
 	const [text, setText] = useState('');
 
 	const handleAdd = () => {
@@ -28,7 +30,7 @@ export const TodoInput = ({ onAdd }: TodoInputProps) => {
 				value={text}
 				onChange={e => setText(e.target.value)}
 				onKeyDown={handleKeyDown}
-				placeholder="請輸入待辦事項"
+				placeholder={t('addTodo')}
 				data-testid="todo-input"
 			/>
 			<AddButton
@@ -36,7 +38,7 @@ export const TodoInput = ({ onAdd }: TodoInputProps) => {
 				disabled={!text.trim()}
 				data-testid="add-button"
 			>
-				新增
+				{t('addTodo')}
 			</AddButton>
 		</InputContainer>
 	);

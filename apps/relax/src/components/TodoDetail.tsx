@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useLanguageContext } from '../hooks/useContexts';
 import type { TodoDetailProps } from '../types/list';
 
 const DetailContainer = styled.div`
@@ -42,6 +43,8 @@ const Status = styled.div<{ $completed: boolean }>`
 `;
 
 export const TodoDetail = ({ item, onToggle, onDelete }: TodoDetailProps) => {
+	const { t } = useLanguageContext();
+
 	return (
 		<DetailContainer>
 			<DetailHeader>
@@ -51,20 +54,21 @@ export const TodoDetail = ({ item, onToggle, onDelete }: TodoDetailProps) => {
 						onClick={() => onToggle(item.id)}
 						style={{ marginRight: '8px' }}
 					>
-						{item.completed ? '標記未完成' : '標記完成'}
+						{item.completed ? t('detailMarkInCompleted') : t('detailMarkCompleted')}
 					</ActionButton>
 					<ActionButton
 						$danger
 						onClick={() => onDelete(item.id)}
 					>
-						刪除
+						{t('deleteTodo')}
 					</ActionButton>
 				</div>
 			</DetailHeader>
 			<Status $completed={item.completed}>
-				狀態:
+				{t('detailState')}
+				:
 				{' '}
-				{item.completed ? '已完成' : '未完成'}
+				{item.completed ? t('detailCompleted') : t('detailInCompleted')}
 			</Status>
 		</DetailContainer>
 	);
