@@ -3,9 +3,9 @@ import { theme } from '../components/styled/theme';
 import { TodoListSkeleton } from '../components/TodoListSkeleton';
 import { useTodoManager } from '../hooks/useTodoManager';
 import { AddButton } from '../components/styled/TodoInputStyle';
-import { TodoList } from './TodoList';
-import { TodoInput } from './TodoInput';
-import { TodoDetail } from './TodoDetail';
+import { TodoList } from '../components/TodoList';
+import { TodoInput } from '../components/TodoInput';
+import { TodoDetail } from '../components/TodoDetail';
 
 export function App() {
 	const {

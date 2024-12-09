@@ -6,7 +6,7 @@ import {
 	TodoHeader,
 	TodoItem,
 	TodoStats,
-} from '../components/styled/TodoStyles';
+} from './styled/TodoStyles';
 
 export const TodoList = ({
 	title = '待辦事項清單',
@@ -47,14 +47,16 @@ export const TodoList = ({
 										/>
 										<span>{item.text}</span>
 									</div>
-									<DeleteButton
-										onClick={(e) => {
-											e.stopPropagation();
-											onDelete(item.id);
-										}}
-									>
-										刪除
-									</DeleteButton>
+									{!isDisable && (
+										<DeleteButton
+											onClick={(e) => {
+												e.stopPropagation();
+												onDelete(item.id);
+											}}
+										>
+											刪除
+										</DeleteButton>
+									)}
 								</TodoItem>
 							))}
 						</ul>

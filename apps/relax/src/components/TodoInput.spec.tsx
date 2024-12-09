@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { ThemeProvider } from 'styled-components';
-import { theme } from '../components/styled/theme';
+import { theme } from './styled/theme';
 import { TodoInput } from './TodoInput';
 
 const renderWithTheme = (component: React.ReactNode) => {

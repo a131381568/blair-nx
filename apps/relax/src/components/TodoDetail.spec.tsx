@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { ThemeProvider } from 'styled-components';
-import { theme } from '../components/styled/theme';
 import type { TodoItem } from '../types/list';
+import { theme } from './styled/theme';
 import { TodoDetail } from './TodoDetail';
 
 const mockTodo: TodoItem = {
@@ -22,6 +22,7 @@ describe('todoDetail Component', () => {
 				item={mockTodo}
 				onToggle={() => {}}
 				onDelete={() => {}}
+				isDisable={false}
 			/>,
 		);
 
@@ -36,6 +37,7 @@ describe('todoDetail Component', () => {
 				item={completedTodo}
 				onToggle={() => {}}
 				onDelete={() => {}}
+				isDisable={false}
 			/>,
 		);
 
@@ -50,6 +52,7 @@ describe('todoDetail Component', () => {
 				item={mockTodo}
 				onToggle={onToggle}
 				onDelete={() => {}}
+				isDisable={false}
 			/>,
 		);
 
@@ -64,6 +67,7 @@ describe('todoDetail Component', () => {
 				item={mockTodo}
 				onToggle={() => {}}
 				onDelete={onDelete}
+				isDisable={false}
 			/>,
 		);
 

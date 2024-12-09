@@ -1,5 +1,5 @@
 import { type KeyboardEvent, useState } from 'react';
-import { AddButton, Input, InputContainer } from '../components/styled/TodoInputStyle';
+import { AddButton, Input, InputContainer } from './styled/TodoInputStyle';
 
 interface TodoInputProps {
 	onAdd: (text: string) => void;

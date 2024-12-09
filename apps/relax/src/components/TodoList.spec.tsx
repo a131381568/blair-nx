@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { ThemeProvider } from 'styled-components';
-import { theme } from '../components/styled/theme';
 import type { TodoItem } from '../types/list';
+import { theme } from './styled/theme';
 import { TodoList } from './TodoList';
 
 const mockTodos: TodoItem[] = [
@@ -15,6 +15,7 @@ const defaultProps = {
 	onToggle: vi.fn(),
 	onDelete: vi.fn(),
 	onSelect: vi.fn(),
+	isDisable: false,
 };
 
 const renderWithTheme = (component: React.ReactNode) => {
