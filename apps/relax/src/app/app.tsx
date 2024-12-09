@@ -1,13 +1,24 @@
 import { ThemeProvider } from 'styled-components';
 import { theme } from '../components/styled/theme';
 import { TodoListSkeleton } from '../components/TodoListSkeleton';
-import { useTodoManager } from '../hooks/useTodoManager';
 import { AddButton } from '../components/styled/TodoInputStyle';
 import { TodoList } from '../components/TodoList';
 import { TodoInput } from '../components/TodoInput';
 import { TodoDetail } from '../components/TodoDetail';
+import { TodoProvider } from '../context/providers/TodoProvider';
+import { useTodoContext } from '../hooks/useContexts';
 
 export function App() {
+	return (
+		<ThemeProvider theme={theme}>
+			<TodoProvider>
+				<TodoApp />
+			</TodoProvider>
+		</ThemeProvider>
+	);
+}
+
+function TodoApp() {
 	const {
 		loading,
 		error,
@@ -20,7 +31,7 @@ export function App() {
 		handleSelect,
 		activeTodo,
 		toggleMode,
-	} = useTodoManager();
+	} = useTodoContext();
 
 	if (error) {
 		return (
@@ -35,30 +46,28 @@ export function App() {
 		return <TodoListSkeleton />;
 
 	return (
-		<ThemeProvider theme={theme}>
-			<div className="app max-w-2xl mx-auto mt-8 px-4">
-				{!isEditMode && (<TodoInput onAdd={handleAdd} />)}
-				<TodoList
-					items={todos}
-					activeId={activeId}
+		<div className="app max-w-2xl mx-auto mt-8 px-4">
+			{!isEditMode && (<TodoInput onAdd={handleAdd} />)}
+			<TodoList
+				items={todos}
+				activeId={activeId}
+				onToggle={handleToggle}
+				onDelete={handleDelete}
+				onSelect={handleSelect}
+				isDisable={isEditMode}
+			/>
+			{activeTodo && !isEditMode && (
+				<TodoDetail
+					item={activeTodo}
 					onToggle={handleToggle}
 					onDelete={handleDelete}
-					onSelect={handleSelect}
 					isDisable={isEditMode}
 				/>
-				{activeTodo && !isEditMode && (
-					<TodoDetail
-						item={activeTodo}
-						onToggle={handleToggle}
-						onDelete={handleDelete}
-						isDisable={isEditMode}
-					/>
-				)}
-				<AddButton className="mt-5" onClick={toggleMode}>
-					{ isEditMode ? '開啟編輯模式' : '儲存清單' }
-				</AddButton>
-			</div>
-		</ThemeProvider>
+			)}
+			<AddButton className="mt-5" onClick={toggleMode}>
+				{ isEditMode ? '開啟編輯模式' : '儲存清單' }
+			</AddButton>
+		</div>
 	);
 }
 
