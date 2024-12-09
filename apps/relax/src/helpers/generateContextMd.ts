@@ -1,9 +1,8 @@
-// apps/relax/src/helpers/generateContextMd.ts
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-// 定義圖片檔案的副檔名
-const IMAGE_EXTENSIONS = new Set(['.ico', '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg']);
+// 定義排除檔案的副檔名
+const EXCLUDE_EXTENSIONS = new Set(['.ico', '.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.sh', '.md']);
 
 export async function generateContextMd(directoryPath: string, outputPath: string) {
 	try {
@@ -37,9 +36,9 @@ export async function generateContextMd(directoryPath: string, outputPath: strin
 					continue;
 				}
 
-				// 檢查是否為圖片檔案
+				// 檢查是否為需要排除的檔案
 				const ext = path.extname(item.name).toLowerCase();
-				if (IMAGE_EXTENSIONS.has(ext)) {
+				if (EXCLUDE_EXTENSIONS.has(ext)) {
 					continue;
 				}
 
