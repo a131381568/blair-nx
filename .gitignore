@@ -76,3 +76,6 @@ storybook-static
 .nuxt
 .nitro
 .cache
+
+# custom generate file
+refer_context.md

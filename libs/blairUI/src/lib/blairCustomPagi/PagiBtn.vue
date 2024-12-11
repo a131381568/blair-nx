@@ -21,7 +21,7 @@ const MODE_STYLE = {
 const STYLE_LIST = {
 	prev: 'text-xl mx-[0.313rem] text-main',
 	next: 'text-xl mx-[0.313rem] text-main',
-	number: 'text-xss mx-2.5',
+	number: 'text-xss mx-[0.625rem]',
 	ellipsis: 'text-[1.063rem] m-0 min-w-0 content-1',
 };
 
@@ -86,7 +86,7 @@ const classList = computed(() => {
 		else {
 			addStyle.push(
 				props.disabled
-					? 'text-white bg-main'
+					? 'text-white bg-main-color-middle'
 					: 'text-content-1 cursor-pointer desktop:hover:text-main',
 			);
 		}
@@ -111,6 +111,9 @@ const onClick = () => {
 			v-if="generateIcon"
 			:icon="generateIcon"
 		/>
-		<span v-else>{{ text }}</span>
+		<span
+			v-else
+			class="text-[length:initial]"
+		>{{ text }}</span>
 	</li>
 </template>

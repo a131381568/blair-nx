@@ -9,10 +9,6 @@ export default {
 	component: BlairPopover,
 	tags: ['autodocs'],
 	argTypes: {
-		dataGa: {
-			control: 'text',
-			description: '設定 ga name',
-		},
 		popperClass: {
 			control: 'text',
 			description: 'popover 的 class',

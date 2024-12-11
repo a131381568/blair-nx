@@ -1,0 +1,31 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"jsx": "react-jsx",
+		"jsxImportSource": "react",
+		"lib": ["ES2015", "DOM"],
+		"baseUrl": "../../",
+		"rootDir": "../../",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+		"types": ["node", "vite/client", "vitest"],
+		"allowJs": true,
+		"strict": true,
+		"declaration": true,
+		"declarationMap": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"verbatimModuleSyntax": true
+	},
+	"references": [
+		{
+			"path": "./tsconfig.app.json"
+		},
+		{
+			"path": "./tsconfig.spec.json"
+		}
+	],
+	"files": [],
+	"include": []
+}

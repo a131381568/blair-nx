@@ -1,0 +1,42 @@
+{
+	"name": "relax",
+	"$schema": "../../node_modules/nx/schemas/project-schema.json",
+	"sourceRoot": "apps/{projectName}/src",
+	"projectType": "application",
+	"tags": [],
+	"targets": {
+		"generateContextMd": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "node dist/apps/{projectName}/helpers/generateContextMd.cjs --source={args.source} --output={args.output}",
+				"source": "apps/{projectName}",
+				"output": "apps/{projectName}/src/helpers/refer_context.md"
+			},
+			"configurations": {
+				"production": {
+					"command": "node dist/apps/{projectName}/helpers/generateContextMd.cjs"
+				}
+			},
+			"dependsOn": ["build-context-script"]
+		},
+		"build-context-script": {
+			"executor": "@nx/esbuild:esbuild",
+			"outputs": ["{options.outputPath}"],
+			"options": {
+				"outputPath": "dist/apps/{projectName}/helpers",
+				"main": "apps/{projectName}/src/helpers/generateContextMd.ts",
+				"tsConfig": "apps/{projectName}/tsconfig.app.json",
+				"assets": [],
+				"generatePackageJson": true,
+				"format": ["cjs"]
+			},
+			"dependsOn": ["copy-env", "build"]
+		},
+		"mockServer": {
+			"executor": "nx:run-commands",
+			"options": {
+				"command": "node apps/{projectName}/src/api/mock-server.js"
+			}
+		}
+	}
+}

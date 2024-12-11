@@ -4,19 +4,21 @@
 
 ## 專案介紹
 
-![nx_graph](https://i.imgur.com/b1lEPpt.png)
+![nx_graph](https://i.imgur.com/w19mHaE.png)
 
 - APP
 
   + [boilerplate](https://github.com/a131381568/blair-nx/tree/development/apps/boilerplate) - 範本專案
   + [cts-front-end](https://github.com/a131381568/blair-nx/tree/development/apps/cts-front-end) - catch the stars 前端
   + [cts-back-end](https://github.com/a131381568/blair-nx/tree/development/apps/cts-back-end) - catch the stars 後端
+  + [relax](https://github.com/a131381568/blair-nx/tree/development/apps/relax) - relax 前端
 
 - 共享庫與 E2E
 
   + [cts-shared](https://github.com/a131381568/blair-nx/tree/development/libs/cts-shared) - 僅 catch the stars 前後端專案的共享資源
   + [cts-front-end-e2e](https://github.com/a131381568/blair-nx/tree/development/apps/cts-front-end-e2e) - catch the stars 的 E2E 測試 (playwright)
   + [boilerplate-e2e](https://github.com/a131381568/blair-nx/tree/development/apps/boilerplate-e2e) - 範本專案的 E2E 測試 (cypress)
+  + [relax-e2e](https://github.com/a131381568/blair-nx/tree/development/apps/relax-e2e) - relax 專案的 E2E 測試 (playwright)
   + [blairComposables](https://github.com/a131381568/blair-nx/tree/development/libs/blairComposables) - 全域共享的 composables
   + [blairConfig](https://github.com/a131381568/blair-nx/tree/development/libs/blairConfig) - 全域共享的設定檔
   + [blairUI](https://github.com/a131381568/blair-nx/tree/development/libs/blairUI) - 全域共享的 UI 組件
