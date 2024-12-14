@@ -1,15 +1,16 @@
 import { type KeyboardEvent, useState } from 'react';
-import { useLanguageContext, useTodoContext } from '../hooks/useContexts';
+import { useLanguageContext } from '../hooks/useContexts';
+import { useTodoStore } from '../stores/useTodoStore';
 import { AddButton, Input, InputContainer } from './styled/TodoInputStyle';
 
 export const TodoInput = () => {
 	const { t } = useLanguageContext();
-	const { api } = useTodoContext();
+	const { addTodo, loadingStates } = useTodoStore();
 	const [text, setText] = useState('');
 
 	const handleAdd = async () => {
 		if (text.trim()) {
-			await api.addTodo(text.trim());
+			await addTodo(text.trim());
 			setText('');
 		}
 	};
@@ -28,14 +29,13 @@ export const TodoInput = () => {
 				onChange={e => setText(e.target.value)}
 				onKeyDown={handleKeyDown}
 				placeholder={t('addTodo')}
-				data-testid="todo-input"
+				disabled={loadingStates.add}
 			/>
 			<AddButton
 				onClick={handleAdd}
-				disabled={!text.trim()}
-				data-testid="add-button"
+				disabled={!text.trim() || loadingStates.add}
 			>
-				{t('addTodo')}
+				{loadingStates.add ? t('addIng') : t('addTodo')}
 			</AddButton>
 		</InputContainer>
 	);

@@ -15,6 +15,10 @@ export const translations = {
 		detailInCompleted: '未完成',
 		detailMarkCompleted: '標記已完成',
 		detailMarkInCompleted: '標記未完成',
+		deleteIng: '刪除中...',
+		addIng: '新增中...',
+		saveIng: '儲存中...',
+		loadIng: '處理中...',
 	},
 	en: {
 		mainTitle: 'Todo List',
@@ -32,5 +36,9 @@ export const translations = {
 		detailInCompleted: 'Incompleted',
 		detailMarkCompleted: 'Mark Completed',
 		detailMarkInCompleted: 'Mark Incompleted',
+		deleteIng: 'Deleteing...',
+		addIng: 'Adding...',
+		saveIng: 'Saveing...',
+		loadIng: 'Loading...',
 	},
 } as const;

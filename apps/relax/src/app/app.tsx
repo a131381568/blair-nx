@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { theme } from '../components/styled/theme';
 import { TodoListSkeleton } from '../components/TodoListSkeleton';
@@ -5,21 +6,20 @@ import { AddButton } from '../components/styled/TodoInputStyle';
 import { TodoList } from '../components/TodoList';
 import { TodoInput } from '../components/TodoInput';
 import { TodoDetail } from '../components/TodoDetail';
-import { TodoProvider } from '../context/providers/TodoProvider';
-import { useLanguageContext, useTodoContext } from '../hooks/useContexts';
+import { useLanguageContext } from '../hooks/useContexts';
 import { LanguageSwitcher } from '../components/LanguageSwitcher';
 import { LanguageProvider } from '../context/providers/LanguageProvider';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { ThemeProvider } from '../context/providers/ThemeProvider';
+import { useTodoStore } from '../stores/useTodoStore';
+import { TodoAPI } from '../api/todo';
 
 export function App() {
 	return (
 		<StyledThemeProvider theme={theme}>
 			<ThemeProvider>
 				<LanguageProvider>
-					<TodoProvider>
-						<TodoApp />
-					</TodoProvider>
+					<TodoApp />
 				</LanguageProvider>
 			</ThemeProvider>
 		</StyledThemeProvider>
@@ -28,8 +28,46 @@ export function App() {
 
 function TodoApp() {
 	const { t } = useLanguageContext();
-	const { state, dispatch, activeTodo, api } = useTodoContext();
-	const { loading, error, isEditMode } = state;
+	const {
+		loading,
+		error,
+		isEditMode,
+		setTodos,
+		setLoading,
+		setError,
+		toggleEditMode,
+		saveTodoList,
+		loadingStates,
+	} = useTodoStore();
+
+	useEffect(() => {
+		let mounted = true;
+
+		async function fetchTodos() {
+			try {
+				const data = await TodoAPI.getAll();
+				if (mounted) {
+					setTodos(data);
+					setError(null);
+				}
+			}
+			catch (err) {
+				if (mounted) {
+					setError(err instanceof Error ? err : new Error('Failed to fetch todos'));
+				}
+			}
+			finally {
+				if (mounted) {
+					setLoading(false);
+				}
+			}
+		}
+
+		fetchTodos();
+		return () => {
+			mounted = false;
+		};
+	}, [setTodos, setError, setLoading]);
 
 	if (error) {
 		return (
@@ -51,22 +89,17 @@ function TodoApp() {
 			</div>
 			{!isEditMode && <TodoInput />}
 			<TodoList />
-			{activeTodo && !isEditMode && <TodoDetail />}
+			{!isEditMode && <TodoDetail />}
 			<AddButton
 				className="mt-5"
 				onClick={async () => {
-					try {
-						dispatch({ type: 'TOGGLE_MODE' });
-						if (!isEditMode) {
-							await api.saveTodoList(state.todos);
-						}
-					}
-					catch (err) {
-						console.error(err);
+					toggleEditMode();
+					if (!isEditMode) {
+						await saveTodoList();
 					}
 				}}
 			>
-				{isEditMode ? t('editMode') : (api.loadingStates.save ? '儲存中...' : t('saveList'))}
+				{isEditMode ? t('editMode') : (loadingStates.save ? t('saveIng') : t('saveList'))}
 			</AddButton>
 		</div>
 	);

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { useLanguageContext, useTodoContext } from '../hooks/useContexts';
+import { useLanguageContext } from '../hooks/useContexts';
+import { useTodoStore } from '../stores/useTodoStore';
 
 const DetailContainer = styled.div`
   margin-top: ${({ theme }) => theme.spacing.lg};
@@ -43,7 +44,9 @@ const Status = styled.div<{ $completed: boolean }>`
 
 export const TodoDetail = () => {
 	const { t } = useLanguageContext();
-	const { dispatch, activeTodo: item } = useTodoContext();
+	const { todos, activeId, toggleTodo, deleteTodo, loadingStates } = useTodoStore();
+
+	const item = todos.find(todo => todo.id === activeId);
 
 	if (!item)
 		return null;
@@ -54,23 +57,26 @@ export const TodoDetail = () => {
 				<DetailTitle>{item.text}</DetailTitle>
 				<div>
 					<ActionButton
-						onClick={() => dispatch({ type: 'TOGGLE_TODO', payload: item.id })}
+						onClick={() => toggleTodo(item.id)}
+						disabled={loadingStates[`toggle-${item.id}`]}
 						style={{ marginRight: '8px' }}
 					>
-						{item.completed ? t('detailMarkInCompleted') : t('detailMarkCompleted')}
+						{loadingStates[`toggle-${item.id}`]
+							? t('loadIng')
+							: (item.completed ? t('detailMarkInCompleted') : t('detailMarkCompleted'))}
 					</ActionButton>
 					<ActionButton
 						$danger
-						onClick={() => dispatch({ type: 'DELETE_TODO', payload: item.id })}
+						onClick={() => deleteTodo(item.id)}
+						disabled={loadingStates[`delete-${item.id}`]}
 					>
-						{t('deleteTodo')}
+						{loadingStates[`delete-${item.id}`] ? t('deleteIng') : t('deleteTodo')}
 					</ActionButton>
 				</div>
 			</DetailHeader>
 			<Status $completed={item.completed}>
 				{t('detailState')}
 				:
-				{' '}
 				{item.completed ? t('detailCompleted') : t('detailInCompleted')}
 			</Status>
 		</DetailContainer>

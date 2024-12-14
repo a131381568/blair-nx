@@ -1,5 +1,6 @@
 import type { TodoListProps } from '../types/list';
-import { useLanguageContext, useTodoContext } from '../hooks/useContexts';
+import { useLanguageContext } from '../hooks/useContexts';
+import { useTodoStore } from '../stores/useTodoStore';
 import {
 	DeleteButton,
 	TodoCheckbox,
@@ -11,8 +12,15 @@ import {
 
 export const TodoList = ({ title }: TodoListProps) => {
 	const { t } = useLanguageContext();
-	const { state, dispatch, api } = useTodoContext();
-	const { todos, activeId, isEditMode } = state;
+	const {
+		todos,
+		activeId,
+		isEditMode,
+		loadingStates,
+		toggleTodo,
+		deleteTodo,
+		selectTodo,
+	} = useTodoStore();
 
 	const completedCount = todos.filter(item => item.completed).length;
 
@@ -31,28 +39,28 @@ export const TodoList = ({ title }: TodoListProps) => {
 									key={item.id}
 									$completed={item.completed}
 									$active={item.id === activeId}
-									onClick={() => dispatch({ type: 'SELECT_TODO', payload: item.id })}
+									onClick={() => selectTodo(item.id)}
 								>
 									<div>
 										<TodoCheckbox
 											checked={item.completed}
-											disabled={isEditMode || api.loadingStates[`toggle-${item.id}`]}
+											disabled={isEditMode || loadingStates[`toggle-${item.id}`]}
 											onChange={async (e) => {
 												e.stopPropagation();
-												await api.toggleTodo(item.id);
+												await toggleTodo(item.id);
 											}}
 										/>
 										<span>{item.text}</span>
 									</div>
 									{!isEditMode && (
 										<DeleteButton
-											disabled={api.loadingStates[`delete-${item.id}`]}
+											disabled={loadingStates[`delete-${item.id}`]}
 											onClick={async (e) => {
 												e.stopPropagation();
-												await api.deleteTodo(item.id);
+												await deleteTodo(item.id);
 											}}
 										>
-											{api.loadingStates[`delete-${item.id}`] ? '刪除中...' : t('deleteTodo')}
+											{loadingStates[`delete-${item.id}`] ? t('deleteIng') : t('deleteTodo')}
 										</DeleteButton>
 									)}
 								</TodoItem>

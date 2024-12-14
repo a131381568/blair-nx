@@ -28,7 +28,7 @@ const initialState: TodoState = {
 	loading: true,
 	error: null,
 	activeId: null,
-	isEditMode: false,
+	isEditMode: true,
 	loadingStates: {},
 };
 
