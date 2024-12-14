@@ -1,3 +1,4 @@
+$ tree
 .
 ├── eslint.config.mjs
 ├── index.html
@@ -57,6 +58,8 @@
 │   ├── main.tsx
 │   ├── reducers
 │   │   └── todoReducer.ts
+│   ├── stores
+│   │   └── useTodoStore.ts
 │   ├── styled.d.ts
 │   ├── styles.css
 │   ├── types

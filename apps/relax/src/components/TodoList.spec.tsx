@@ -1,58 +1,47 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { ThemeProvider } from 'styled-components';
-import { TodoContext } from '../context/TodoContext';
 import { LanguageProvider } from '../context/providers/LanguageProvider';
-import type { TodoContextType } from '../context/types';
-import type { TodoItem } from '../types/list';
+import * as todoStoreModule from '../stores/useTodoStore';
 import { theme } from './styled/theme';
 import { TodoList } from './TodoList';
 
-const mockTodos: TodoItem[] = [
+const mockTodos = [
 	{ id: 1, text: '學習 React 基礎', completed: true },
 	{ id: 2, text: '理解 JSX 語法', completed: false },
 ];
 
-const mockTodoContext: TodoContextType = {
-	state: {
+vi.mock('../stores/useTodoStore', () => ({
+	useTodoStore: vi.fn(() => ({
 		todos: mockTodos,
-		loading: false,
-		error: null,
-		isEditMode: false,
 		activeId: null,
-	},
-	dispatch: vi.fn(),
-	activeTodo: undefined,
-	api: {
-		addTodo: vi.fn(),
-		toggleTodo: vi.fn().mockImplementation(() => Promise.resolve()),
-		deleteTodo: vi.fn().mockImplementation(() => Promise.resolve()),
-		saveTodoList: vi.fn(),
+		isEditMode: false,
 		loadingStates: {},
-	},
-};
+		toggleTodo: vi.fn(),
+		deleteTodo: vi.fn(),
+		selectTodo: vi.fn(),
+	})),
+}));
 
-interface ContextOverrides {
-	state?: Partial<TodoContextType['state']>;
-	api?: Partial<TodoContextType['api']>;
-	dispatch?: typeof mockTodoContext.dispatch;
-}
-
-const renderWithProviders = (contextOverrides: ContextOverrides = {}) => {
-	const contextValue = {
-		...mockTodoContext,
-		state: { ...mockTodoContext.state, ...contextOverrides.state },
-		api: { ...mockTodoContext.api, ...contextOverrides.api },
-		dispatch: contextOverrides.dispatch || mockTodoContext.dispatch,
+const renderWithProviders = (storeOverrides = {}) => {
+	const store = {
+		todos: mockTodos,
+		activeId: null,
+		isEditMode: false,
+		loadingStates: {},
+		toggleTodo: vi.fn(),
+		deleteTodo: vi.fn(),
+		selectTodo: vi.fn(),
+		...storeOverrides,
 	};
+
+	vi.mocked(todoStoreModule.useTodoStore).mockReturnValue(store);
 
 	return render(
 		<ThemeProvider theme={theme}>
-			<TodoContext.Provider value={contextValue}>
-				<LanguageProvider>
-					<TodoList />
-				</LanguageProvider>
-			</TodoContext.Provider>
+			<LanguageProvider>
+				<TodoList />
+			</LanguageProvider>
 		</ThemeProvider>,
 	);
 };
@@ -64,9 +53,7 @@ describe('todoList Component', () => {
 	});
 
 	it('當清單為空時應該顯示提示訊息', () => {
-		renderWithProviders({
-			state: { todos: [] },
-		});
+		renderWithProviders({ todos: [] });
 		expect(screen.getByText('目前沒有待辦事項')).toBeInTheDocument();
 	});
 
@@ -78,69 +65,46 @@ describe('todoList Component', () => {
 	});
 
 	it('應該正確處理待辦事項的完成狀態', async () => {
-		const toggleTodo = vi.fn().mockImplementation(() => Promise.resolve());
-
-		renderWithProviders({
-			api: { toggleTodo },
-		});
-
-		const checkbox = screen.getAllByRole('checkbox')[0];
+		const toggleTodo = vi.fn();
+		renderWithProviders({ toggleTodo });
 
 		await act(async () => {
-			fireEvent.click(checkbox);
-			await Promise.resolve();
+			fireEvent.click(screen.getAllByRole('checkbox')[0]);
 		});
 
 		expect(toggleTodo).toHaveBeenCalledWith(mockTodos[0].id);
 	});
 
 	it('應該正確處理待辦事項的刪除', async () => {
-		const deleteTodo = vi.fn().mockImplementation(() => Promise.resolve());
-
-		renderWithProviders({
-			api: { deleteTodo },
-		});
-
-		const deleteButtons = screen.getAllByText('刪除');
+		const deleteTodo = vi.fn();
+		renderWithProviders({ deleteTodo });
 
 		await act(async () => {
-			fireEvent.click(deleteButtons[0]);
-			await Promise.resolve();
+			fireEvent.click(screen.getAllByText('刪除')[0]);
 		});
 
 		expect(deleteTodo).toHaveBeenCalledWith(mockTodos[0].id);
 	});
 
-	it('應該正確顯示待辦事項統計', () => {
-		renderWithProviders();
-
-		expect(screen.getByText(/總計:/)).toHaveTextContent('2');
-		expect(screen.getByText('1')).toHaveClass('completed');
-	});
-
-	it('選中項目時應正確觸發 dispatch', async () => {
-		const dispatch = vi.fn();
-
-		renderWithProviders({
-			dispatch,
-		});
+	it('選中項目時應正確觸發選擇動作', async () => {
+		const selectTodo = vi.fn();
+		renderWithProviders({ selectTodo });
 
 		await act(async () => {
 			fireEvent.click(screen.getByText('學習 React 基礎'));
 		});
 
-		expect(dispatch).toHaveBeenCalledWith({
-			type: 'SELECT_TODO',
-			payload: mockTodos[0].id,
-		});
+		expect(selectTodo).toHaveBeenCalledWith(mockTodos[0].id);
 	});
 
 	it('編輯模式下應隱藏刪除按鈕', () => {
-		renderWithProviders({
-			state: { isEditMode: true },
-		});
+		renderWithProviders({ isEditMode: true });
+		expect(screen.queryAllByText('刪除')).toHaveLength(0);
+	});
 
-		const deleteButtons = screen.queryAllByText('刪除');
-		expect(deleteButtons).toHaveLength(0);
+	it('應該正確顯示待辦事項統計', () => {
+		renderWithProviders();
+		expect(screen.getByText(/總計:/)).toBeInTheDocument();
+		expect(screen.getByText('1')).toHaveClass('completed');
 	});
 });

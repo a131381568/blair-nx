@@ -74,7 +74,7 @@ export const TodoDetail = () => {
 					</ActionButton>
 				</div>
 			</DetailHeader>
-			<Status $completed={item.completed}>
+			<Status $completed={item.completed} data-testid="detail-state">
 				{t('detailState')}
 				:
 				{item.completed ? t('detailCompleted') : t('detailInCompleted')}

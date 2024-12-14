@@ -1,13 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { ThemeProvider } from 'styled-components';
-import { TodoContext } from '../context/TodoContext';
-import type { TodoContextType } from '../context/types';
-import type { TodoItem } from '../types/list';
-import { translations } from '../constants/language-translations';
 import { LanguageProvider } from '../context/providers/LanguageProvider';
-import { TodoDetail } from './TodoDetail';
+import * as todoStoreModule from '../stores/useTodoStore';
+import type { TodoItem } from '../types/list';
 import { theme } from './styled/theme';
+import { TodoDetail } from './TodoDetail';
 
 const mockTodo: TodoItem = {
 	id: 1,
@@ -15,74 +13,88 @@ const mockTodo: TodoItem = {
 	completed: false,
 };
 
-const mockContext = (overrides: Partial<TodoContextType> = {}): TodoContextType => ({
-	state: {
+vi.mock('../stores/useTodoStore', () => ({
+	useTodoStore: vi.fn(() => ({
 		todos: [mockTodo],
-		loading: false,
-		error: null,
-		isEditMode: false,
 		activeId: mockTodo.id,
-	},
-	dispatch: vi.fn(),
-	activeTodo: mockTodo,
-	api: {
-		addTodo: vi.fn(),
 		toggleTodo: vi.fn(),
 		deleteTodo: vi.fn(),
-		saveTodoList: vi.fn(),
 		loadingStates: {},
-	},
-	...overrides,
-});
+	})),
+}));
 
-const renderTodoDetail = (contextOverrides: Partial<TodoContextType> = {}) => {
+const renderTodoDetail = (storeOverrides = {}) => {
+	const store = {
+		todos: [mockTodo],
+		activeId: mockTodo.id,
+		toggleTodo: vi.fn(),
+		deleteTodo: vi.fn(),
+		loadingStates: {},
+		...storeOverrides,
+	};
+
+	vi.mocked(todoStoreModule.useTodoStore).mockReturnValue(store);
+
 	return render(
 		<ThemeProvider theme={theme}>
-			<TodoContext.Provider value={mockContext(contextOverrides)}>
-				<LanguageProvider>
-					<TodoDetail />
-				</LanguageProvider>
-			</TodoContext.Provider>
+			<LanguageProvider>
+				<TodoDetail />
+			</LanguageProvider>
 		</ThemeProvider>,
 	);
 };
 
 describe('todoDetail Component', () => {
 	it('當沒有選中項目時不應渲染', () => {
-		renderTodoDetail({ activeTodo: undefined });
+		renderTodoDetail({ activeId: null });
 		expect(screen.queryByText(mockTodo.text)).not.toBeInTheDocument();
 	});
 
 	it('應該渲染待辦事項詳細資訊', () => {
 		renderTodoDetail();
 		expect(screen.getByText(mockTodo.text)).toBeInTheDocument();
-		expect(screen.getByText(`${translations.zh.detailState}: ${translations.zh.detailInCompleted}`)).toBeInTheDocument();
+		const detailStateContainer = screen.getByTestId('detail-state');
+		expect(detailStateContainer).toBeInTheDocument();
+		expect(detailStateContainer).toHaveTextContent('未完成');
 	});
 
 	it('切換完成狀態時應該顯示正確的按鈕文字', () => {
 		const completedTodo = { ...mockTodo, completed: true };
 		renderTodoDetail({
-			activeTodo: completedTodo,
-			state: { ...mockContext().state, todos: [completedTodo] },
+			todos: [completedTodo],
+			activeId: completedTodo.id,
 		});
 
-		expect(screen.getByText(translations.zh.detailMarkInCompleted)).toBeInTheDocument();
-		expect(screen.getByText(`${translations.zh.detailState}: ${translations.zh.detailCompleted}`)).toBeInTheDocument();
+		expect(screen.getByText('標記未完成')).toBeInTheDocument();
+		const detailStateContainer = screen.getByTestId('detail-state');
+		expect(detailStateContainer).toHaveTextContent('已完成');
 	});
 
-	it('點擊標記完成按鈕應該觸發 dispatch', () => {
-		const dispatch = vi.fn();
-		renderTodoDetail({ dispatch });
+	it('點擊標記完成按鈕應該觸發 toggleTodo', () => {
+		const toggleTodo = vi.fn();
+		renderTodoDetail({ toggleTodo });
 
-		fireEvent.click(screen.getByText(translations.zh.detailMarkCompleted));
-		expect(dispatch).toHaveBeenCalledWith({ type: 'TOGGLE_TODO', payload: mockTodo.id });
+		fireEvent.click(screen.getByText('標記已完成'));
+		expect(toggleTodo).toHaveBeenCalledWith(mockTodo.id);
 	});
 
-	it('點擊刪除按鈕應該觸發 dispatch', () => {
-		const dispatch = vi.fn();
-		renderTodoDetail({ dispatch });
+	it('點擊刪除按鈕應該觸發 deleteTodo', () => {
+		const deleteTodo = vi.fn();
+		renderTodoDetail({ deleteTodo });
 
-		fireEvent.click(screen.getByText(translations.zh.deleteTodo));
-		expect(dispatch).toHaveBeenCalledWith({ type: 'DELETE_TODO', payload: mockTodo.id });
+		fireEvent.click(screen.getByText('刪除'));
+		expect(deleteTodo).toHaveBeenCalledWith(mockTodo.id);
+	});
+
+	it('在載入狀態下應該禁用按鈕', () => {
+		renderTodoDetail({
+			loadingStates: {
+				[`toggle-${mockTodo.id}`]: true,
+				[`delete-${mockTodo.id}`]: true,
+			},
+		});
+
+		expect(screen.getByText('處理中...')).toBeDisabled();
+		expect(screen.getByText('刪除中...')).toBeDisabled();
 	});
 });
