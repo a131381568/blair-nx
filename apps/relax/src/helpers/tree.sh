@@ -1,4 +1,3 @@
-$ tree
 .
 ├── eslint.config.mjs
 ├── index.html
