@@ -13,7 +13,7 @@ export const TodoInput = () => {
 
 	const handleAdd = async () => {
 		const text = inputValue.trim();
-		if (text) {
+		if (text && !loadingStates.add) { // 檢查是否已在載入中
 			await addTodo(text);
 			inputRef.current?.clear();
 			setInputValue(''); // 清除狀態
