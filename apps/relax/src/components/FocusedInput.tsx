@@ -3,9 +3,9 @@ import type { InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 export interface InputHandle {
-	focus: () => void;
-	clear: () => void;
-	getValue: () => string;
+	focus: () => void; // 聚焦輸入框
+	clear: () => void; // 清空輸入值
+	getValue: () => string; // 獲取當前值
 }
 
 interface FocusedInputProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -32,6 +32,7 @@ export const FocusedInput = forwardRef<InputHandle, FocusedInputProps>(
 		const inputRef = useRef<HTMLInputElement>(null);
 		const [internalValue, setInternalValue] = useState(value);
 
+		// 暴露方法給父組件
 		useImperativeHandle(ref, () => ({
 			focus: () => {
 				inputRef.current?.focus();
