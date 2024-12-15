@@ -5,6 +5,13 @@
 	"projectType": "application",
 	"tags": [],
 	"targets": {
+		"lint": {
+			"executor": "nx:run-commands",
+			"options": {
+				"cwd": "apps/{projectName}",
+				"command": "eslint ."
+			}
+		},
 		"generateContextMd": {
 			"executor": "nx:run-commands",
 			"options": {
