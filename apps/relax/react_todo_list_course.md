@@ -1,6 +1,6 @@
 # 循序漸進學習開發 React Todo List 大綱
 
-以下是跟你一起規劃的循序漸進 React Todo List 學習路線。這個規劃會從基礎開始，逐步引入更進階的概念：
+以下是跟 [claude.ai](https://claude.ai/) 一起規劃的循序漸進 React Todo List 學習路線。這個規劃會從基礎開始，逐步引入更進階的概念：
 
 ### 第一章：React 基礎 & JSX
 
