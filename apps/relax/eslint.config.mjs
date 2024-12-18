@@ -39,7 +39,7 @@ export default antfu(
 			'**/e2e/*.png',
 			'**/e2e/*.pdf',
 			'**/refer_context.md',
-			'react_todo_list_course.md',
+			'**/*.md',
 		],
 	},
 	{
