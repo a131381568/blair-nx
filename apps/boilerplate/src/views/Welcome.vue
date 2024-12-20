@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import NxWelcome from '@demo-src/components/NxWelcome.vue';
+import { runTests } from '../services/stringMatching';
+
+runTests();
 </script>
 
 <template>
