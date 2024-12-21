@@ -7,8 +7,10 @@ const apiClient = axios.create({
 });
 
 export const TodoAPI = {
-	async getAll() {
-		const { data } = await apiClient.get<TodoItem[]>('/todo');
+	async getAll(config?: { signal?: AbortSignal }) {
+		const { data } = await apiClient.get<TodoItem[]>('/todo', {
+			...config,
+		});
 		return data;
 	},
 
